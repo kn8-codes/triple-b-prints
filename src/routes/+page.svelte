@@ -47,7 +47,7 @@
 				</p>
 				<div class="flex flex-wrap gap-4 justify-center md:justify-start">
 					<a
-						href="#products"
+						href="/shop/t-shirt"
 						class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all"
 					>
 						Shop Now
