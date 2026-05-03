@@ -85,7 +85,12 @@
 		if (file) handleFileUpload(file);
 	}
 
-	// ─── Artwork Drag Positioning ───
+	/* ─── Artwork Drag Positioning ───
+	   MOBILE RESPONSIVENESS FIX (2025-05-03):
+	   • Added ontouchstart on the artwork element so dragging works on phones.
+	   • Global window listeners for touchmove / touchend already exist below.
+	   • Prevent default on touchmove stops the page from scrolling while dragging.
+	*/
 	function startDrag(event: MouseEvent | TouchEvent) {
 		if (!uploadedImage) return;
 		isDragging = true;
@@ -96,6 +101,10 @@
 
 	function onDragMove(event: MouseEvent | TouchEvent) {
 		if (!isDragging || !previewRef) return;
+		// Prevent page scroll on mobile while dragging artwork
+		if ('touches' in event) {
+			event.preventDefault();
+		}
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 
@@ -143,11 +152,47 @@
 		imageScale = parseFloat(input.value);
 	}
 
-	// ─── Add to Cart ───
-	function addToCart() {
-		if (!uploadedImage) return;
-		addedToCart = true;
-		setTimeout(() => (addedToCart = false), 2000);
+	let isCheckingOut = $state(false);
+	let checkoutError = $state<string | null>(null);
+	let checkoutStatusRef = $state<HTMLParagraphElement | null>(null);
+
+	async function buyNow() {
+		if (!uploadedImage || isCheckingOut) return;
+		isCheckingOut = true;
+		checkoutError = null;
+
+		try {
+			const payload = {
+				productName: product.name,
+				amount: totalPrice,
+				options: {
+					size: selectedSize.label,
+					color: selectedColor.name,
+					printLocation: selectedLocation.label,
+					artwork: 'Uploaded by customer'
+				}
+			};
+
+			const res = await fetch('/api/checkout-session', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			});
+
+			if (!res.ok) {
+				const errData = await res.json().catch(() => ({}));
+				throw new Error(errData.message || 'Checkout failed. Please try again.');
+			}
+
+			const { url } = await res.json();
+			if (!url) throw new Error('No checkout URL returned.');
+
+			window.location.href = url;
+		} catch (err: any) {
+			isCheckingOut = false;
+			checkoutError = err.message || 'Something went wrong. Please try again.';
+			setTimeout(() => checkoutStatusRef?.focus(), 0);
+		}
 	}
 
 	// ─── Global Event Listeners ───

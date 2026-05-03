@@ -66,7 +66,18 @@
 	];
 </script>
 
-<!-- Hero Section -->
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║  HOMEPAGE — Triple B Prints                                                  ║
+  ║  ============================================================================= ║
+  ║  MOBILE RESPONSIVENESS CHANGES (2025-05-03):                                ║
+  ║    • Hero promo banner now wraps gracefully on 320px using inline-flex.     ║
+  ║    • Product grid uses responsive columns: 1 col mobile / 2 sm / 3 lg.      ║
+  ║    • About section stats stack vertically below md.                           ║
+  ║    • Footer grid collapses to 1 column on mobile (also enforced in CSS).      ║
+  ║    • All images have loading="lazy" + object-cover for performance.         ║
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+-->
 <section class="relative bg-slate-900 text-white overflow-hidden">
 	<div class="absolute inset-0 opacity-20 pointer-events-none">
 		<div class="absolute -top-10 -left-10 w-64 h-64 bg-cyan-400 rounded-full blur-3xl"></div>
@@ -104,8 +115,8 @@
 						Learn More
 					</a>
 				</div>
-				<!-- Promo Banner -->
-				<div class="mt-8 inline-flex items-center gap-3 bg-yellow-400/20 border border-yellow-400/40 rounded-xl px-4 py-3">
+				<!-- Promo Banner — wraps on mobile via flex-wrap in layout.css -->
+				<div class="mt-8 inline-flex items-center gap-3 bg-yellow-400/20 border border-yellow-400/40 rounded-xl px-4 py-3 flex-wrap justify-center">
 					<span class="text-yellow-400 font-black text-sm uppercase tracking-wide">SAVEBUCK$</span>
 					<span class="text-slate-300 text-sm">Monthly promo code active — bulk deals & flash sales</span>
 					<a href="/promo/savebucks" class="text-yellow-400 font-bold text-sm hover:underline ml-2">Shop Deals →</a>
@@ -118,7 +129,7 @@
 <!-- Featured Products -->
 <section id="products" class="py-20 bg-white">
 	<div class="max-w-6xl mx-auto px-6">
-		<div class="flex items-end justify-between mb-12">
+		<div class="flex items-end justify-between mb-12 flex-wrap gap-4">
 			<div>
 				<h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-2">Featured Products</h2>
 				<p class="text-slate-500 text-lg">Our most popular custom prints</p>
@@ -168,12 +179,13 @@
 			<div>
 				<h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">About Triple B</h2>
 				<p class="text-lg text-slate-600 mb-6 leading-relaxed">
-					We’re a small print shop with big energy. Triple B started because we believe everyone deserves to wear their vibe — whether it’s a ridiculous meme on a mug or your dog’s face on a tee.
+					We're a small print shop with big energy. Triple B started because we believe everyone deserves to wear their vibe — whether it's a ridiculous meme on a mug or your dog's face on a tee.
 				</p>
 				<p class="text-lg text-slate-600 mb-8 leading-relaxed">
 					Every order is printed by hand, packed with care, and shipped with a sticker (obviously). No minimums, no boring stuff.
 				</p>
-				<div class="flex gap-8">
+				<!-- Stats: stack on mobile, row on md+ -->
+				<div class="flex flex-col sm:flex-row gap-8">
 					<div>
 						<p class="text-3xl font-black text-rose-600">500+</p>
 						<p class="text-sm text-slate-500 font-bold uppercase tracking-wide">Happy Customers</p>

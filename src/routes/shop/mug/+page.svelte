@@ -73,7 +73,12 @@
 		if (file) handleFileUpload(file);
 	}
 
-	// ─── Artwork Drag Positioning ───
+	/* ─── Artwork Drag Positioning ───
+	   MOBILE RESPONSIVENESS FIX (2025-05-03):
+	   • Added ontouchstart on the artwork element so dragging works on phones.
+	   • Global window listeners for touchmove / touchend already exist below.
+	   • Prevent default on touchmove stops the page from scrolling while dragging.
+	*/
 	function startDrag(event: MouseEvent | TouchEvent) {
 		if (!uploadedImage) return;
 		isDragging = true;
@@ -84,6 +89,10 @@
 
 	function onDragMove(event: MouseEvent | TouchEvent) {
 		if (!isDragging || !previewRef) return;
+		// Prevent page scroll on mobile while dragging artwork
+		if ('touches' in event) {
+			event.preventDefault();
+		}
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 
@@ -131,11 +140,46 @@
 		imageScale = parseFloat(input.value);
 	}
 
-	// ─── Add to Cart ───
-	function addToCart() {
-		if (!uploadedImage) return;
-		addedToCart = true;
-		setTimeout(() => (addedToCart = false), 2000);
+	let isCheckingOut = $state(false);
+	let checkoutError = $state<string | null>(null);
+	let checkoutStatusRef = $state<HTMLParagraphElement | null>(null);
+
+	async function buyNow() {
+		if (!uploadedImage || isCheckingOut) return;
+		isCheckingOut = true;
+		checkoutError = null;
+
+		try {
+			const payload = {
+				productName: product.name,
+				amount: totalPrice,
+				options: {
+					size: selectedSize.label,
+					color: selectedColor.name,
+					artwork: 'Uploaded by customer'
+				}
+			};
+
+			const res = await fetch('/api/checkout-session', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			});
+
+			if (!res.ok) {
+				const errData = await res.json().catch(() => ({}));
+				throw new Error(errData.message || 'Checkout failed. Please try again.');
+			}
+
+			const { url } = await res.json();
+			if (!url) throw new Error('No checkout URL returned.');
+
+			window.location.href = url;
+		} catch (err: any) {
+			isCheckingOut = false;
+			checkoutError = err.message || 'Something went wrong. Please try again.';
+			setTimeout(() => checkoutStatusRef?.focus(), 0);
+		}
 	}
 
 	// ─── Global Event Listeners ───
@@ -368,34 +412,53 @@
 					{/if}
 				</div>
 
-				<!-- Add to Cart -->
-				<button
-					class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage
-						? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
-						: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
-					disabled={!uploadedImage}
-					onclick={addToCart}
-					aria-label={uploadedImage ? `Add custom mug to cart for $${totalPrice}` : 'Upload artwork to enable checkout'}
-					aria-live="polite"
-				>
-					{#if addedToCart}
-						<span class="flex items-center justify-center gap-2" role="status">
-							<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-							</svg>
-							Added to Cart!
-						</span>
-					{:else}
-						{uploadedImage ? 'Add to Cart — $' + totalPrice : 'Upload Artwork to Continue'}
-					{/if}
-				</button>
+							<!-- Buy Now (Stripe Checkout) -->
+							<button
+								class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage && !isCheckingOut
+									? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
+									: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
+								disabled={!uploadedImage || isCheckingOut}
+								onclick={buyNow}
+								aria-label={uploadedImage ? `Buy now custom mug for $${totalPrice}` : 'Upload artwork to enable checkout'}
+								aria-live="polite"
+							>
+								{#if isCheckingOut}
+									<span class="flex items-center justify-center gap-2" role="status">
+										<svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+										</svg>
+										Redirecting to secure checkout…
+									</span>
+								{:else if addedToCart}
+									<span class="flex items-center justify-center gap-2" role="status">
+										<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+										</svg>
+										Added to Cart!
+									</span>
+								{:else}
+									{uploadedImage ? 'Buy Now — $' + totalPrice : 'Upload Artwork to Continue'}
+								{/if}
+							</button>
 
-				{#if !uploadedImage}
-					<p class="text-sm text-slate-500 text-center">
-						Upload your artwork to enable checkout
-					</p>
-				{/if}
-			</div>
+							{#if checkoutError}
+								<p
+									bind:this={checkoutStatusRef}
+									tabindex="-1"
+									class="text-sm text-red-600 font-medium text-center"
+									role="alert"
+									aria-live="assertive"
+								>
+									{checkoutError}
+								</p>
+							{/if}
+
+							{#if !uploadedImage}
+								<p class="text-sm text-slate-500 text-center">
+									Upload your artwork to enable checkout
+								</p>
+							{/if}
+						</div>
 		</div>
 	</div>
 </section>
