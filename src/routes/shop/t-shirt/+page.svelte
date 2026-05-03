@@ -2,80 +2,85 @@
 	import { onMount } from 'svelte';
 
 	// ─── Product Data ───
-	const product = {
-		name: 'Custom T-Shirt',
-		basePrice: 18,
-		description: 'Premium cotton tee with your custom artwork. Soft, durable, and made to stand out.',
-		image: 'https://placehold.co/600x700/1e293b/ffffff?text=T-Shirt+Base'
+const product = {
+	name: 'Custom T-Shirt',
+	basePrice: 18,
+	description: 'Premium cotton tee with your custom artwork. Soft, durable, and made to stand out.',
+	image: 'https://placehold.co/600x700/1e293b/ffffff?text=T-Shirt+Base'
+};
+
+// ─── Size Options ───
+const sizes = [
+	{ label: 'S', priceMod: 0 },
+	{ label: 'M', priceMod: 0 },
+	{ label: 'L', priceMod: 0 },
+	{ label: 'XL', priceMod: 2 },
+	{ label: '2XL', priceMod: 4 }
+];
+
+// ─── Color Options ───
+const colors = [
+	{ name: 'Black', hex: '#1a1a1a' },
+	{ name: 'White', hex: '#f5f5f5' },
+	{ name: 'Navy', hex: '#1e3a5f' },
+	{ name: 'Red', hex: '#cc0000' }
+];
+
+// ─── State (Svelte 5 Runes) ───
+let selectedSize = $state(sizes[2]); // Default L
+let selectedColor = $state(colors[0]); // Default Black
+let uploadedImage = $state<string | null>(null);
+let imagePosition = $state({ x: 50, y: 40 }); // Percentage on t-shirt
+let imageScale = $state(1);
+let isDragging = $state(false);
+let dragStart = $state({ x: 0, y: 0 });
+let previewRef = $state<HTMLDivElement | null>(null);
+let isDragOver = $state(false);
+let addedToCart = $state(false);
+
+// ─── Derived Price ───
+let totalPrice = $derived(product.basePrice + selectedSize.priceMod);
+
+// ─── File Upload ───
+function handleFileUpload(file: File) {
+	if (!file.type.startsWith('image/')) return;
+	const reader = new FileReader();
+	reader.onload = (e) => {
+		uploadedImage = e.target?.result as string;
+		addedToCart = false;
 	};
+	reader.readAsDataURL(file);
+}
 
-	// ─── Size Options ───
-	const sizes = [
-		{ label: 'S', priceMod: 0 },
-		{ label: 'M', priceMod: 0 },
-		{ label: 'L', priceMod: 0 },
-		{ label: 'XL', priceMod: 2 },
-		{ label: '2XL', priceMod: 4 }
-	];
+function onFileInput(event: Event) {
+	const input = event.target as HTMLInputElement;
+	const file = input.files?.[0];
+	if (file) handleFileUpload(file);
+}
 
-	// ─── Color Options ───
-	const colors = [
-		{ name: 'Black', hex: '#1a1a1a' },
-		{ name: 'White', hex: '#f5f5f5' },
-		{ name: 'Navy', hex: '#1e3a5f' },
-		{ name: 'Red', hex: '#cc0000' }
-	];
+// ─── Drag & Drop ───
+function onDragOver(event: DragEvent) {
+	event.preventDefault();
+	isDragOver = true;
+}
 
-	// ─── State (Svelte 5 Runes) ───
-	let selectedSize = $state(sizes[2]); // Default L
-	let selectedColor = $state(colors[0]); // Default Black
-	let uploadedImage = $state<string | null>(null);
-	let imagePosition = $state({ x: 50, y: 40 }); // Percentage on t-shirt
-	let imageScale = $state(1);
-	let isDragging = $state(false);
-	let dragStart = $state({ x: 0, y: 0 });
-	let previewRef = $state<HTMLDivElement | null>(null);
-	let isDragOver = $state(false);
-	let addedToCart = $state(false);
+function onDragLeave() {
+	isDragOver = false;
+}
 
-	// ─── Derived Price ───
-	let totalPrice = $derived(product.basePrice + selectedSize.priceMod);
+function onDrop(event: DragEvent) {
+	event.preventDefault();
+	isDragOver = false;
+	const file = event.dataTransfer?.files[0];
+	if (file) handleFileUpload(file);
+}
 
-	// ─── File Upload ───
-	function handleFileUpload(file: File) {
-		if (!file.type.startsWith('image/')) return;
-		const reader = new FileReader();
-		reader.onload = (e) => {
-			uploadedImage = e.target?.result as string;
-			addedToCart = false;
-		};
-		reader.readAsDataURL(file);
-	}
-
-	function onFileInput(event: Event) {
-		const input = event.target as HTMLInputElement;
-		const file = input.files?.[0];
-		if (file) handleFileUpload(file);
-	}
-
-	// ─── Drag & Drop ───
-	function onDragOver(event: DragEvent) {
-		event.preventDefault();
-		isDragOver = true;
-	}
-
-	function onDragLeave() {
-		isDragOver = false;
-	}
-
-	function onDrop(event: DragEvent) {
-		event.preventDefault();
-		isDragOver = false;
-		const file = event.dataTransfer?.files[0];
-		if (file) handleFileUpload(file);
-	}
-
-	// ─── Artwork Drag Positioning ───
+	/* ─── Artwork Drag Positioning ───
+	   MOBILE RESPONSIVENESS FIX (2025-05-03):
+	   • Added ontouchstart on the artwork element so dragging works on phones.
+	   • Global window listeners for touchmove / touchend already exist below.
+	   • Prevent default on touchmove stops the page from scrolling while dragging.
+	*/
 	function startDrag(event: MouseEvent | TouchEvent) {
 		if (!uploadedImage) return;
 		isDragging = true;
@@ -86,6 +91,10 @@
 
 	function onDragMove(event: MouseEvent | TouchEvent) {
 		if (!isDragging || !previewRef) return;
+		// Prevent page scroll on mobile while dragging artwork
+		if ('touches' in event) {
+			event.preventDefault();
+		}
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 
@@ -99,62 +108,124 @@
 		dragStart = { x: clientX, y: clientY };
 	}
 
-	function endDrag() {
-		isDragging = false;
-	}
+function endDrag() {
+	isDragging = false;
+}
 
-	// ─── Keyboard Navigation for Artwork ───
-	function handleArtworkKey(event: KeyboardEvent) {
-		if (!uploadedImage) return;
-		const step = event.shiftKey ? 5 : 1;
-		switch (event.key) {
-			case 'ArrowLeft':
-				event.preventDefault();
-				imagePosition.x = Math.max(5, imagePosition.x - step);
-				break;
-			case 'ArrowRight':
-				event.preventDefault();
-				imagePosition.x = Math.min(95, imagePosition.x + step);
-				break;
-			case 'ArrowUp':
-				event.preventDefault();
-				imagePosition.y = Math.max(5, imagePosition.y - step);
-				break;
-			case 'ArrowDown':
-				event.preventDefault();
-				imagePosition.y = Math.min(95, imagePosition.y + step);
-				break;
-		}
+// ─── Keyboard Navigation for Artwork ───
+function handleArtworkKey(event: KeyboardEvent) {
+	if (!uploadedImage) return;
+	const step = event.shiftKey ? 5 : 1;
+	switch (event.key) {
+		case 'ArrowLeft':
+			event.preventDefault();
+			imagePosition.x = Math.max(5, imagePosition.x - step);
+			break;
+		case 'ArrowRight':
+			event.preventDefault();
+			imagePosition.x = Math.min(95, imagePosition.x + step);
+			break;
+		case 'ArrowUp':
+			event.preventDefault();
+			imagePosition.y = Math.max(5, imagePosition.y - step);
+			break;
+		case 'ArrowDown':
+			event.preventDefault();
+			imagePosition.y = Math.min(95, imagePosition.y + step);
+			break;
 	}
+}
 
-	// ─── Scale ───
-	function handleScaleChange(event: Event) {
-		const input = event.target as HTMLInputElement;
-		imageScale = parseFloat(input.value);
-	}
+// ─── Scale ───
+function handleScaleChange(event: Event) {
+	const input = event.target as HTMLInputElement;
+	imageScale = parseFloat(input.value);
+}
 
-	// ─── Add to Cart ───
-	function addToCart() {
-		if (!uploadedImage) return;
-		addedToCart = true;
-		setTimeout(() => (addedToCart = false), 2000);
-	}
+// ─── Add to Cart ───
+function addToCart() {
+	if (!uploadedImage) return;
+	addedToCart = true;
+	setTimeout(() => (addedToCart = false), 2000);
+}
 
-	// ─── Global Event Listeners ───
-	onMount(() => {
-		const move = (e: MouseEvent | TouchEvent) => onDragMove(e);
-		const up = () => endDrag();
-		window.addEventListener('mousemove', move);
-		window.addEventListener('mouseup', up);
-		window.addEventListener('touchmove', move, { passive: false });
-		window.addEventListener('touchend', up);
-		return () => {
-			window.removeEventListener('mousemove', move);
-			window.removeEventListener('mouseup', up);
-			window.removeEventListener('touchmove', move);
-			window.removeEventListener('touchend', up);
+// ─── Stripe Buy Now ───
+/**
+ * Initiates a Stripe Checkout session for this configured product.
+ *
+ * Flow:
+ * 1. Collect current configuration (size, color, price) into a payload.
+ * 2. POST to /api/checkout-session to create a Stripe Checkout Session.
+ * 3. Redirect the browser to Stripe's hosted checkout page.
+ *
+ * Why redirect instead of embedded checkout?
+ * - PCI compliance: Stripe handles all card input.
+ * - Accessibility: Stripe's hosted page is fully keyboard-navigable and screen-reader friendly.
+ * - Test mode: no real money moves; use Stripe test card 4242 4242 4242 4242.
+ *
+ * Accessibility:
+ * - We set isCheckingOut to show a loading state and disable the button.
+ * - aria-live="polite" on the status message announces progress to screen readers.
+ * - On error, focus moves to the error message so assistive tech users know what happened.
+ */
+let isCheckingOut = $state(false);
+let checkoutError = $state<string | null>(null);
+let checkoutStatusRef = $state<HTMLParagraphElement | null>(null);
+
+async function buyNow() {
+	if (!uploadedImage || isCheckingOut) return;
+	isCheckingOut = true;
+	checkoutError = null;
+
+	try {
+		const payload = {
+			productName: product.name,
+			amount: totalPrice,
+			options: {
+				size: selectedSize.label,
+				color: selectedColor.name,
+				artwork: 'Uploaded by customer'
+			}
 		};
-	});
+
+		const res = await fetch('/api/checkout-session', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload)
+		});
+
+		if (!res.ok) {
+			const errData = await res.json().catch(() => ({}));
+			throw new Error(errData.message || 'Checkout failed. Please try again.');
+		}
+
+		const { url } = await res.json();
+		if (!url) throw new Error('No checkout URL returned.');
+
+		window.location.href = url;
+	} catch (err: any) {
+		isCheckingOut = false;
+		checkoutError = err.message || 'Something went wrong. Please try again.';
+		// Move focus to the error message so screen readers announce it.
+		setTimeout(() => checkoutStatusRef?.focus(), 0);
+	}
+}
+
+// ─── Global Event Listeners ───
+onMount(() => {
+	const move = (e: MouseEvent | TouchEvent) => onDragMove(e);
+	const up = () => endDrag();
+	window.addEventListener('mousemove', move);
+	window.addEventListener('mouseup', up);
+	window.addEventListener('touchmove', move, { passive: false });
+	window.addEventListener('touchend', up);
+	return () => {
+		window.removeEventListener('mousemove', move);
+		window.removeEventListener('mouseup', up);
+		window.removeEventListener('touchmove', move);
+		window.removeEventListener('touchend', up);
+	};
+});
 </script>
 
 <svelte:head>
@@ -350,45 +421,64 @@
 									stroke-width="2"
 									d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
 								/>
-								</svg>
-								<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
-								<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG up to 25MB</p>
-							</label>
-							{#if uploadedImage}
-								<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
-									✓ Artwork uploaded
-								</p>
-								{/if}
-							</div>
+							</svg>
+							<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
+							<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG up to 25MB</p>
+						</label>
+						{#if uploadedImage}
+							<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
+								✓ Artwork uploaded
+							</p>
+							{/if}
+						</div>
 
-							<!-- Add to Cart -->
-							<button
-								class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage
-									? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
-									: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
-								disabled={!uploadedImage}
-								onclick={addToCart}
-								aria-label={uploadedImage ? `Add custom t-shirt to cart for $${totalPrice}` : 'Upload artwork to enable checkout'}
-								aria-live="polite"
+						<!-- Buy Now (Stripe Checkout) -->
+						<button
+							class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage && !isCheckingOut
+								? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
+								: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
+							disabled={!uploadedImage || isCheckingOut}
+							onclick={buyNow}
+							aria-label={uploadedImage ? `Buy now custom t-shirt for $${totalPrice}` : 'Upload artwork to enable checkout'}
+							aria-live="polite"
+						>
+							{#if isCheckingOut}
+								<span class="flex items-center justify-center gap-2" role="status">
+									<svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+									</svg>
+									Redirecting to secure checkout…
+								</span>
+							{:else if addedToCart}
+								<span class="flex items-center justify-center gap-2" role="status">
+									<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+									</svg>
+									Added to Cart!
+								</span>
+							{:else}
+								{uploadedImage ? 'Buy Now — $' + totalPrice : 'Upload Artwork to Continue'}
+							{/if}
+						</button>
+
+						{#if checkoutError}
+							<p
+								bind:this={checkoutStatusRef}
+								tabindex="-1"
+								class="text-sm text-red-600 font-medium text-center"
+								role="alert"
+								aria-live="assertive"
 							>
-								{#if addedToCart}
-									<span class="flex items-center justify-center gap-2" role="status">
-										<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-										</svg>
-										Added to Cart!
-									</span>
-								{:else}
-									{uploadedImage ? 'Add to Cart — $' + totalPrice : 'Upload Artwork to Continue'}
-								{/if}
-							</button>
+								{checkoutError}
+							</p>
+						{/if}
 
-							{#if !uploadedImage}
-								<p class="text-sm text-slate-500 text-center">
-									Upload your artwork to enable checkout
-								</p>
-								{/if}
-							</div>
+						{#if !uploadedImage}
+							<p class="text-sm text-slate-500 text-center">
+								Upload your artwork to enable checkout
+							</p>
+							{/if}
+						</div>
 		</div>
 	</div>
 </section>

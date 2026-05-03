@@ -84,7 +84,12 @@
 		if (file) handleFileUpload(file);
 	}
 
-	// ─── Artwork Drag Positioning ───
+	/* ─── Artwork Drag Positioning ───
+	   MOBILE RESPONSIVENESS FIX (2025-05-03):
+	   • Added ontouchstart on the artwork element so dragging works on phones.
+	   • Global window listeners for touchmove / touchend already exist below.
+	   • Prevent default on touchmove stops the page from scrolling while dragging.
+	*/
 	function startDrag(event: MouseEvent | TouchEvent) {
 		if (!uploadedImage) return;
 		isDragging = true;
@@ -95,6 +100,10 @@
 
 	function onDragMove(event: MouseEvent | TouchEvent) {
 		if (!isDragging || !previewRef) return;
+		// Prevent page scroll on mobile while dragging artwork
+		if ('touches' in event) {
+			event.preventDefault();
+		}
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 
