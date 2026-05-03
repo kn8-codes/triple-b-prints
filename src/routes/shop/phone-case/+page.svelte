@@ -3,34 +3,35 @@
 
 	// ─── Product Data ───
 	const product = {
-		name: 'Custom T-Shirt',
-		basePrice: 18,
-		description: 'Premium cotton tee with your custom artwork. Soft, durable, and made to stand out.',
-		image: 'https://placehold.co/600x700/1e293b/ffffff?text=T-Shirt+Base'
+		name: 'Custom Phone Case',
+		basePrice: 20,
+		description: 'Tough polycarbonate case with your custom artwork. Glossy or matte finish.',
+		image: 'https://placehold.co/600x700/1e293b/ffffff?text=Phone+Case+Base'
 	};
 
-	// ─── Size Options ───
-	const sizes = [
-		{ label: 'S', priceMod: 0 },
-		{ label: 'M', priceMod: 0 },
-		{ label: 'L', priceMod: 0 },
-		{ label: 'XL', priceMod: 2 },
-		{ label: '2XL', priceMod: 4 }
+	// ─── Phone Model Options ───
+	const models = [
+		{ label: 'iPhone 15', priceMod: 0 },
+		{ label: 'iPhone 15 Pro', priceMod: 2 },
+		{ label: 'iPhone 14', priceMod: 0 },
+		{ label: 'iPhone 14 Pro', priceMod: 2 },
+		{ label: 'Galaxy S24', priceMod: 0 },
+		{ label: 'Galaxy S24 Ultra', priceMod: 2 },
+		{ label: 'Pixel 8', priceMod: 0 },
+		{ label: 'Pixel 8 Pro', priceMod: 2 }
 	];
 
-	// ─── Color Options ───
-	const colors = [
-		{ name: 'Black', hex: '#1a1a1a' },
-		{ name: 'White', hex: '#f5f5f5' },
-		{ name: 'Navy', hex: '#1e3a5f' },
-		{ name: 'Red', hex: '#cc0000' }
+	// ─── Finish Options ───
+	const finishes = [
+		{ label: 'Glossy', priceMod: 0 },
+		{ label: 'Matte', priceMod: 2 }
 	];
 
 	// ─── State (Svelte 5 Runes) ───
-	let selectedSize = $state(sizes[2]); // Default L
-	let selectedColor = $state(colors[0]); // Default Black
+	let selectedModel = $state(models[0]);
+	let selectedFinish = $state(finishes[0]);
 	let uploadedImage = $state<string | null>(null);
-	let imagePosition = $state({ x: 50, y: 40 }); // Percentage on t-shirt
+	let imagePosition = $state({ x: 50, y: 50 });
 	let imageScale = $state(1);
 	let isDragging = $state(false);
 	let dragStart = $state({ x: 0, y: 0 });
@@ -39,7 +40,7 @@
 	let addedToCart = $state(false);
 
 	// ─── Derived Price ───
-	let totalPrice = $derived(product.basePrice + selectedSize.priceMod);
+	let totalPrice = $derived(product.basePrice + selectedModel.priceMod + selectedFinish.priceMod);
 
 	// ─── File Upload ───
 	function handleFileUpload(file: File) {
@@ -103,7 +104,7 @@
 		isDragging = false;
 	}
 
-	// ─── Keyboard Navigation for Artwork ───
+	// ─── Keyboard Navigation ───
 	function handleArtworkKey(event: KeyboardEvent) {
 		if (!uploadedImage) return;
 		const step = event.shiftKey ? 5 : 1;
@@ -158,8 +159,8 @@
 </script>
 
 <svelte:head>
-	<title>Custom T-Shirt | Triple B Prints</title>
-	<meta name="description" content="Design your own custom t-shirt with Triple B Prints. Upload artwork, pick size and color." />
+	<title>Custom Phone Case | Triple B Prints</title>
+	<meta name="description" content="Design your own custom phone case with Triple B Prints. iPhone, Galaxy, Pixel. Glossy or matte finish." />
 </svelte:head>
 
 <!-- Breadcrumb -->
@@ -177,25 +178,23 @@
 			<div class="space-y-6">
 				<h1 class="text-3xl font-black text-slate-900">{product.name}</h1>
 				<p class="text-slate-600">{product.description}</p>
-				
+
 				<!-- Configurator Preview -->
 				<div
 					bind:this={previewRef}
 					class="relative bg-slate-100 rounded-2xl overflow-hidden shadow-lg select-none"
 					style="aspect-ratio: 1;"
+					role="img"
+					aria-label="Phone case preview showing your uploaded artwork"
+					tabindex="0"
+					onkeydown={handleArtworkKey}
 				>
 					<!-- Base product image -->
 					<img
 						src={product.image}
-						alt="T-shirt base"
+						alt="Phone case base"
 						class="w-full h-full object-cover"
 					/>
-
-					<!-- Color overlay tint -->
-					<div
-						class="absolute inset-0 mix-blend-multiply pointer-events-none opacity-30"
-						style="background-color: {selectedColor.hex};"
-					></div>
 
 					<!-- Overlay uploaded image -->
 					{#if uploadedImage}
@@ -226,10 +225,11 @@
 				<!-- Scale control -->
 				{#if uploadedImage}
 					<div class="bg-slate-50 rounded-xl p-4">
-						<label class="block text-sm font-bold text-slate-700 mb-2">
+						<label class="block text-sm font-bold text-slate-700 mb-2" for="scale-slider">
 							Artwork Size: {Math.round(imageScale * 100)}%
 						</label>
 						<input
+							id="scale-slider"
 							type="range"
 							min="0.5"
 							max="2"
@@ -237,9 +237,10 @@
 							value={imageScale}
 							oninput={handleScaleChange}
 							class="w-full accent-rose-600"
+							aria-label="Adjust artwork size"
 						/>
 						<p class="text-xs text-slate-500 mt-1">
-							Drag artwork to position. Use slider to resize.
+							Drag artwork to position. Use slider to resize. Arrow keys for fine-tuning.
 						</p>
 					</div>
 				{/if}
@@ -252,143 +253,127 @@
 					<p class="text-sm text-slate-600 font-medium mb-1">Total Price</p>
 					<p class="text-4xl font-black text-slate-900">${totalPrice}</p>
 					<p class="text-sm text-slate-500 mt-1">
-						Base: ${product.basePrice} + Size: +${selectedSize.priceMod}
+						Base: ${product.basePrice} + Model: +${selectedModel.priceMod} + Finish: +${selectedFinish.priceMod}
 					</p>
 				</div>
 
-				<!-- Size Selector -->
+				<!-- Model Selector -->
 				<div>
-					<h3 class="text-lg font-bold text-slate-900 mb-3" id="size-label">Size</h3>
-					<div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="size-label">
-						{#each sizes as size}
+					<h3 class="text-lg font-bold text-slate-900 mb-3" id="model-label">Phone Model</h3>
+					<div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="model-label">
+						{#each models as model}
 							<button
-								class="px-4 py-2 rounded-lg font-bold transition-all {selectedSize.label === size.label
+								class="px-4 py-2 rounded-lg font-bold transition-all {selectedModel.label === model.label
 									? 'bg-slate-900 text-white'
 									: 'bg-slate-100 text-slate-700 hover:bg-slate-200'}"
-								onclick={() => (selectedSize = size)}
+								onclick={() => (selectedModel = model)}
 								role="radio"
-								aria-checked={selectedSize.label === size.label}
-								tabindex={selectedSize.label === size.label ? 0 : -1}
+								aria-checked={selectedModel.label === model.label}
+								tabindex={selectedModel.label === model.label ? 0 : -1}
 							>
-								{size.label}
-								{#if size.priceMod > 0}
-									<span class="text-xs ml-1 opacity-70">+${size.priceMod}</span>
+								{model.label}
+								{#if model.priceMod > 0}
+									<span class="text-xs ml-1 opacity-70">+${model.priceMod}</span>
 								{/if}
 							</button>
 						{/each}
 					</div>
 				</div>
 
-				<!-- Color Selector -->
+				<!-- Finish Selector -->
 				<div>
-					<h3 class="text-lg font-bold text-slate-900 mb-3" id="color-label">Color</h3>
-					<div class="flex flex-wrap gap-3" role="radiogroup" aria-labelledby="color-label">
-						{#each colors as color}
+					<h3 class="text-lg font-bold text-slate-900 mb-3" id="finish-label">Finish</h3>
+					<div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="finish-label">
+						{#each finishes as finish}
 							<button
-								class="w-12 h-12 rounded-full border-4 transition-all {selectedColor.name === color.name
-									? 'border-yellow-400 scale-110'
-									: 'border-transparent hover:scale-105'}"
-								style="background-color: {color.hex};"
-								onclick={() => (selectedColor = color)}
-								aria-label={color.name}
+								class="px-4 py-2 rounded-lg font-bold transition-all {selectedFinish.label === finish.label
+									? 'bg-slate-900 text-white'
+									: 'bg-slate-100 text-slate-700 hover:bg-slate-200'}"
+								onclick={() => (selectedFinish = finish)}
 								role="radio"
-								aria-checked={selectedColor.name === color.name}
-								tabindex={selectedColor.name === color.name ? 0 : -1}
+								aria-checked={selectedFinish.label === finish.label}
+								tabindex={selectedFinish.label === finish.label ? 0 : -1}
 							>
-								{#if selectedColor.name === color.name}
-									<div class="w-full h-full flex items-center justify-center">
-										<svg
-											class="w-6 h-6 text-white drop-shadow-md"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="3"
-													d="M5 13l4 4L19 7"
-												/>
-											</svg>
-										</div>
-									{/if}
-								</button>
-							{/each}
-						</div>
-						<p class="text-sm text-slate-600 mt-2 font-medium">{selectedColor.name}</p>
-					</div>
-
-					<!-- Artwork Upload -->
-					<div>
-						<h3 class="text-lg font-bold text-slate-900 mb-3" id="upload-label">Your Artwork</h3>
-						<label
-							class="block w-full border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer {isDragOver
-								? 'border-rose-600 bg-rose-50'
-								: 'border-slate-300 hover:border-yellow-400 hover:bg-yellow-50'}"
-							ondragover={onDragOver}
-							ondragleave={onDragLeave}
-							ondrop={onDrop}
-							aria-labelledby="upload-label"
-						>
-							<input
-								type="file"
-								accept="image/png,image/jpeg,image/svg+xml"
-								class="hidden"
-								onchange={onFileInput}
-								aria-label="Upload your artwork image"
-							/>
-							<svg
-								class="w-10 h-10 text-slate-400 mx-auto mb-2"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-								/>
-								</svg>
-								<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
-								<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG up to 25MB</p>
-							</label>
-							{#if uploadedImage}
-								<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
-									✓ Artwork uploaded
-								</p>
-								{/if}
-							</div>
-
-							<!-- Add to Cart -->
-							<button
-								class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage
-									? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
-									: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
-								disabled={!uploadedImage}
-								onclick={addToCart}
-								aria-label={uploadedImage ? `Add custom t-shirt to cart for $${totalPrice}` : 'Upload artwork to enable checkout'}
-								aria-live="polite"
-							>
-								{#if addedToCart}
-									<span class="flex items-center justify-center gap-2" role="status">
-										<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-										</svg>
-										Added to Cart!
-									</span>
-								{:else}
-									{uploadedImage ? 'Add to Cart — $' + totalPrice : 'Upload Artwork to Continue'}
+								{finish.label}
+								{#if finish.priceMod > 0}
+									<span class="text-xs ml-1 opacity-70">+${finish.priceMod}</span>
 								{/if}
 							</button>
+						{/each}
+					</div>
+				</div>
 
-							{#if !uploadedImage}
-								<p class="text-sm text-slate-500 text-center">
-									Upload your artwork to enable checkout
-								</p>
-								{/if}
-							</div>
+				<!-- Artwork Upload -->
+				<div>
+					<h3 class="text-lg font-bold text-slate-900 mb-3" id="upload-label">Your Artwork</h3>
+					<label
+						class="block w-full border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer {isDragOver
+							? 'border-rose-600 bg-rose-50'
+							: 'border-slate-300 hover:border-yellow-400 hover:bg-yellow-50'}"
+						ondragover={onDragOver}
+						ondragleave={onDragLeave}
+						ondrop={onDrop}
+						aria-labelledby="upload-label"
+					>
+						<input
+							type="file"
+							accept="image/png,image/jpeg,image/svg+xml"
+							class="hidden"
+							onchange={onFileInput}
+							aria-label="Upload your artwork image"
+						/>
+						<svg
+							class="w-10 h-10 text-slate-400 mx-auto mb-2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+							/>
+						</svg>
+						<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
+						<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG up to 25MB</p>
+					</label>
+					{#if uploadedImage}
+						<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
+							✓ Artwork uploaded
+						</p>
+					{/if}
+				</div>
+
+				<!-- Add to Cart -->
+				<button
+					class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage
+						? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
+						: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
+					disabled={!uploadedImage}
+					onclick={addToCart}
+					aria-label={uploadedImage ? `Add custom phone case to cart for $${totalPrice}` : 'Upload artwork to enable checkout'}
+					aria-live="polite"
+				>
+					{#if addedToCart}
+						<span class="flex items-center justify-center gap-2" role="status">
+							<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+							</svg>
+							Added to Cart!
+						</span>
+					{:else}
+						{uploadedImage ? 'Add to Cart — $' + totalPrice : 'Upload Artwork to Continue'}
+					{/if}
+				</button>
+
+				{#if !uploadedImage}
+					<p class="text-sm text-slate-500 text-center">
+						Upload your artwork to enable checkout
+					</p>
+				{/if}
+			</div>
 		</div>
 	</div>
 </section>
@@ -396,6 +381,8 @@
 <!-- Footer -->
 <footer class="bg-slate-900 text-white py-12 mt-12">
 	<div class="max-w-6xl mx-auto px-6 text-center">
-		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Demo configurator.</p>
+		<p class="text-slate-400">
+			© {new Date().getFullYear()} Triple B Prints. Demo configurator.
+		</p>
 	</div>
 </footer>

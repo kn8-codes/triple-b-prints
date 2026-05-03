@@ -17,6 +17,8 @@
 			<a href="/" class="text-2xl font-black tracking-tight uppercase">Triple B Prints</a>
 			<nav class="hidden sm:flex gap-6 text-sm font-bold uppercase tracking-wide">
 				<a href="/shop/t-shirt" class="hover:text-yellow-300 transition-colors">Products</a>
+				<a href="/equipment" class="hover:text-yellow-300 transition-colors">Equipment</a>
+				<a href="/turnkey-interview" class="hover:text-yellow-300 transition-colors">Turnkey</a>
 				<a href="/" class="hover:text-yellow-300 transition-colors">About</a>
 				<a href="/" class="hover:text-yellow-300 transition-colors">Contact</a>
 			</nav>

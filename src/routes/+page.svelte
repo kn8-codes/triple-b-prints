@@ -2,21 +2,66 @@
 	const products = [
 		{
 			name: 'Custom T-Shirts',
-			price: 'From $18',
+			price: 'From $25',
 			image: 'https://placehold.co/400x400/1e293b/ffffff?text=T-Shirt',
-			badge: 'Best Seller'
+			badge: 'Best Seller',
+			link: '/shop/t-shirt'
+		},
+		{
+			name: 'Custom Hoodies',
+			price: 'From $45',
+			image: 'https://placehold.co/400x400/1e293b/ffffff?text=Hoodie',
+			badge: 'New',
+			link: '/shop/hoodie'
 		},
 		{
 			name: 'Printed Mugs',
-			price: 'From $14',
+			price: 'From $18',
 			image: 'https://placehold.co/400x400/0ea5e9/ffffff?text=Mug',
-			badge: 'New'
+			badge: 'New',
+			link: '/shop/mug'
+		},
+		{
+			name: 'Custom Hats',
+			price: 'From $22',
+			image: 'https://placehold.co/400x400/f59e0b/ffffff?text=Hat',
+			badge: null,
+			link: '/shop/hat'
 		},
 		{
 			name: 'Keychains',
 			price: 'From $8',
 			image: 'https://placehold.co/400x400/f59e0b/ffffff?text=Keychain',
-			badge: null
+			badge: null,
+			link: '/shop/keychain'
+		},
+		{
+			name: 'Phone Cases',
+			price: 'From $20',
+			image: 'https://placehold.co/400x400/8b5cf6/ffffff?text=Phone+Case',
+			badge: null,
+			link: '/shop/phone-case'
+		},
+		{
+			name: 'Coasters',
+			price: 'From $12',
+			image: 'https://placehold.co/400x400/10b981/ffffff?text=Coaster',
+			badge: null,
+			link: '/shop/coaster'
+		},
+		{
+			name: 'Shorts',
+			price: 'From $28',
+			image: 'https://placehold.co/400x400/06b6d4/ffffff?text=Shorts',
+			badge: null,
+			link: '/shop/shorts'
+		},
+		{
+			name: 'Joggers',
+			price: 'From $35',
+			image: 'https://placehold.co/400x400/64748b/ffffff?text=Joggers',
+			badge: null,
+			link: '/shop/joggers'
 		}
 	];
 </script>
@@ -59,6 +104,12 @@
 						Learn More
 					</a>
 				</div>
+				<!-- Promo Banner -->
+				<div class="mt-8 inline-flex items-center gap-3 bg-yellow-400/20 border border-yellow-400/40 rounded-xl px-4 py-3">
+					<span class="text-yellow-400 font-black text-sm uppercase tracking-wide">SAVEBUCK$</span>
+					<span class="text-slate-300 text-sm">Monthly promo code active — bulk deals & flash sales</span>
+					<a href="/promo/savebucks" class="text-yellow-400 font-bold text-sm hover:underline ml-2">Shop Deals →</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -77,7 +128,11 @@
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each products as product}
-				<div class="group bg-yellow-50 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+				<a
+					href={product.link}
+					class="group block bg-yellow-50 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+					aria-label={`View ${product.name} configurator`}
+				>
 					<div class="relative">
 					<img
 						src={product.image}
@@ -94,13 +149,13 @@
 					<div class="p-6">
 						<h3 class="text-xl font-black text-slate-900 mb-1">{product.name}</h3>
 						<p class="text-slate-500 font-medium mb-4">{product.price}</p>
-						<button
-							class="w-full bg-slate-900 text-white font-bold uppercase tracking-wide py-3 rounded-xl hover:bg-rose-600 transition-colors"
+						<span
+							class="block w-full bg-slate-900 text-white font-bold uppercase tracking-wide py-3 rounded-xl text-center group-hover:bg-rose-600 transition-colors"
 						>
 							Customize
-						</button>
+						</span>
 					</div>
-				</div>
+				</a>
 			{/each}
 		</div>
 	</div>

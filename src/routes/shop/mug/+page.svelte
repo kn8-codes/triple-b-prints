@@ -3,40 +3,38 @@
 
 	// ─── Product Data ───
 	const product = {
-		name: 'Custom T-Shirt',
-		basePrice: 18,
-		description: 'Premium cotton tee with your custom artwork. Soft, durable, and made to stand out.',
-		image: 'https://placehold.co/600x700/1e293b/ffffff?text=T-Shirt+Base'
+		name: 'Custom Mug',
+		basePrice: 14,
+		description: '11oz ceramic mug with your custom artwork. Dishwasher safe, vivid print quality.',
+		image: 'https://placehold.co/600x700/1e293b/ffffff?text=Mug+Base'
 	};
 
 	// ─── Size Options ───
 	const sizes = [
-		{ label: 'S', priceMod: 0 },
-		{ label: 'M', priceMod: 0 },
-		{ label: 'L', priceMod: 0 },
-		{ label: 'XL', priceMod: 2 },
-		{ label: '2XL', priceMod: 4 }
+		{ label: '11 oz', priceMod: 0 },
+		{ label: '15 oz', priceMod: 3 }
 	];
 
 	// ─── Color Options ───
 	const colors = [
-		{ name: 'Black', hex: '#1a1a1a' },
 		{ name: 'White', hex: '#f5f5f5' },
+		{ name: 'Black', hex: '#1a1a1a' },
 		{ name: 'Navy', hex: '#1e3a5f' },
 		{ name: 'Red', hex: '#cc0000' }
 	];
 
 	// ─── State (Svelte 5 Runes) ───
-	let selectedSize = $state(sizes[2]); // Default L
-	let selectedColor = $state(colors[0]); // Default Black
+	let selectedSize = $state(sizes[0]); // Default 11 oz
+	let selectedColor = $state(colors[0]); // Default White
 	let uploadedImage = $state<string | null>(null);
-	let imagePosition = $state({ x: 50, y: 40 }); // Percentage on t-shirt
+	let imagePosition = $state({ x: 50, y: 45 }); // Percentage on mug
 	let imageScale = $state(1);
 	let isDragging = $state(false);
 	let dragStart = $state({ x: 0, y: 0 });
 	let previewRef = $state<HTMLDivElement | null>(null);
 	let isDragOver = $state(false);
 	let addedToCart = $state(false);
+	let focusedElement = $state<string | null>(null);
 
 	// ─── Derived Price ───
 	let totalPrice = $derived(product.basePrice + selectedSize.priceMod);
@@ -106,7 +104,7 @@
 	// ─── Keyboard Navigation for Artwork ───
 	function handleArtworkKey(event: KeyboardEvent) {
 		if (!uploadedImage) return;
-		const step = event.shiftKey ? 5 : 1;
+		const step = event.shiftKey ? 5 : 1; // Shift = faster movement
 		switch (event.key) {
 			case 'ArrowLeft':
 				event.preventDefault();
@@ -158,8 +156,11 @@
 </script>
 
 <svelte:head>
-	<title>Custom T-Shirt | Triple B Prints</title>
-	<meta name="description" content="Design your own custom t-shirt with Triple B Prints. Upload artwork, pick size and color." />
+	<title>Custom Mug | Triple B Prints</title>
+	<meta
+		name="description"
+		content="Design your own custom mug with Triple B Prints. Upload artwork, pick size and color."
+	/>
 </svelte:head>
 
 <!-- Breadcrumb -->
@@ -177,17 +178,21 @@
 			<div class="space-y-6">
 				<h1 class="text-3xl font-black text-slate-900">{product.name}</h1>
 				<p class="text-slate-600">{product.description}</p>
-				
+
 				<!-- Configurator Preview -->
 				<div
 					bind:this={previewRef}
 					class="relative bg-slate-100 rounded-2xl overflow-hidden shadow-lg select-none"
 					style="aspect-ratio: 1;"
+					role="img"
+					aria-label="Mug preview showing your uploaded artwork positioned on the mug"
+					tabindex="0"
+					onkeydown={handleArtworkKey}
 				>
 					<!-- Base product image -->
 					<img
 						src={product.image}
-						alt="T-shirt base"
+						alt="White ceramic mug base"
 						class="w-full h-full object-cover"
 					/>
 
@@ -226,10 +231,11 @@
 				<!-- Scale control -->
 				{#if uploadedImage}
 					<div class="bg-slate-50 rounded-xl p-4">
-						<label class="block text-sm font-bold text-slate-700 mb-2">
+						<label class="block text-sm font-bold text-slate-700 mb-2" for="scale-slider">
 							Artwork Size: {Math.round(imageScale * 100)}%
 						</label>
 						<input
+							id="scale-slider"
 							type="range"
 							min="0.5"
 							max="2"
@@ -237,9 +243,10 @@
 							value={imageScale}
 							oninput={handleScaleChange}
 							class="w-full accent-rose-600"
+							aria-label="Adjust artwork size"
 						/>
 						<p class="text-xs text-slate-500 mt-1">
-							Drag artwork to position. Use slider to resize.
+							Drag artwork to position. Use slider to resize. Arrow keys for fine-tuning.
 						</p>
 					</div>
 				{/if}
@@ -302,93 +309,93 @@
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="3"
-													d="M5 13l4 4L19 7"
-												/>
-											</svg>
-										</div>
-									{/if}
-								</button>
-							{/each}
-						</div>
-						<p class="text-sm text-slate-600 mt-2 font-medium">{selectedColor.name}</p>
-					</div>
-
-					<!-- Artwork Upload -->
-					<div>
-						<h3 class="text-lg font-bold text-slate-900 mb-3" id="upload-label">Your Artwork</h3>
-						<label
-							class="block w-full border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer {isDragOver
-								? 'border-rose-600 bg-rose-50'
-								: 'border-slate-300 hover:border-yellow-400 hover:bg-yellow-50'}"
-							ondragover={onDragOver}
-							ondragleave={onDragLeave}
-							ondrop={onDrop}
-							aria-labelledby="upload-label"
-						>
-							<input
-								type="file"
-								accept="image/png,image/jpeg,image/svg+xml"
-								class="hidden"
-								onchange={onFileInput}
-								aria-label="Upload your artwork image"
-							/>
-							<svg
-								class="w-10 h-10 text-slate-400 mx-auto mb-2"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-								/>
-								</svg>
-								<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
-								<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG up to 25MB</p>
-							</label>
-							{#if uploadedImage}
-								<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
-									✓ Artwork uploaded
-								</p>
-								{/if}
-							</div>
-
-							<!-- Add to Cart -->
-							<button
-								class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage
-									? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
-									: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
-								disabled={!uploadedImage}
-								onclick={addToCart}
-								aria-label={uploadedImage ? `Add custom t-shirt to cart for $${totalPrice}` : 'Upload artwork to enable checkout'}
-								aria-live="polite"
-							>
-								{#if addedToCart}
-									<span class="flex items-center justify-center gap-2" role="status">
-										<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="3"
+												d="M5 13l4 4L19 7"
+											/>
 										</svg>
-										Added to Cart!
-									</span>
-								{:else}
-									{uploadedImage ? 'Add to Cart — $' + totalPrice : 'Upload Artwork to Continue'}
+									</div>
 								{/if}
 							</button>
+						{/each}
+					</div>
+					<p class="text-sm text-slate-600 mt-2 font-medium">{selectedColor.name}</p>
+				</div>
 
-							{#if !uploadedImage}
-								<p class="text-sm text-slate-500 text-center">
-									Upload your artwork to enable checkout
-								</p>
-								{/if}
-							</div>
+				<!-- Artwork Upload -->
+				<div>
+					<h3 class="text-lg font-bold text-slate-900 mb-3" id="upload-label">Your Artwork</h3>
+					<label
+						class="block w-full border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer {isDragOver
+							? 'border-rose-600 bg-rose-50'
+							: 'border-slate-300 hover:border-yellow-400 hover:bg-yellow-50'}"
+						ondragover={onDragOver}
+						ondragleave={onDragLeave}
+						ondrop={onDrop}
+						aria-labelledby="upload-label"
+					>
+						<input
+							type="file"
+							accept="image/png,image/jpeg,image/svg+xml"
+							class="hidden"
+							onchange={onFileInput}
+							aria-label="Upload your artwork image"
+						/>
+						<svg
+							class="w-10 h-10 text-slate-400 mx-auto mb-2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+							/>
+						</svg>
+						<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
+						<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG up to 25MB</p>
+					</label>
+					{#if uploadedImage}
+						<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
+							✓ Artwork uploaded
+						</p>
+					{/if}
+				</div>
+
+				<!-- Add to Cart -->
+				<button
+					class="w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg {uploadedImage
+						? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105'
+						: 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'}"
+					disabled={!uploadedImage}
+					onclick={addToCart}
+					aria-label={uploadedImage ? `Add custom mug to cart for $${totalPrice}` : 'Upload artwork to enable checkout'}
+					aria-live="polite"
+				>
+					{#if addedToCart}
+						<span class="flex items-center justify-center gap-2" role="status">
+							<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+							</svg>
+							Added to Cart!
+						</span>
+					{:else}
+						{uploadedImage ? 'Add to Cart — $' + totalPrice : 'Upload Artwork to Continue'}
+					{/if}
+				</button>
+
+				{#if !uploadedImage}
+					<p class="text-sm text-slate-500 text-center">
+						Upload your artwork to enable checkout
+					</p>
+				{/if}
+			</div>
 		</div>
 	</div>
 </section>
@@ -396,6 +403,8 @@
 <!-- Footer -->
 <footer class="bg-slate-900 text-white py-12 mt-12">
 	<div class="max-w-6xl mx-auto px-6 text-center">
-		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Demo configurator.</p>
+		<p class="text-slate-400">
+			© {new Date().getFullYear()} Triple B Prints. Demo configurator.
+		</p>
 	</div>
 </footer>
