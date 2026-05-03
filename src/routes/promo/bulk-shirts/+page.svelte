@@ -26,25 +26,25 @@
 
 <!-- Breadcrumb -->
 <div class="bg-slate-900 text-slate-400 py-4">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<a href="/" class="hover:text-yellow-400 transition-colors">← Back to Home</a>
 	</div>
 </div>
 
 <!-- Hero -->
 <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-16">
-	<div class="max-w-6xl mx-auto px-6 text-center">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
 		<span class="inline-block bg-rose-600 text-white text-sm font-black uppercase px-4 py-2 rounded-full mb-4">Bulk Deal</span>
 		<h1 class="text-4xl md:text-6xl font-black mb-4">50 Shirts / $400</h1>
 		<p class="text-2xl text-yellow-400 font-bold mb-4">$8 per shirt</p>
 		<p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
 			Perfect for teams, events, family reunions, or launching your brand. Full-color DTG printing, no minimum color count.
 		</p>
-		<div class="flex flex-wrap gap-4 justify-center">
-			<a href="/shop/t-shirt" class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all">
+		<div class="flex flex-wrap gap-4 justify-center items-stretch">
+			<a href="/shop/t-shirt" class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all tap-target">
 				Start Designing
 			</a>
-			<a href="/promo/savebucks" class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-8 py-4 rounded-xl hover:bg-white/20 transition-all">
+			<a href="/promo/savebucks" class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl hover:bg-white/20 transition-all tap-target">
 				All Deals
 			</a>
 		</div>
@@ -53,9 +53,9 @@
 
 <!-- Features -->
 <section class="py-16 bg-white">
-	<div class="max-w-4xl mx-auto px-6">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6">
 		<h2 class="text-3xl font-black text-slate-900 mb-8 text-center">What's Included</h2>
-		<ul class="grid md:grid-cols-2 gap-4" role="list">
+		<ul class="grid gap-4 md:grid-cols-2" role="list">
 			{#each features as feature}
 				<li class="flex items-start gap-3 bg-slate-50 rounded-xl p-4" role="listitem">
 					<svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -70,7 +70,7 @@
 
 <!-- FAQ -->
 <section class="py-16 bg-slate-50">
-	<div class="max-w-4xl mx-auto px-6">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6">
 		<h2 class="text-3xl font-black text-slate-900 mb-8 text-center">FAQ</h2>
 		<div class="space-y-4">
 			{#each faqs as faq, i}
@@ -87,10 +87,10 @@
 
 <!-- CTA -->
 <section class="py-16 bg-yellow-400">
-	<div class="max-w-4xl mx-auto px-6 text-center">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
 		<h2 class="text-3xl font-black text-slate-900 mb-4">Ready to Order?</h2>
 		<p class="text-slate-800 mb-8">Use code <span class="font-black">SAVEBUCK$</span> at checkout. Or call us and mention this deal.</p>
-		<a href="/shop/t-shirt" class="inline-block bg-slate-900 text-white font-black uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg hover:bg-slate-800 hover:scale-105 transition-all">
+		<a href="/shop/t-shirt" class="inline-block bg-slate-900 text-white font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-slate-800 hover:scale-105 transition-all tap-target">
 			Design Your Shirts
 		</a>
 	</div>
@@ -98,7 +98,7 @@
 
 <!-- Footer -->
 <footer class="bg-slate-900 text-white py-12">
-	<div class="max-w-6xl mx-auto px-6 text-center">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
 		<p class="text-slate-400">
 			© {new Date().getFullYear()} Triple B Prints. 50-shirt deal valid while listed on this page.
 		</p>

@@ -51,14 +51,14 @@
 
 <!-- Breadcrumb -->
 <div class="bg-slate-900 text-slate-400 py-4">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<a href="/" class="hover:text-yellow-400 transition-colors">← Back to Home</a>
 	</div>
 </div>
 
 <!-- Hero -->
 <section class="bg-slate-900 text-white py-16 md:py-24">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<div class="max-w-2xl">
 			<h1 class="text-4xl md:text-5xl font-black mb-6">
 				The Tools Behind <span class="text-yellow-400">Triple B</span>
@@ -71,7 +71,7 @@
 			<div class="flex flex-wrap gap-4">
 				<a 
 					href="#lasers" 
-					class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all"
+					class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all tap-target"
 				>
 					Browse Lasers
 				</a>
@@ -79,7 +79,7 @@
 					href="https://xtool.com" 
 					target="_blank" 
 					rel="noopener noreferrer"
-					class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-8 py-4 rounded-xl hover:bg-white/20 transition-all"
+					class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl hover:bg-white/20 transition-all tap-target"
 				>
 					Visit xTool →
 				</a>
@@ -94,7 +94,7 @@
 
 <!-- Laser Tools Grid -->
 <section id="lasers" class="py-20 bg-white">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<div class="mb-12">
 			<h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-2">Laser Engravers</h2>
 			<p class="text-slate-500 text-lg">Professional machines for every budget and production level</p>
@@ -126,7 +126,7 @@
 							href={tool.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="inline-block w-full text-center bg-slate-900 text-white font-bold uppercase tracking-wide py-3 rounded-xl hover:bg-rose-600 transition-colors"
+							class="inline-block w-full text-center bg-slate-900 text-white font-bold uppercase tracking-wide py-3 rounded-xl hover:bg-rose-600 transition-colors tap-target"
 						>
 							View on xTool →
 						</a>
@@ -139,7 +139,7 @@
 
 <!-- Materials -->
 <section class="py-20 bg-sky-50">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<div class="mb-12">
 			<h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-2">Materials We Use</h2>
 			<p class="text-slate-500 text-lg">Quality blanks and substrates for every project</p>
@@ -158,12 +158,12 @@
 
 <!-- Why xTool -->
 <section class="py-20 bg-white">
-	<div class="max-w-6xl mx-auto px-6">
-		<div class="grid md:grid-cols-2 gap-12 items-center">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
+		<div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
 			<div>
 				<h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">Why We Chose xTool</h2>
 				<div class="space-y-6">
-					<div class="flex gap-4">
+					<div class="flex flex-col sm:flex-row gap-4">
 						<div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center flex-shrink-0">
 							<svg class="w-6 h-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -174,7 +174,7 @@
 							<p class="text-slate-600">xTool's software is intuitive. We were cutting and engraving within hours of unboxing.</p>
 						</div>
 					</div>
-					<div class="flex gap-4">
+					<div class="flex flex-col sm:flex-row gap-4">
 						<div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center flex-shrink-0">
 							<svg class="w-6 h-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -185,7 +185,7 @@
 							<p class="text-slate-600">When we had questions, xTool's team responded fast. That's critical when you're running production.</p>
 						</div>
 					</div>
-					<div class="flex gap-4">
+					<div class="flex flex-col sm:flex-row gap-4">
 						<div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center flex-shrink-0">
 							<svg class="w-6 h-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -213,16 +213,16 @@
 
 <!-- CTA -->
 <section class="py-20 bg-slate-900 text-white">
-	<div class="max-w-4xl mx-auto px-6 text-center">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
 		<h2 class="text-4xl md:text-5xl font-black mb-6">Start Your Own Shop</h2>
 		<p class="text-lg text-slate-300 mb-8 leading-relaxed">
 			Interested in launching your own custom print and engraving business? 
 			We can help you choose the right equipment and get started.
 		</p>
-		<div class="flex flex-wrap gap-4 justify-center">
+		<div class="flex flex-wrap gap-4 justify-center items-stretch">
 			<a 
 				href="mailto:hello@triplebprints.com" 
-				class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all"
+				class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all tap-target"
 			>
 				Get in Touch
 			</a>
@@ -230,7 +230,7 @@
 				href="https://xtool.com" 
 				target="_blank" 
 				rel="noopener noreferrer"
-				class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-8 py-4 rounded-xl hover:bg-white/20 transition-all"
+				class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl hover:bg-white/20 transition-all tap-target"
 			>
 				Shop xTool →
 			</a>
@@ -240,7 +240,7 @@
 
 <!-- Footer -->
 <footer class="bg-slate-900 text-white py-12 border-t border-slate-800">
-	<div class="max-w-6xl mx-auto px-6 text-center">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
 		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Equipment recommendations are based on our own experience.</p>
 	</div>
 </footer>

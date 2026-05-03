@@ -3,16 +3,18 @@
 	import favicon from '$lib/assets/favicon.svg';
 
 	let { children } = $props();
+	let mobileMenuOpen = $state(false);
 
-	/* ─── Mobile nav state (2025-05-03) ─── */
-	let mobileNavOpen = $state(false);
+	const navItems = [
+		{ href: '/shop/t-shirt', label: 'Products' },
+		{ href: '/equipment', label: 'Equipment' },
+		{ href: '/turnkey-interview', label: 'Turnkey' },
+		{ href: '/#about', label: 'About' },
+		{ href: '/#contact', label: 'Contact' }
+	];
 
-	function toggleMobileNav() {
-		mobileNavOpen = !mobileNavOpen;
-	}
-
-	function closeMobileNav() {
-		mobileNavOpen = false;
+	function closeMobileMenu() {
+		mobileMenuOpen = false;
 	}
 </script>
 
@@ -37,85 +39,35 @@
 
 <div class="min-h-screen flex flex-col bg-yellow-50 text-slate-900">
 	<header class="bg-rose-600 text-white shadow-lg">
-		<div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-			<!-- Logo -->
-			<a href="/" class="text-xl sm:text-2xl font-black tracking-tight uppercase" aria-label="Triple B Prints Home">
+		<div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+			<a href="/" class="text-xl sm:text-2xl font-black tracking-tight uppercase nav-brand">
 				Triple B Prints
 			</a>
 
-			<!--
-				HAMBURGER BUTTON (visible only below sm / 640px)
-				• aria-expanded tells screen readers whether the menu is open.
-				• aria-controls links the button to the mobile nav panel.
-				• aria-label provides an accessible name since the SVG is decorative.
-				• min-height ensures WCAG 2.5.5 target size (44px).
-				• focus:outline-none + focus-visible ring handled in layout.css.
-			-->
+			<nav class="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-wide" aria-label="Primary">
+				{#each navItems as item}
+					<a href={item.href} class="nav-link tap-target">{item.label}</a>
+				{/each}
+			</nav>
+
 			<button
 				type="button"
-				class="sm:hidden flex flex-col justify-center items-center gap-1.5 p-2 rounded-lg hover:bg-rose-700 transition-colors"
-				aria-expanded={mobileNavOpen}
-				aria-controls="mobile-nav"
-				aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-				onclick={toggleMobileNav}
+				class="md:hidden mobile-menu-button tap-target"
+				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+				aria-expanded={mobileMenuOpen}
+				aria-controls="mobile-navigation"
+				aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
 			>
-				<span class="block w-6 h-0.5 bg-white transition-transform {mobileNavOpen ? 'rotate-45 translate-y-2' : ''}"></span>
-				<span class="block w-6 h-0.5 bg-white transition-opacity {mobileNavOpen ? 'opacity-0' : ''}"></span>
-				<span class="block w-6 h-0.5 bg-white transition-transform {mobileNavOpen ? '-rotate-45 -translate-y-2' : ''}"></span>
+				<span aria-hidden="true">☰</span>
 			</button>
-
-			<!-- Desktop nav (hidden on mobile, flex at sm+) -->
-			<nav class="hidden sm:flex gap-6 text-sm font-bold uppercase tracking-wide">
-				<a href="/shop/t-shirt" class="hover:text-yellow-300 transition-colors">Products</a>
-				<a href="/equipment" class="hover:text-yellow-300 transition-colors">Equipment</a>
-				<a href="/turnkey-interview" class="hover:text-yellow-300 transition-colors">Turnkey</a>
-				<a href="/about" class="hover:text-yellow-300 transition-colors">About</a>
-				<a href="/contact" class="hover:text-yellow-300 transition-colors">Contact</a>
-			</nav>
 		</div>
 
-		<!-- Mobile nav panel (collapsible, only rendered when open) -->
-		{#if mobileNavOpen}
-			<nav
-				id="mobile-nav"
-				class="sm:hidden bg-rose-700 border-t border-rose-500"
-			>
-				<div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-3">
-					<a
-						href="/shop/t-shirt"
-						class="text-sm font-bold uppercase tracking-wide py-3 px-4 rounded-lg hover:bg-rose-600 transition-colors"
-						onclick={closeMobileNav}
-					>
-						Products
-					</a>
-					<a
-						href="/equipment"
-						class="text-sm font-bold uppercase tracking-wide py-3 px-4 rounded-lg hover:bg-rose-600 transition-colors"
-						onclick={closeMobileNav}
-					>
-						Equipment
-					</a>
-					<a
-						href="/turnkey-interview"
-						class="text-sm font-bold uppercase tracking-wide py-3 px-4 rounded-lg hover:bg-rose-600 transition-colors"
-						onclick={closeMobileNav}
-					>
-						Turnkey
-					</a>
-					<a
-						href="/about"
-						class="text-sm font-bold uppercase tracking-wide py-3 px-4 rounded-lg hover:bg-rose-600 transition-colors"
-						onclick={closeMobileNav}
-					>
-						About
-					</a>
-					<a
-						href="/contact"
-						class="text-sm font-bold uppercase tracking-wide py-3 px-4 rounded-lg hover:bg-rose-600 transition-colors"
-						onclick={closeMobileNav}
-					>
-						Contact
-					</a>
+		{#if mobileMenuOpen}
+			<nav id="mobile-navigation" class="mobile-nav md:hidden" aria-label="Mobile">
+				<div class="max-w-6xl mx-auto px-4 sm:px-6 pb-4 grid gap-2">
+					{#each navItems as item}
+						<a href={item.href} class="mobile-nav-link tap-target" onclick={closeMobileMenu}>{item.label}</a>
+					{/each}
 				</div>
 			</nav>
 		{/if}

@@ -88,7 +88,7 @@
 
 <!-- Header -->
 <div class="bg-slate-900 text-white py-12">
-	<div class="max-w-4xl mx-auto px-6">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6">
 		<a href="/" class="text-slate-400 hover:text-yellow-400 transition-colors text-sm font-bold uppercase tracking-wide">← Back to Home</a>
 		<h1 class="text-4xl md:text-5xl font-black mt-4 mb-2">Turnkey Business Interview</h1>
 		<p class="text-slate-400 text-lg">Read these questions to your friend. Record the answers. Transcribe later.</p>
@@ -97,8 +97,8 @@
 
 <!-- Instructions -->
 <section class="bg-yellow-50 py-8">
-	<div class="max-w-4xl mx-auto px-6">
-		<div class="flex items-start gap-4">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6">
+		<div class="flex flex-col sm:flex-row items-start gap-4">
 			<div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0">
 				<svg class="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
@@ -120,7 +120,7 @@
 
 <!-- Questions -->
 <section class="py-12 bg-white">
-	<div class="max-w-4xl mx-auto px-6 space-y-12">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-12">
 		{#each sections as section, i}
 			<div class="border-l-4 border-rose-600 pl-6">
 				<h2 class="text-2xl font-black text-slate-900 mb-4">{section.title}</h2>
@@ -139,11 +139,11 @@
 
 <!-- Notes Section -->
 <section class="py-12 bg-slate-50">
-	<div class="max-w-4xl mx-auto px-6">
-		<div class="flex items-center justify-between mb-4">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6">
+		<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
 			<h2 class="text-2xl font-black text-slate-900">Interview Notes</h2>
 			<button
-				class="text-sm font-bold text-rose-600 hover:text-rose-700 transition-colors"
+				class="text-sm font-bold text-rose-600 hover:text-rose-700 transition-colors tap-target"
 				onclick={() => showNotes = !showNotes}
 			>
 				{showNotes ? 'Hide Notes' : 'Show Notes'}
@@ -158,9 +158,9 @@
 					class="w-full h-96 p-4 rounded-xl border-2 border-slate-200 focus:border-yellow-400 focus:outline-none font-mono text-sm text-slate-700 resize-y"
 					placeholder="Paste notes here...&#10;&#10;Section 1: What's Included&#10;- Equipment: ...&#10;- Training: ...&#10;&#10;Section 2: Pricing&#10;- Starter: $...&#10;- Pro: $..."
 				></textarea>
-				<div class="flex gap-4">
+				<div class="flex flex-col sm:flex-row gap-4">
 					<button
-						class="bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 py-3 rounded-xl hover:bg-yellow-300 transition-colors"
+						class="bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 py-3 rounded-xl hover:bg-yellow-300 transition-colors tap-target"
 						onclick={() => {
 							navigator.clipboard.writeText(notes);
 							alert('Notes copied to clipboard');
@@ -169,7 +169,7 @@
 						Copy Notes
 					</button>
 					<button
-						class="bg-slate-200 text-slate-700 font-bold uppercase tracking-wide px-6 py-3 rounded-xl hover:bg-slate-300 transition-colors"
+						class="bg-slate-200 text-slate-700 font-bold uppercase tracking-wide px-6 py-3 rounded-xl hover:bg-slate-300 transition-colors tap-target"
 						onclick={() => {
 							if (confirm('Clear all notes?')) notes = '';
 						}}
@@ -186,7 +186,7 @@
 
 <!-- Footer -->
 <footer class="bg-slate-900 text-white py-8">
-	<div class="max-w-4xl mx-auto px-6 text-center">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
 		<p class="text-slate-400 text-sm">Triple B Prints — Turnkey Business Documentation</p>
 	</div>
 </footer>

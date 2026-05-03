@@ -34,14 +34,14 @@
 
 <!-- Breadcrumb -->
 <div class="bg-slate-900 text-slate-400 py-4">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<a href="/" class="hover:text-yellow-400 transition-colors">← Back to Home</a>
 	</div>
 </div>
 
 <!-- Hero -->
 <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-16">
-	<div class="max-w-6xl mx-auto px-6 text-center">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
 		<h1 class="text-4xl md:text-6xl font-black mb-4">
 			<span class="text-yellow-400">SAVEBUCK$</span>
 		</h1>
@@ -57,9 +57,9 @@
 
 <!-- Active Promos -->
 <section class="py-16 bg-white">
-	<div class="max-w-6xl mx-auto px-6">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
 		<h2 class="text-3xl font-black text-slate-900 mb-8 text-center">Active Promotions</h2>
-		<div class="grid md:grid-cols-3 gap-8">
+		<div class="grid gap-6 md:grid-cols-3 md:gap-8">
 			{#each promos as promo}
 				<a
 					href={promo.link}
@@ -87,7 +87,7 @@
 
 <!-- How It Works -->
 <section class="py-16 bg-slate-50">
-	<div class="max-w-4xl mx-auto px-6">
+	<div class="max-w-4xl mx-auto px-4 sm:px-6">
 		<h2 class="text-3xl font-black text-slate-900 mb-8 text-center">How SAVEBUCK$ Works</h2>
 		<div class="grid md:grid-cols-3 gap-8 text-center">
 			<div>
@@ -117,7 +117,7 @@
 
 <!-- Footer -->
 <footer class="bg-slate-900 text-white py-12">
-	<div class="max-w-6xl mx-auto px-6 text-center">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
 		<p class="text-slate-400">
 			© {new Date().getFullYear()} Triple B Prints. SAVEBUCK$ code subject to change monthly.
 		</p>

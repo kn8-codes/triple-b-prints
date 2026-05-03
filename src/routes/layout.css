@@ -26,224 +26,129 @@
 
 @import 'tailwindcss';
 
-/* ──────────────────────────────────────────────────────────────────────────────
-   1. FLUID TYPOGRAPHY ROOT VARIABLES
-   ──────────────────────────────────────────────────────────────────────────────
-   Instead of hard-coding font sizes in every component, we define CSS custom
-   properties on :root that scale down gracefully on narrow screens.  This keeps
-   ALL pages readable without touching individual .svelte files.
-   The clamp() values ensure:
-     • Minimum 14px on mobile (WCAG 1.4.4 Resize Text)
-     • Comfortable 16–18px on tablets
-     • Full desktop size on 1024px+
-   ────────────────────────────────────────────────────────────────────────────── */
-:root {
-  /* Base body text: never smaller than 14px, scales to 16px by 768px */
-  --text-base: clamp(0.875rem, 0.8rem + 0.5vw, 1rem);
-
-  /* Small / caption text: minimum 12.5px so it stays legible */
-  --text-sm: clamp(0.78rem, 0.72rem + 0.4vw, 0.875rem);
-
-  /* Large paragraphs / descriptions */
-  --text-lg: clamp(1rem, 0.9rem + 0.6vw, 1.125rem);
-
-  /* XL headings (section titles) */
-  --text-xl: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
-
-  /* 2XL headings (page titles) */
-  --text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
-
-  /* 3XL headings (hero titles) */
-  --text-3xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
-
-  /* 4XL headings (big hero text) */
-  --text-4xl: clamp(2rem, 1.5rem + 2.2vw, 3rem);
-
-  /* 5XL headings (massive promo text) */
-  --text-5xl: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
-
-  /* 6XL headings (absolute largest) */
-  --text-6xl: clamp(2.5rem, 1.8rem + 3.5vw, 4rem);
-
-  /* Touch-target minimum (WCAG 2.5.5 Target Size) */
-  --touch-min: 44px;
-
-  /* Safe horizontal padding for tiny screens */
-  --page-px: clamp(0.75rem, 2vw, 1.5rem);
+/* Mobile baseline: keep the layout from ever leaking sideways while still allowing
+   intentional horizontal scrolling containers (like tables) to opt in. */
+html,
+body {
+	overflow-x: clip;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────────
-   2. GLOBAL BOX-SIZING & SCROLL BEHAVIOUR
-   ──────────────────────────────────────────────────────────────────────────────
-   border-box prevents padding from blowing out widths.
-   smooth scrolling is nice for anchor links, but we respect
-   prefers-reduced-motion below.
-   ────────────────────────────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* Accessibility baseline: images should never overflow their parent and should
+   preserve aspect ratio across every audited viewport. */
+img,
+picture,
+svg,
+canvas,
+video {
+	max-width: 100%;
+	height: auto;
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%; /* Stop iOS Safari auto-zooming text */
+/* Accessibility baseline: keyboard users need a strong, consistent focus ring
+   across links, buttons, form fields, summaries, and the draggable artwork handles. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 3px solid #facc15;
+	outline-offset: 3px;
+	border-radius: 0.75rem;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────────
-   3. REDUCED MOTION (a11y)
-   ──────────────────────────────────────────────────────────────────────────────
-   Users with vestibular disorders can request less animation.
-   We disable smooth scroll, transitions, and animations globally.
-   ────────────────────────────────────────────────────────────────────────────── */
+/* Navigation helper styles: the desktop nav keeps spacing predictable while the
+   mobile drawer gets large, readable tap targets instead of cramped inline links. */
+.nav-brand {
+	text-wrap: balance;
+}
+
+.nav-link,
+.mobile-nav-link,
+.mobile-menu-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding-inline: 1rem;
+	border-radius: 0.75rem;
+	transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.nav-link:hover,
+.mobile-nav-link:hover,
+.mobile-menu-button:hover {
+	background: rgb(255 255 255 / 0.12);
+	color: #fde047;
+}
+
+.mobile-menu-button {
+	min-width: 44px;
+	font-size: 1.5rem;
+	font-weight: 900;
+	line-height: 1;
+}
+
+.mobile-nav {
+	border-top: 1px solid rgb(255 255 255 / 0.14);
+	background: rgb(225 29 72 / 0.96);
+}
+
+.mobile-nav-link {
+	justify-content: flex-start;
+	font-size: 0.95rem;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: white;
+}
+
+/* Reusable mobile control helper: every CTA/button-like control audited for this job
+   gets a guaranteed 44px tap target without forcing desktop layouts to look oversized. */
+.tap-target {
+	min-height: 44px;
+}
+
+/* Promo/table safeguard: if any future table lands on these pages, it should scroll
+   instead of breaking the viewport. The block display preserves access on phones. */
+table {
+	display: block;
+	max-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+thead,
+tbody,
+tr {
+	width: 100%;
+}
+
+/* Reduced motion support: hover scale flourishes are fine, but we should calm them down
+   for visitors who explicitly request less animation. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }
 
-/* ──────────────────────────────────────────────────────────────────────────────
-   4. FOCUS-VISIBLE OUTLINES (a11y)
-   ──────────────────────────────────────────────────────────────────────────────
-   Keyboard users need clear focus indicators, but mouse users
-   don’t want ugly rings on click.  :focus-visible solves both.
-   ────────────────────────────────────────────────────────────────────────────── */
-:focus-visible {
-  outline: 3px solid #fbbf24; /* yellow-400 */
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Remove default focus ring where we supply our own via Tailwind */
-button:focus,
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   5. GLOBAL IMAGE RESPONSIVENESS
-   ──────────────────────────────────────────────────────────────────────────────
-   Every <img> on the site should shrink to fit its container and
-   never cause horizontal scroll.  height: auto preserves aspect ratio.
-   ────────────────────────────────────────────────────────────────────────────── */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block; /* Removes mysterious 4px bottom gap in older browsers */
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   6. TOUCH TARGET SIZE ENFORCEMENT
-   ──────────────────────────────────────────────────────────────────────────────
-   WCAG 2.1 AA requires 44×44px minimum for interactive elements.
-   We enforce this on buttons, links that look like chips, and
-   colour swatches inside product configurators.
-   ────────────────────────────────────────────────────────────────────────────── */
-button,
-[role="button"],
-[role="radio"],
-a {
-  min-height: var(--touch-min);
-  min-width: var(--touch-min);
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   7. MOBILE-FIRST MEDIA QUERY OVERRIDES (320px – 767px)
-   ──────────────────────────────────────────────────────────────────────────────
-   At very narrow widths Tailwind’s default px-6 (1.5rem / 24px) eats
-   too much of the viewport.  We override container padding here so
-   content has more breathing room on iPhone SE / mini devices.
-   ────────────────────────────────────────────────────────────────────────────── */
 @media (max-width: 767px) {
-  /* Shrink excessive horizontal padding on max-w-6xl containers */
-  .max-w-6xl,
-  .max-w-5xl,
-  .max-w-4xl {
-    padding-left: var(--page-px) !important;
-    padding-right: var(--page-px) !important;
-  }
+	/* Mobile typography floor: the brief asked for no text smaller than 14px on mobile,
+	   so we lift Tailwind's text-xs utility to 14px while preserving readable line-height. */
+	.text-xs {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+	}
 
-  /* Ensure text never overflows its box */
-  body {
-    overflow-x: hidden;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
+	/* Mobile control floor: buttons, inputs, selects, summaries, and textareas need big,
+	   thumb-friendly targets when the viewport gets narrow. */
+	:where(button, input, select, summary, textarea) {
+		min-height: 44px;
+	}
 
-  /* Prevent long URLs / emails from breaking layout */
-  a {
-    word-break: break-word;
-  }
-
-  /* Make sure the hero promo banner on homepage wraps instead of overflowing */
-  .inline-flex {
-    flex-wrap: wrap;
-  }
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   8. TABLET ADJUSTMENTS (768px – 1023px)
-   ──────────────────────────────────────────────────────────────────────────────
-   On tablets we keep two-column grids but reduce gap sizes so
-   cards don’t feel squashed.  Also bump font sizes back up.
-   ────────────────────────────────────────────────────────────────────────────── */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .max-w-6xl,
-  .max-w-5xl,
-  .max-w-4xl {
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-  }
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   9. CONFIGURATOR PREVIEW AREA — RESPONSIVE ASPECT RATIO
-   ──────────────────────────────────────────────────────────────────────────────
-   All 9 product configurators use aspect-ratio: 1 for the preview.
-   On very small screens a square can feel too tall; we cap the max
-   height so the user can still reach the controls below without
-   excessive scrolling.
-   ────────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 767px) {
-  [style*="aspect-ratio: 1"] {
-    max-height: 70vh;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   10. HERO SECTION TEXT SHRINKING
-   ──────────────────────────────────────────────────────────────────────────────
-   The homepage hero uses text-4xl → md:text-6xl.  At exactly 320px
-   even 2.5rem is tight, so we clamp it further via CSS variable.
-   ────────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 374px) {
-  h1 {
-    font-size: var(--text-3xl);
-  }
-  h2 {
-    font-size: var(--text-2xl);
-  }
-}
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   11. FOOTER GRID COLLAPSE ON MOBILE
-   ──────────────────────────────────────────────────────────────────────────────
-   The homepage footer uses grid-cols-4 which becomes unreadable on
-   320px.  We force a single column on narrow screens.
-   ────────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 639px) {
-  footer .grid {
-    grid-template-columns: 1fr !important;
-  }
+	/* Mobile range sliders can feel tiny by default; this gives them a reliable touch lane
+	   without changing their desktop behavior. */
+	input[type='range'] {
+		min-height: 44px;
+	}
 }

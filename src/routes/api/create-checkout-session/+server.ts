@@ -3,7 +3,18 @@ import { env } from '$env/dynamic/private';
 import type { RequestHandler } from './$types';
 
 const STRIPE_CHECKOUT_URL = 'https://api.stripe.com/v1/checkout/sessions';
-const STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY || 'sk_test_4eC39HqLyjWDarjtT1zdp7dc';
+// STRIPE_SECRET_KEY must be set in environment variables.
+// For local dev, create .env with STRIPE_SECRET_KEY=sk_test_...
+// For Vercel, add it in dashboard → Project → Environment Variables.
+// Never commit real keys.
+const STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY;
+
+function assertStripeKey() {
+	if (!STRIPE_SECRET_KEY) {
+		throw new Error('STRIPE_SECRET_KEY is required. Set it in .env or Vercel environment variables.');
+	}
+	return STRIPE_SECRET_KEY;
+}
 
 function appendFormValue(form: URLSearchParams, key: string, value: string | number) {
 	form.append(key, String(value));
@@ -77,7 +88,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
 	const stripeResponse = await fetch(STRIPE_CHECKOUT_URL, {
 		method: 'POST',
 		headers: {
-			Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+			Authorization: `Bearer ${assertStripeKey()}`,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		},
 		body: form.toString()
