@@ -73,9 +73,9 @@
 			return;
 		}
 
-		// ─── Quality Gate: validate artwork before accepting ───
-		// This prevents bad files from reaching the print queue and saves the client
-		// from burning xTool AI tokens on unfixable customer uploads.
+		// ─── Quality Gate: validate artwork and warn, don't block ───
+		// V1 policy: show clear messaging, let customer proceed anyway.
+		// We track ignored warnings for V2 hard-block promotion.
 		isValidating = true;
 		announce(`Checking image quality for ${product.name}...`);
 
@@ -90,23 +90,23 @@
 			});
 			const result = await response.json();
 
-			if (!result.valid) {
-				// Rejection: show all errors, don't accept the file
-				const errorText = result.errors.join('\n');
-				setError(errorText);
-				announce(`Image rejected. ${result.errors.length} problem${result.errors.length > 1 ? 's' : ''} found.`);
-				isValidating = false;
-				return;
+			// V1: always accept the file, but show warnings
+			validationWarnings = result.warnings || [];
+			if (validationWarnings.length > 0) {
+				announce(`Image uploaded with ${validationWarnings.length} quality warning${validationWarnings.length > 1 ? 's' : ''}. You can still proceed.`);
+			} else {
+				announce(`Image looks great! No quality concerns.`);
 			}
 
-			// Passed validation: store any warnings for display
-			validationWarnings = result.warnings || [];
-			announce(`Image passed quality checks. ${validationWarnings.length > 0 ? validationWarnings.length + ' warning(s).' : 'Ready to print!'}`);
+			// Track ignored warnings for analytics (V2 promotion)
+			if (result.ignoredWarningCount > 0) {
+				console.log('[Quality Gate] Warnings ignored:', result.ignoredWarningCount, 'for', product.slug);
+			}
 
 		} catch (err) {
 			// Network or server error — don't block upload, just warn
 			console.warn('Validation endpoint unavailable:', err);
-			validationWarnings = ['Could not verify image quality. Please make sure your image is high-resolution.'];
+			validationWarnings = ['We couldn\'t check image quality. Make sure your image is high-resolution for best prints.'];
 		}
 
 		isValidating = false;
