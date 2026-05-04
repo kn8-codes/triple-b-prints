@@ -1,5 +1,4 @@
 import { loadStripe } from '@stripe/stripe-js';
-import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from '$env/static/public';
 
 /**
  * Stripe Checkout Integration for Triple B Prints
@@ -15,12 +14,19 @@ import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from '$env/static/public';
  * 
  * Environment variables:
  * - PUBLIC_STRIPE_PUBLISHABLE_KEY: must start with pk_test_ for test mode.
+ *   Set in .env for local dev, or Vercel dashboard for production.
  */
+
+// Read from Vite's env injection. Falls back to empty string if not set.
+const PUBLIC_STRIPE_PUBLISHABLE_KEY = import.meta.env?.PUBLIC_STRIPE_PUBLISHABLE_KEY || '';
+
+// Export for components that need the raw key (e.g. validation loading)
+export const STRIPE_PUBLISHABLE_KEY = PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
 let stripePromise: ReturnType<typeof loadStripe> | null = null;
 
 export function getStripe() {
-	if (!stripePromise) {
+	if (!stripePromise && PUBLIC_STRIPE_PUBLISHABLE_KEY) {
 		stripePromise = loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
 	}
 	return stripePromise;

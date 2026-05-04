@@ -25,6 +25,7 @@
 	},
 	"dependencies": {
 		"@stripe/stripe-js": "^9.4.0",
+		"sharp": "^0.34.5",
 		"stripe": "^22.1.0"
 	}
 }
