@@ -9,7 +9,7 @@
   a11y: All images have alt text, headings in order, focus rings on links.
 -->
 
-<script>
+<script lang="ts">
   // No reactive state needed for a static about page.
   // If we add testimonials or team carousel later, use $state here.
 </script>
@@ -41,7 +41,10 @@
         src="/images/about-shop.jpg"
         alt="Triple B Prints shop interior with DTG printer and laser engraver"
         class="rounded-2xl border border-neutral-700 shadow-lg"
-        on:error={(e) => { e.currentTarget.style.display = 'none'; }}
+        onerror={(event) => {
+          const image = event.currentTarget as HTMLImageElement | null;
+          if (image) image.style.display = 'none';
+        }}
       />
       <div>
         <h2 class="text-2xl font-bold text-yellow-400">Our Story</h2>

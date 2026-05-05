@@ -2,14 +2,21 @@
 	import { onMount, untrack } from 'svelte';
 	import { loadStripe } from '@stripe/stripe-js';
 	import { STRIPE_PUBLISHABLE_KEY } from '$lib/stripe';
-	import type { ProductConfig, SwatchOption } from '$lib/data/shopProducts';
+	import {
+		ACCEPTED_ARTWORK_MIME_TYPES,
+		buildArtworkReference,
+		clampQuantity,
+		formatArtworkFileMeta,
+		validateArtworkFile
+	} from '$lib/configurator';
+	import type { OptionGroup, ProductConfig, SwatchOption } from '$lib/data/shopProducts';
 
 	let { product } = $props<{ product: ProductConfig }>();
 
 	// We store the currently-selected option for each group in one object so the UI, price display,
 	// and checkout payload all read from the exact same source of truth.
 	const initialSelections = untrack(() =>
-		Object.fromEntries(product.optionGroups.map((group) => [group.id, group.options[0]])) as Record<string, SwatchOption>
+		Object.fromEntries(product.optionGroups.map((group: OptionGroup) => [group.id, group.options[0]])) as Record<string, SwatchOption>
 	);
 
 	let selections = $state<Record<string, SwatchOption>>(initialSelections);
@@ -29,6 +36,9 @@
 	let isCheckingOut = $state(false);
 	let liveMessage = $state('');
 	let errorMessage = $state('');
+	let validationWarnings = $state<string[]>([]);
+	let validationMessage = $state('');
+	let isValidatingArtwork = $state(false);
 
 	// Total unit price is derived from the base price plus every selected option modifier.
 	// Keeping this calculation derived avoids price drift between the UI and the checkout request.
@@ -64,19 +74,47 @@
 		announce(`${groupId.replace('-', ' ')} set to ${option.label}.`);
 	}
 
-	function handleFileUpload(file: File) {
-		if (!file.type.startsWith('image/')) {
-			setError('Please upload an image file for the artwork preview.');
+	async function handleFileUpload(file: File) {
+		const validation = validateArtworkFile(file);
+		if (!validation.ok) {
+			setError(validation.message);
 			return;
+		}
+
+		isValidatingArtwork = true;
+		validationWarnings = [];
+		validationMessage = '';
+		announce(`Checking image quality for ${product.name}.`);
+
+		try {
+			const formData = new FormData();
+			formData.append('file', file);
+			formData.append('productType', product.slug);
+
+			const response = await fetch('/api/validate-artwork', {
+				method: 'POST',
+				body: formData
+			});
+			const result = await response.json();
+			validationWarnings = Array.isArray(result?.warnings) ? result.warnings : [];
+			validationMessage = typeof result?.message === 'string' ? result.message : '';
+		} catch {
+			validationWarnings = ['We could not check image quality right now. Use a high-resolution source if you have one.'];
+			validationMessage = 'Artwork uploaded, but the quality gate was unavailable.';
 		}
 
 		const reader = new FileReader();
 		reader.onload = (event) => {
 			uploadedImage = event.target?.result as string;
 			uploadedArtworkName = file.name;
-			uploadedArtworkMeta = `${file.type}, ${Math.round(file.size / 1024)} KB`;
+			uploadedArtworkMeta = formatArtworkFileMeta(file);
 			clearError();
-			announce(`Artwork uploaded: ${file.name}. You can now use Buy Now.`);
+			announce(
+				validationWarnings.length > 0
+					? `Artwork uploaded with ${validationWarnings.length} quality warning${validationWarnings.length > 1 ? 's' : ''}. You can still proceed.`
+					: `Artwork uploaded: ${file.name}. Quality check looks good.`
+			);
+			isValidatingArtwork = false;
 		};
 		reader.readAsDataURL(file);
 	}
@@ -167,7 +205,7 @@
 
 	function handleQuantityChange(event: Event) {
 		const input = event.target as HTMLInputElement;
-		const nextQuantity = Math.max(1, Math.min(99, Number.parseInt(input.value || '1', 10) || 1));
+		const nextQuantity = clampQuantity(Number.parseInt(input.value || '1', 10) || 1);
 		quantity = nextQuantity;
 		announce(`Quantity set to ${quantity}.`);
 	}
@@ -181,9 +219,20 @@
 		}
 
 		isCheckingOut = true;
+		if (validationWarnings.length > 0) {
+			console.log('[Quality Gate] proceeding with warnings', {
+				product: product.slug,
+				warningCount: validationWarnings.length,
+				warnings: validationWarnings
+			});
+		}
 		announce('Preparing secure Stripe Checkout.');
 
 		try {
+			if (!STRIPE_PUBLISHABLE_KEY) {
+				throw new Error('Stripe is not configured yet. Add PUBLIC_STRIPE_PUBLISHABLE_KEY before using checkout.');
+			}
+
 			// We load Stripe.js even though the redirect uses the server-returned session URL.
 			// That gives the page an early publishable-key validation point and keeps Stripe's client script warm.
 			await loadStripe(STRIPE_PUBLISHABLE_KEY);
@@ -401,7 +450,7 @@
 					>
 						<input
 							type="file"
-							accept="image/png,image/jpeg,image/svg+xml,image/webp"
+							accept={ACCEPTED_ARTWORK_MIME_TYPES.join(',')}
 							class="sr-only"
 							onchange={onFileInput}
 							aria-label="Upload your artwork image"
@@ -410,13 +459,35 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
 						</svg>
 						<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
-						<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG, or WEBP. The upload is used as the checkout artwork reference.</p>
+						<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG, or WEBP. The configurator also checks image quality and warns if the print source looks weak.</p>
 					</label>
 
 					{#if uploadedImage}
 						<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
 							✓ Artwork uploaded: {uploadedArtworkName}
 						</p>
+					{/if}
+
+					{#if isValidatingArtwork}
+						<p class="text-sm text-amber-700 font-medium mt-2" role="status" aria-live="polite">
+							Checking image quality…
+						</p>
+					{/if}
+
+					{#if validationMessage}
+						<p class="text-sm text-slate-600 mt-2" aria-live="polite">{validationMessage}</p>
+					{/if}
+
+					{#if validationWarnings.length > 0}
+						<div class="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900">
+							<p class="font-bold">Image quality warnings</p>
+							<ul class="mt-2 list-disc pl-5 space-y-2 text-sm">
+								{#each validationWarnings as warning}
+									<li>{warning}</li>
+								{/each}
+							</ul>
+							<p class="mt-3 text-sm">You can still proceed, but this is the gate trying to keep weak source images out of production.</p>
+						</div>
 					{/if}
 				</div>
 

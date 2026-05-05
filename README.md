@@ -1,42 +1,66 @@
-# sv
+# Triple B Prints
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+SvelteKit storefront prototype for Triple B Prints, with a shared product configurator and Stripe Checkout handoff.
 
-## Creating a project
+## Read this first
+If you are picking up work in this repo, start with:
+- `CONTEXT.md` — current project direction, cleanup status, and agent handoff context
+- `TODO.md` — prioritized work list
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Current status
+This repo has already gone through a cleanup pass on the fresh clone:
+- `npm run check` passes
+- `npm run build` passes
+- duplicate legacy Stripe route removed
+- Vercel runtime pinned for stable builds
 
+## Product direction
+Important: the configurator should be treated as the start of a future standalone product, not just one-off Triple B page code.
+
+That means new work should prefer:
+- reusable configurator logic
+- data-driven product rules
+- explicit validation and error handling
+- clean separation between brand content and configurator mechanics
+
+More detail lives in `CONTEXT.md`.
+
+## Stack
+- SvelteKit
+- Svelte 5 runes
+- Tailwind CSS
+- Stripe Checkout
+- Vercel adapter
+
+## Scripts
 ```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@0.15.2 create --template minimal --types ts --add tailwindcss="plugins:none" sveltekit-adapter="adapter:static" --install npm triple-b-prints
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
+npm run check
 npm run build
+npm run preview
 ```
 
-You can preview the production build with `npm run preview`.
+## Environment variables
+### Public
+- `PUBLIC_STRIPE_PUBLISHABLE_KEY`
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+### Private
+- `STRIPE_SECRET_KEY`
+
+## Key files
+- `src/lib/components/ProductConfigurator.svelte`
+- `src/lib/data/shopProducts.ts`
+- `src/routes/api/create-checkout-session/+server.ts`
+- `svelte.config.js`
+- `CONTEXT.md`
+- `TODO.md`
+
+## Deployment note
+Builds are configured for Vercel with runtime pinned in `svelte.config.js`.
+
+## Known unfinished areas
+- placeholder/demo content still exists
+- contact form is not wired to a real backend yet
+- storefront positioning is still split across multiple goals
+- configurator still needs further hardening for product-grade reuse

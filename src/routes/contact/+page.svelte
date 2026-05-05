@@ -9,7 +9,7 @@
   a11y: Labels linked to inputs, error announcements, focus management.
 -->
 
-<script>
+<script lang="ts">
   // PLACEHOLDER STATE: Replace with real form handling once backend ready.
   // If adding Supabase, import createClient here and POST on submit.
   let name = $state('');
@@ -19,7 +19,7 @@
   let message = $state('');
   let status = $state(''); // 'idle' | 'sending' | 'sent' | 'error'
 
-  function handleSubmit(e) {
+  function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     // PLACEHOLDER: No backend yet. Show coming-soon message.
     status = 'sent';
@@ -216,27 +216,27 @@
         <!-- SOCIAL LINKS -->
         <div class="flex gap-4">
           <!-- PLACEHOLDER: Add real social URLs once accounts exist. -->
-          <a
-            href="#"
-            aria-label="Facebook"
+          <button
+            type="button"
+            aria-label="Facebook coming soon"
             class="rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             FB
-          </a>
-          <a
-            href="#"
-            aria-label="Instagram"
+          </button>
+          <button
+            type="button"
+            aria-label="Instagram coming soon"
             class="rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             IG
-          </a>
-          <a
-            href="#"
-            aria-label="TikTok"
+          </button>
+          <button
+            type="button"
+            aria-label="TikTok coming soon"
             class="rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             TT
-          </a>
+          </button>
         </div>
       </div>
     </div>

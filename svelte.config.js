@@ -11,7 +11,7 @@ const config = {
 		// Stripe Checkout requires a real server endpoint so we can hold the secret key on the server.
 		// The previous static adapter cannot serve +server routes at runtime.
 		// adapter-vercel gives us serverless API routes while keeping Vercel hosting.
-		adapter: adapter()
+		adapter: adapter({ runtime: 'nodejs22.x' })
 	}
 };
 
