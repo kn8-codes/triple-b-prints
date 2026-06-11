@@ -73,8 +73,8 @@ video {
 .nav-link:hover,
 .mobile-nav-link:hover,
 .mobile-menu-button:hover {
-	background: rgb(255 255 255 / 0.12);
-	color: #fde047;
+	background: rgb(34 211 238 / 0.12);
+	color: #d8ff3e;
 }
 
 .mobile-menu-button {
@@ -86,7 +86,8 @@ video {
 
 .mobile-nav {
 	border-top: 1px solid rgb(255 255 255 / 0.14);
-	background: rgb(225 29 72 / 0.96);
+	background: rgb(7 9 15 / 0.97);
+	backdrop-filter: blur(18px);
 }
 
 .mobile-nav-link {
@@ -150,5 +151,13 @@ tr {
 	   without changing their desktop behavior. */
 	input[type='range'] {
 		min-height: 44px;
+	}
+}
+
+@media (min-width: 768px) {
+	/* The custom mobile button class sets display:inline-flex, so it must explicitly
+	   yield to the desktop navigation instead of fighting Tailwind's md:hidden. */
+	.mobile-menu-button {
+		display: none;
 	}
 }
