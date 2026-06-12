@@ -50,6 +50,19 @@ export const POST: RequestHandler = async ({ request, url }) => {
 		colorLabel
 	} = checkout;
 
+	let stripeSecretKey: string;
+	try {
+		stripeSecretKey = assertStripeKey();
+	} catch (error) {
+		return json(
+			{
+				error: error instanceof Error ? error.message : 'Stripe Checkout is not configured yet.',
+				code: 'stripe_not_configured'
+			},
+			{ status: 503 }
+		);
+	}
+
 	// Success gets its own page so the customer lands somewhere calm and explicit after payment.
 	// Cancel intentionally returns to the same product page so they can adjust options instead of starting over.
 	const successUrl = `${url.origin}/shop/success?session_id={CHECKOUT_SESSION_ID}&product=${encodeURIComponent(product.slug)}`;
@@ -79,7 +92,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
 	const stripeResponse = await fetch(STRIPE_CHECKOUT_URL, {
 		method: 'POST',
 		headers: {
-			Authorization: `Bearer ${assertStripeKey()}`,
+			Authorization: `Bearer ${stripeSecretKey}`,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		},
 		body: form.toString()

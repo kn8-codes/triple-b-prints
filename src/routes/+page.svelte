@@ -107,7 +107,7 @@
 				<p class="mb-4 text-sm font-black uppercase tracking-[0.32em] text-cyan-100">Triple B / Print Studio</p>
 				<h1 class="text-5xl font-black uppercase leading-[0.88] tracking-[-0.08em] text-white sm:text-7xl lg:text-8xl">
 					Custom prints<br />
-					<span class="text-[#d8ff3e]">with teeth.</span>
+					<span class="text-[#d8ff3e]">made sharp.</span>
 				</h1>
 				<p class="mx-auto mt-7 max-w-xl text-lg leading-8 text-slate-300 lg:mx-0">
 					T-shirts, hoodies, mugs, keychains, and small-run merch with a configurator that lets customers see the job before checkout.
@@ -189,23 +189,23 @@
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Shop posture</p>
 				<h2 class="mb-6 text-4xl font-black uppercase tracking-[-0.05em] text-white md:text-6xl">Small shop. Sharp output.</h2>
 				<p class="mb-6 text-lg leading-8 text-slate-300">
-					Triple B is being shaped around fast custom work, clean previews, and a checkout flow that helps customers send usable artwork instead of mystery files from the swamp.
+					Triple B is being shaped around fast custom work, clean previews, and a checkout flow that helps customers send usable artwork instead of guessing what the shop needs.
 				</p>
 				<p class="mb-8 text-lg leading-8 text-slate-300">
 					The site should feel like a print room: dark, focused, practical, and built around getting the job onto the press.
 				</p>
 				<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5">
-						<p class="text-3xl font-black text-[#d8ff3e]">500+</p>
-						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Happy Customers</p>
+						<p class="text-3xl font-black text-[#d8ff3e]">Upload</p>
+						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Artwork preview</p>
 					</div>
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5">
-						<p class="text-3xl font-black text-[#d8ff3e]">2 Day</p>
-						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Turnaround</p>
+						<p class="text-3xl font-black text-[#d8ff3e]">Place</p>
+						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Size and position</p>
 					</div>
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5 col-span-2 sm:col-span-1">
-						<p class="text-3xl font-black text-[#d8ff3e]">100%</p>
-						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Satisfaction</p>
+						<p class="text-3xl font-black text-[#d8ff3e]">Checkout</p>
+						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Stripe handoff</p>
 					</div>
 				</div>
 			</div>
@@ -230,7 +230,7 @@
 			<div>
 				<h3 class="mb-4 text-2xl font-black uppercase tracking-[-0.03em]">Triple B Prints</h3>
 				<p class="leading-relaxed text-slate-400">
-					Bold custom merch with a live configurator and just enough chaos to keep the machinery awake.
+					Bold custom merch with a live configurator built to get clean artwork, clear options, and checkout-ready orders into the shop.
 				</p>
 			</div>
 			<div>
@@ -267,7 +267,7 @@
 			</div>
 		</div>
 		<div class="border-t border-white/10 pt-8 text-center text-sm text-slate-500">
-			<p>© {new Date().getFullYear()} Triple B Prints. All rights reserved. Demo mockup.</p>
+			<p>© {new Date().getFullYear()} Triple B Prints. All rights reserved.</p>
 		</div>
 	</div>
 </footer>

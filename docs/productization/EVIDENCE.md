@@ -123,6 +123,69 @@ Visual note:
 - Hoodie page reads as a dark premium studio/configurator.
 - Current bright red global nav clashes with the premium dark Press Room treatment; needs a design decision.
 
+## 2026-06-12 client-safe dark polish + checkout smoke boundary
+
+Branch:
+
+```text
+feat/bbb-dark-configurator-finish-2026-06-12
+```
+
+Changed files:
+
+```text
+src/routes/+page.svelte
+src/routes/api/create-checkout-session/+server.ts
+src/routes/shop/success/+page.svelte
+```
+
+Intent:
+
+- keep the black/dark premium visual direction;
+- remove client-risky or overly internal copy;
+- remove unverified claims (`500+`, `2 Day`, `100% Satisfaction`);
+- remove `Demo mockup` footer language;
+- make Stripe success page match the dark premium theme;
+- make missing Stripe env return a clear JSON smoke-test boundary instead of generic internal error.
+
+Commands:
+
+```bash
+npm run check
+npm run build
+curl -X POST -F 'file=@/tmp/bbb-smoke-art.png;type=image/png' -F 'productType=hoodie' http://127.0.0.1:5174/api/validate-artwork
+curl -i -X POST http://127.0.0.1:5174/api/create-checkout-session -H 'content-type: application/json' --data '<hoodie smoke payload>'
+```
+
+Results:
+
+```text
+npm run check: svelte-check found 0 errors and 0 warnings
+npm run build: passed
+validate-artwork: returned valid=true with expected low-resolution/DPI warnings for smoke PNG
+create-checkout-session without Stripe env: HTTP 503 JSON code=stripe_not_configured
+```
+
+Browser/visual smoke:
+
+```text
+/: dark premium home renders; visible unverified claims removed; footer no longer says Demo mockup
+/shop/hoodie: dark configurator renders with upload/options/quantity/disabled checkout pre-upload
+/shop/success?session_id=cs_test_smoke&product=hoodie: dark success page renders and matches theme
+```
+
+Independent review:
+
+```json
+{"passed":true,"security_concerns":[],"logic_errors":[],"suggestions":[],"summary":"Diff review passed with no security concerns or logic errors found."}
+```
+
+Stop line:
+
+```text
+Ready up to checkout smoke boundary. Full Stripe/payment smoke remains Sunday test-suite work and requires test keys/environment.
+```
+
 ## Final build
 
-TBD during next implementation slice.
+2026-06-12: current client-safe dark polish build passes. Full Sunday checkout smoke remains pending.
