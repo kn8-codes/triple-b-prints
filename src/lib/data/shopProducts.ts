@@ -25,6 +25,26 @@ export type ProductConfig = {
 	optionGroups: OptionGroup[];
 };
 
+function mockupImage(label: string, accent: string) {
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700">
+		<defs>
+			<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset="1" stop-color="#030712"/></linearGradient>
+			<radialGradient id="glow" cx="50%" cy="18%" r="70%"><stop stop-color="${accent}" stop-opacity="0.32"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient>
+			<filter id="shadow"><feDropShadow dx="0" dy="30" stdDeviation="24" flood-color="#000" flood-opacity="0.45"/></filter>
+		</defs>
+		<rect width="600" height="700" fill="url(#bg)"/>
+		<rect width="600" height="700" fill="url(#glow)"/>
+		<g filter="url(#shadow)">
+			<rect x="142" y="120" width="316" height="420" rx="46" fill="#0b1220" stroke="${accent}" stroke-opacity="0.45" stroke-width="4"/>
+			<rect x="178" y="170" width="244" height="260" rx="28" fill="#111827" stroke="#ffffff" stroke-opacity="0.12"/>
+			<path d="M196 462h208" stroke="${accent}" stroke-opacity="0.42" stroke-width="6" stroke-linecap="round"/>
+		</g>
+		<text x="300" y="602" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="900" text-anchor="middle" letter-spacing="-1">${label}</text>
+		<text x="300" y="638" fill="${accent}" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="900" text-anchor="middle" letter-spacing="4">MOCKUP TEMPLATE</text>
+	</svg>`;
+	return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
 // The repo had nine nearly-identical configurators with slightly different option sets.
 // We normalize them into one data shape so checkout logic stays consistent across every product page.
 export const shopProducts: Record<string, ProductConfig> = {
@@ -67,7 +87,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'mug': {
 		slug: 'mug', name: 'Custom Mug', basePrice: 14,
 		description: '11oz ceramic mug with your custom artwork. Dishwasher safe, vivid print quality.',
-		image: 'https://placehold.co/600x700/1e293b/ffffff?text=Mug+Base', imageAlt: 'Ceramic mug base preview',
+		image: mockupImage('Mug Base', '#38bdf8'), imageAlt: 'Ceramic mug base preview',
 		previewEmptyText: 'Upload artwork to see your mug preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 2,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the mug size.', render: 'pill', options: [
@@ -81,7 +101,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'hat': {
 		slug: 'hat', name: 'Custom Hat', basePrice: 22,
 		description: 'Structured cap with clean embroidery-style placement for your logo or art.',
-		image: 'https://placehold.co/600x700/f59e0b/ffffff?text=Hat+Base', imageAlt: 'Hat base garment preview',
+		image: mockupImage('Hat Base', '#f59e0b'), imageAlt: 'Hat base garment preview',
 		previewEmptyText: 'Upload artwork to see your hat preview.', artworkPosition: { x: 50, y: 48 }, artworkMaxScale: 1.6,
 		optionGroups: [
 			{ id: 'size', label: 'Style', helperText: 'Choose the hat style.', render: 'pill', options: [
@@ -95,7 +115,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'keychain': {
 		slug: 'keychain', name: 'Custom Keychain', basePrice: 8,
 		description: 'Small, durable, and perfect for logos, mascots, and quick gift runs.',
-		image: 'https://placehold.co/600x700/f59e0b/ffffff?text=Keychain+Base', imageAlt: 'Keychain base preview',
+		image: mockupImage('Keychain Base', '#f59e0b'), imageAlt: 'Keychain base preview',
 		previewEmptyText: 'Upload artwork to see your keychain preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5,
 		optionGroups: [
 			{ id: 'size', label: 'Material', helperText: 'Choose the keychain material.', render: 'pill', options: [
@@ -109,7 +129,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'phone-case': {
 		slug: 'phone-case', name: 'Custom Phone Case', basePrice: 20,
 		description: 'Protective case with full-color custom artwork for everyday carry.',
-		image: 'https://placehold.co/600x700/8b5cf6/ffffff?text=Phone+Case+Base', imageAlt: 'Phone case base preview',
+		image: mockupImage('Phone Case Base', '#8b5cf6'), imageAlt: 'Phone case base preview',
 		previewEmptyText: 'Upload artwork to see your phone case preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.7,
 		optionGroups: [
 			{ id: 'size', label: 'Phone Model', helperText: 'Choose the phone model.', render: 'pill', options: [
@@ -123,7 +143,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'coaster': {
 		slug: 'coaster', name: 'Custom Coaster', basePrice: 12,
 		description: 'Sturdy custom coasters that make logos and artwork pop on every table.',
-		image: 'https://placehold.co/600x700/10b981/ffffff?text=Coaster+Base', imageAlt: 'Coaster base preview',
+		image: mockupImage('Coaster Base', '#10b981'), imageAlt: 'Coaster base preview',
 		previewEmptyText: 'Upload artwork to see your coaster preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5,
 		optionGroups: [
 			{ id: 'size', label: 'Shape', helperText: 'Choose the coaster shape.', render: 'pill', options: [
@@ -137,7 +157,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'shorts': {
 		slug: 'shorts', name: 'Custom Shorts', basePrice: 28,
 		description: 'Comfortable custom shorts with print placement that works for teams, brands, and events.',
-		image: 'https://placehold.co/600x700/06b6d4/ffffff?text=Shorts+Base', imageAlt: 'Shorts base garment preview',
+		image: mockupImage('Shorts Base', '#06b6d4'), imageAlt: 'Shorts base garment preview',
 		previewEmptyText: 'Upload artwork to see your shorts preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 1.6,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the shorts size.', render: 'pill', options: [
@@ -154,7 +174,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'joggers': {
 		slug: 'joggers', name: 'Custom Joggers', basePrice: 35,
 		description: 'Midweight joggers built for clean front-leg branding and repeat-wear comfort.',
-		image: 'https://placehold.co/600x700/64748b/ffffff?text=Joggers+Base', imageAlt: 'Joggers base garment preview',
+		image: mockupImage('Joggers Base', '#64748b'), imageAlt: 'Joggers base garment preview',
 		previewEmptyText: 'Upload artwork to see your joggers preview.', artworkPosition: { x: 50, y: 42 }, artworkMaxScale: 1.6,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the jogger size.', render: 'pill', options: [

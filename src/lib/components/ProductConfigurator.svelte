@@ -48,6 +48,7 @@
 	let orderTotal = $derived(unitPrice * quantity);
 	let colorSelection = $derived(selections.color?.label ?? 'Default');
 	let sizeSelection = $derived(selections.size?.label ?? 'Standard');
+	let printSelection = $derived(selections['print-location']?.label ?? 'Standard print');
 
 	function announce(message: string) {
 		// Screen readers only announce live-region changes when the text actually changes.
@@ -321,21 +322,33 @@
 					<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Print Studio / Live Configurator</p>
 					<h1 class="text-4xl font-black uppercase tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">{product.name}</h1>
 					<p class="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">{product.description}</p>
+					<div class="mt-5 flex flex-wrap gap-2 text-[0.68rem] font-black uppercase tracking-[0.18em] text-cyan-100/80" aria-label="Configurator workflow">
+						<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">1 / Pick base</span>
+						<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">2 / Upload art</span>
+						<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">3 / Proof layout</span>
+						<span class="rounded-full border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 px-3 py-2 text-[#d8ff3e]">4 / Checkout</span>
+					</div>
 				</div>
 
 				<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-3 shadow-2xl shadow-cyan-950/40 backdrop-blur">
+					<div class="mb-3 flex flex-wrap items-center justify-between gap-3 px-2 text-[0.68rem] font-black uppercase tracking-[0.2em] text-cyan-100/70">
+						<span>Live mockup stage</span>
+						<span class="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[#d8ff3e]">Template preview</span>
+					</div>
 					<div
 						bind:this={previewRef}
-						class="relative isolate overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.16),transparent_42%),linear-gradient(180deg,#111827,#030712)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] select-none"
+						class="relative isolate overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.16),transparent_42%),linear-gradient(180deg,#111827,#030712)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] select-none"
 						style="aspect-ratio: 1;"
 						role="img"
 						aria-label={`${product.name} preview with current artwork placement.`}
 					>
+						<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[length:36px_36px]"></div>
 						<div class="absolute inset-x-8 top-8 h-px bg-cyan-200/30"></div>
 						<div class="absolute inset-y-10 left-8 w-px bg-cyan-200/20"></div>
 						<div class="absolute inset-y-10 right-8 w-px bg-cyan-200/20"></div>
 						<div class="absolute bottom-8 left-8 right-8 h-px bg-cyan-200/20"></div>
 						<div class="absolute left-10 top-10 z-20 text-[0.65rem] font-black uppercase tracking-[0.24em] text-cyan-100/70">Registration guide</div>
+						<div class="absolute right-10 top-10 z-20 rounded-full border border-white/10 bg-black/35 px-3 py-1 text-[0.62rem] font-black uppercase tracking-[0.18em] text-slate-300 backdrop-blur">{colorSelection}</div>
 						<img src={product.image} alt={product.imageAlt} class="h-full w-full object-cover opacity-95 mix-blend-screen" />
 
 						{#if selections.color?.hex}
@@ -364,12 +377,28 @@
 							</div>
 						{:else}
 							<div class="absolute inset-0 z-20 flex items-center justify-center px-6 text-center">
-								<div class="rounded-2xl border border-white/10 bg-black/35 p-4 backdrop-blur">
+								<div class="max-w-xs rounded-2xl border border-white/10 bg-black/45 p-5 shadow-2xl shadow-black/30 backdrop-blur">
 									<p class="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">Drop art here</p>
 									<p class="mt-2 text-sm text-slate-300">{product.previewEmptyText}</p>
+									<p class="mt-3 text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Template proof preview</p>
 								</div>
 							</div>
 						{/if}
+					</div>
+				</div>
+
+				<div class="grid gap-3 sm:grid-cols-3">
+					<div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+						<p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-cyan-100/70">Base</p>
+						<p class="mt-1 font-black text-white">{sizeSelection} / {colorSelection}</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+						<p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-cyan-100/70">Placement</p>
+						<p class="mt-1 font-black text-white">{printSelection}</p>
+					</div>
+					<div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+						<p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-cyan-100/70">Proof</p>
+						<p class="mt-1 font-black text-white">{uploadedImage ? 'Artwork staged' : 'Waiting on art'}</p>
 					</div>
 				</div>
 
