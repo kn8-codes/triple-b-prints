@@ -22,6 +22,10 @@
 	<link rel="icon" href={favicon} />
 	<title>Triple B Prints — Bold Custom Prints</title>
 	<meta name="description" content="Custom t-shirts, mugs, keychains and more. Bold prints for bold people." />
+	<meta name="theme-color" content="#07090f" />
+	<meta name="color-scheme" content="dark light" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </svelte:head>
 
 <!--

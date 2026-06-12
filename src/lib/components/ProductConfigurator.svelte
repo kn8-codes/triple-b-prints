@@ -301,62 +301,81 @@
 	<meta name="description" content={product.description} />
 </svelte:head>
 
-<div class="bg-slate-900 text-slate-400 py-4">
-	<div class="max-w-6xl mx-auto px-6">
-		<a href="/" class="hover:text-yellow-400 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-sm">← Back to Home</a>
+<div class="bg-[#07090f] text-cyan-100/80 py-4 border-b border-white/10">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6">
+		<a href="/" class="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-black uppercase tracking-[0.18em] text-cyan-100 hover:border-cyan-200/40 hover:bg-cyan-200/10 hover:text-[#d8ff3e] transition-colors focus:outline-none focus:ring-2 focus:ring-[#d8ff3e]">← Back to Studio</a>
 	</div>
 </div>
 
-<section class="py-12 bg-white">
-	<div class="max-w-6xl mx-auto px-6">
+<section class="relative overflow-hidden bg-[#07090f] py-10 text-white sm:py-14">
+	<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(62,230,255,0.18),transparent_34%),radial-gradient(circle_at_90%_12%,rgba(216,255,62,0.12),transparent_30%),linear-gradient(135deg,rgba(15,23,42,0.35),rgba(3,7,18,1))]"></div>
+	<div class="pointer-events-none absolute left-1/2 top-24 hidden -translate-x-1/2 select-none text-[15vw] font-black uppercase leading-none tracking-[-0.08em] text-white/[0.035] lg:block">
+		{product.name}
+	</div>
+	<div class="relative mx-auto max-w-7xl px-4 sm:px-6">
 		<p bind:this={liveRegionRef} class="sr-only" aria-live="polite" aria-atomic="true">{liveMessage}</p>
 
-		<div class="grid md:grid-cols-2 gap-12">
+		<div class="grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.92fr)] lg:items-start">
 			<div class="space-y-6">
-				<h1 class="text-3xl font-black text-slate-900">{product.name}</h1>
-				<p class="text-slate-600">{product.description}</p>
+				<div class="max-w-2xl">
+					<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Print Studio / Live Configurator</p>
+					<h1 class="text-4xl font-black uppercase tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">{product.name}</h1>
+					<p class="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">{product.description}</p>
+				</div>
 
-				<div
-					bind:this={previewRef}
-					class="relative bg-slate-100 rounded-2xl overflow-hidden shadow-lg select-none"
-					style="aspect-ratio: 1;"
-					role="img"
-					aria-label={`${product.name} preview with current artwork placement.`}
-				>
-					<img src={product.image} alt={product.imageAlt} class="w-full h-full object-cover" />
+				<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-3 shadow-2xl shadow-cyan-950/40 backdrop-blur">
+					<div
+						bind:this={previewRef}
+						class="relative isolate overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.16),transparent_42%),linear-gradient(180deg,#111827,#030712)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] select-none"
+						style="aspect-ratio: 1;"
+						role="img"
+						aria-label={`${product.name} preview with current artwork placement.`}
+					>
+						<div class="absolute inset-x-8 top-8 h-px bg-cyan-200/30"></div>
+						<div class="absolute inset-y-10 left-8 w-px bg-cyan-200/20"></div>
+						<div class="absolute inset-y-10 right-8 w-px bg-cyan-200/20"></div>
+						<div class="absolute bottom-8 left-8 right-8 h-px bg-cyan-200/20"></div>
+						<div class="absolute left-10 top-10 z-20 text-[0.65rem] font-black uppercase tracking-[0.24em] text-cyan-100/70">Registration guide</div>
+						<img src={product.image} alt={product.imageAlt} class="h-full w-full object-cover opacity-95 mix-blend-screen" />
 
-					{#if selections.color?.hex}
-						<div class="absolute inset-0 mix-blend-multiply pointer-events-none opacity-30" style={`background-color: ${selections.color.hex};`}></div>
-					{/if}
+						{#if selections.color?.hex}
+							<div class="absolute inset-0 mix-blend-multiply pointer-events-none opacity-35" style={`background-color: ${selections.color.hex};`}></div>
+						{/if}
 
-					{#if uploadedImage}
-						<div
-							class="absolute cursor-move touch-none focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-md"
-							style={`left: ${imagePosition.x}%; top: ${imagePosition.y}%; transform: translate(-50%, -50%) scale(${imageScale});`}
-							onmousedown={startDrag}
-							ontouchstart={startDrag}
-							role="button"
-							aria-label="Uploaded artwork preview. Drag it or use arrow keys to move it. Hold Shift with arrow keys for larger moves."
-							tabindex="0"
-							onkeydown={handleArtworkKey}
-						>
-							<img
-								src={uploadedImage}
-								alt={`Uploaded artwork preview: ${uploadedArtworkName}`}
-								class="w-32 h-32 object-contain pointer-events-none"
-								style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));"
-							/>
-						</div>
-					{:else}
-						<div class="absolute inset-0 flex items-center justify-center px-6 text-center">
-							<p class="text-slate-400 font-medium">{product.previewEmptyText}</p>
-						</div>
-					{/if}
+						<div class="pointer-events-none absolute left-1/2 top-[48%] h-[34%] w-[38%] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-dashed border-cyan-200/50 bg-cyan-300/5 shadow-[0_0_40px_rgba(34,211,238,0.12)]"></div>
+
+						{#if uploadedImage}
+							<div
+								class="absolute z-20 cursor-move touch-none rounded-md focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]"
+								style={`left: ${imagePosition.x}%; top: ${imagePosition.y}%; transform: translate(-50%, -50%) scale(${imageScale});`}
+								onmousedown={startDrag}
+								ontouchstart={startDrag}
+								role="button"
+								aria-label="Uploaded artwork preview. Drag it or use arrow keys to move it. Hold Shift with arrow keys for larger moves."
+								tabindex="0"
+								onkeydown={handleArtworkKey}
+							>
+								<img
+									src={uploadedImage}
+									alt={`Uploaded artwork preview: ${uploadedArtworkName}`}
+									class="h-28 w-28 object-contain pointer-events-none sm:h-36 sm:w-36"
+									style="filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45));"
+								/>
+							</div>
+						{:else}
+							<div class="absolute inset-0 z-20 flex items-center justify-center px-6 text-center">
+								<div class="rounded-2xl border border-white/10 bg-black/35 p-4 backdrop-blur">
+									<p class="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">Drop art here</p>
+									<p class="mt-2 text-sm text-slate-300">{product.previewEmptyText}</p>
+								</div>
+							</div>
+						{/if}
+					</div>
 				</div>
 
 				{#if uploadedImage}
-					<div class="bg-slate-50 rounded-xl p-4">
-						<label class="block text-sm font-bold text-slate-700 mb-2" for="scale-slider">
+					<div class="rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur">
+						<label class="mb-2 block text-sm font-black uppercase tracking-[0.18em] text-cyan-100" for="scale-slider">
 							Artwork Size: {Math.round(imageScale * 100)}%
 						</label>
 						<input
@@ -367,163 +386,165 @@
 							step="0.1"
 							value={imageScale}
 							oninput={handleScaleChange}
-							class="w-full accent-rose-600"
+							class="w-full min-h-11 accent-cyan-300"
 							aria-label="Adjust artwork size"
 						/>
-						<p class="text-xs text-slate-500 mt-1">Drag the artwork to move it. Focus the artwork itself, then use arrow keys for fine control.</p>
+						<p class="mt-1 text-sm text-slate-400">Drag artwork to position. Focus the artwork itself, then use arrow keys for fine control.</p>
 					</div>
 				{/if}
 			</div>
 
-			<div class="space-y-8">
-				<div class="bg-yellow-50 rounded-2xl p-6" aria-live="polite" aria-atomic="true">
-					<p class="text-sm text-slate-600 font-medium mb-1">Order Summary</p>
-					<p class="text-4xl font-black text-slate-900">${orderTotal}</p>
-					<p class="text-sm text-slate-500 mt-1">Unit price: ${unitPrice} × Quantity: {quantity}</p>
+			<aside class="rounded-[2rem] border border-white/10 bg-white/[0.07] p-5 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-7">
+				<div class="mb-7 rounded-2xl border border-[#d8ff3e]/20 bg-[#d8ff3e]/10 p-5" aria-live="polite" aria-atomic="true">
+					<p class="text-xs font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Order Summary</p>
+					<p class="mt-1 text-5xl font-black tracking-[-0.08em] text-white">${orderTotal}</p>
+					<p class="mt-2 text-sm text-slate-300">Unit price: ${unitPrice} × Quantity: {quantity}</p>
 				</div>
 
-				{#each product.optionGroups as group}
-					<fieldset class="space-y-3">
-						<legend class="text-lg font-bold text-slate-900">{group.label}</legend>
-						<p class="text-sm text-slate-500">{group.helperText}</p>
+				<div class="space-y-7">
+					{#each product.optionGroups as group}
+						<fieldset class="space-y-3">
+							<legend class="text-sm font-black uppercase tracking-[0.2em] text-slate-200">{group.label}</legend>
+							<p class="text-sm text-slate-400">{group.helperText}</p>
 
-						{#if group.render === 'swatch'}
-							<div class="flex flex-wrap gap-3">
-								{#each group.options as option}
-									<button
-										type="button"
-										class={`w-12 h-12 rounded-full border-4 transition-all focus:outline-none focus:ring-4 focus:ring-yellow-400 ${selections[group.id]?.label === option.label ? 'border-yellow-400 scale-110' : 'border-transparent hover:scale-105'}`}
-										style={`background-color: ${option.hex};`}
-										onclick={() => chooseOption(group.id, option)}
-										aria-pressed={selections[group.id]?.label === option.label}
-										aria-label={`${group.label}: ${option.label}${option.priceMod > 0 ? `, adds $${option.priceMod}` : ''}`}
-									></button>
-								{/each}
-							</div>
-						{:else}
-							<div class="flex flex-wrap gap-2">
-								{#each group.options as option}
-									<button
-										type="button"
-										class={`px-4 py-2 rounded-lg font-bold transition-all focus:outline-none focus:ring-4 focus:ring-yellow-400 ${selections[group.id]?.label === option.label ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-										onclick={() => chooseOption(group.id, option)}
-										aria-pressed={selections[group.id]?.label === option.label}
-										aria-label={`${group.label}: ${option.label}${option.priceMod > 0 ? `, adds $${option.priceMod}` : ''}`}
-									>
-										{option.label}
-										{#if option.priceMod > 0}
-											<span class="text-xs ml-1 opacity-70">+${option.priceMod}</span>
-										{/if}
-									</button>
-								{/each}
-							</div>
+							{#if group.render === 'swatch'}
+								<div class="flex flex-wrap gap-3">
+									{#each group.options as option}
+										<button
+											type="button"
+											class={`h-12 w-12 rounded-full border-4 shadow-lg transition-all focus:outline-none focus:ring-4 focus:ring-[#d8ff3e] ${selections[group.id]?.label === option.label ? 'border-[#d8ff3e] scale-110' : 'border-white/10 hover:scale-105'}`}
+											style={`background-color: ${option.hex};`}
+											onclick={() => chooseOption(group.id, option)}
+											aria-pressed={selections[group.id]?.label === option.label}
+											aria-label={`${group.label}: ${option.label}${option.priceMod > 0 ? `, adds $${option.priceMod}` : ''}`}
+										></button>
+									{/each}
+								</div>
+							{:else}
+								<div class="flex flex-wrap gap-2">
+									{#each group.options as option}
+										<button
+											type="button"
+											class={`min-h-11 rounded-xl border px-4 py-2.5 font-black transition-all focus:outline-none focus:ring-4 focus:ring-[#d8ff3e] ${selections[group.id]?.label === option.label ? 'border-cyan-200 bg-cyan-200 text-slate-950' : 'border-white/10 bg-white/5 text-slate-200 hover:border-cyan-200/60 hover:bg-cyan-200/10'}`}
+											onclick={() => chooseOption(group.id, option)}
+											aria-pressed={selections[group.id]?.label === option.label}
+											aria-label={`${group.label}: ${option.label}${option.priceMod > 0 ? `, adds $${option.priceMod}` : ''}`}
+										>
+											{option.label}
+											{#if option.priceMod > 0}
+												<span class="ml-1 text-xs opacity-70">+${option.priceMod}</span>
+											{/if}
+										</button>
+									{/each}
+								</div>
+							{/if}
+
+							<p class="text-sm font-bold text-cyan-100">Selected: {selections[group.id]?.label}</p>
+						</fieldset>
+					{/each}
+
+					<div>
+						<label class="mb-3 block text-sm font-black uppercase tracking-[0.2em] text-slate-200" for="quantity">Quantity</label>
+						<input
+							id="quantity"
+							type="number"
+							min="1"
+							max="99"
+							inputmode="numeric"
+							value={quantity}
+							oninput={handleQuantityChange}
+							class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]"
+							aria-describedby="quantity-help"
+						/>
+						<p id="quantity-help" class="mt-2 text-sm text-slate-400">Choose how many of this configured item you want to order.</p>
+					</div>
+
+					<div>
+						<h2 class="mb-3 text-sm font-black uppercase tracking-[0.2em] text-slate-200" id="upload-label">Your Artwork</h2>
+						<label
+							class={`block w-full cursor-pointer rounded-2xl border-2 border-dashed p-6 text-center transition-all focus-within:ring-4 focus-within:ring-[#d8ff3e] ${isDragOver ? 'border-cyan-200 bg-cyan-200/10' : 'border-white/15 bg-black/20 hover:border-[#d8ff3e]/70 hover:bg-[#d8ff3e]/10'}`}
+							ondragover={onDragOver}
+							ondragleave={onDragLeave}
+							ondrop={onDrop}
+							aria-labelledby="upload-label"
+						>
+							<input
+								type="file"
+								accept={ACCEPTED_ARTWORK_MIME_TYPES.join(',')}
+								class="sr-only"
+								onchange={onFileInput}
+								aria-label="Upload your artwork image"
+							/>
+							<svg class="mx-auto mb-2 h-10 w-10 text-cyan-100/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+							</svg>
+							<p class="text-lg font-black text-white">Click to upload or drag and drop</p>
+							<p class="mt-1 text-sm text-slate-400">PNG, JPG, SVG, or WEBP. The configurator checks source quality before checkout.</p>
+						</label>
+
+						{#if uploadedImage}
+							<p class="mt-2 text-sm font-medium text-emerald-300" role="status" aria-live="polite">
+								✓ Artwork uploaded: {uploadedArtworkName}
+							</p>
 						{/if}
 
-						<p class="text-sm text-slate-600 font-medium">Selected: {selections[group.id]?.label}</p>
-					</fieldset>
-				{/each}
+						{#if isValidatingArtwork}
+							<p class="mt-2 text-sm font-medium text-[#d8ff3e]" role="status" aria-live="polite">
+								Checking image quality…
+							</p>
+						{/if}
 
-				<div>
-					<label class="block text-lg font-bold text-slate-900 mb-3" for="quantity">Quantity</label>
-					<input
-						id="quantity"
-						type="number"
-						min="1"
-						max="99"
-						inputmode="numeric"
-						value={quantity}
-						oninput={handleQuantityChange}
-						class="w-full rounded-xl border border-slate-300 px-4 py-3 font-semibold text-slate-900 focus:outline-none focus:ring-4 focus:ring-yellow-400"
-						aria-describedby="quantity-help"
-					/>
-					<p id="quantity-help" class="text-sm text-slate-500 mt-2">Choose how many of this configured item you want to order.</p>
-				</div>
+						{#if validationMessage}
+							<p class="mt-2 text-sm text-slate-300" aria-live="polite">{validationMessage}</p>
+						{/if}
 
-				<div>
-					<h2 class="text-lg font-bold text-slate-900 mb-3" id="upload-label">Your Artwork</h2>
-					<label
-						class={`block w-full border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer focus-within:ring-4 focus-within:ring-yellow-400 ${isDragOver ? 'border-rose-600 bg-rose-50' : 'border-slate-300 hover:border-yellow-400 hover:bg-yellow-50'}`}
-						ondragover={onDragOver}
-						ondragleave={onDragLeave}
-						ondrop={onDrop}
-						aria-labelledby="upload-label"
-					>
-						<input
-							type="file"
-							accept={ACCEPTED_ARTWORK_MIME_TYPES.join(',')}
-							class="sr-only"
-							onchange={onFileInput}
-							aria-label="Upload your artwork image"
-						/>
-						<svg class="w-10 h-10 text-slate-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-						</svg>
-						<p class="font-bold text-slate-700">Click to upload or drag and drop</p>
-						<p class="text-sm text-slate-500 mt-1">PNG, JPG, SVG, or WEBP. The configurator also checks image quality and warns if the print source looks weak.</p>
-					</label>
+						{#if validationWarnings.length > 0}
+							<div class="mt-3 rounded-xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 p-4 text-[#f4f5f2]">
+								<p class="font-bold text-[#d8ff3e]">Image quality warnings</p>
+								<ul class="mt-2 list-disc space-y-2 pl-5 text-sm">
+									{#each validationWarnings as warning}
+										<li>{warning}</li>
+									{/each}
+								</ul>
+								<p class="mt-3 text-sm text-slate-300">You can still proceed, but this gate is trying to keep weak source images out of production.</p>
+							</div>
+						{/if}
+					</div>
 
-					{#if uploadedImage}
-						<p class="text-sm text-green-600 font-medium mt-2" role="status" aria-live="polite">
-							✓ Artwork uploaded: {uploadedArtworkName}
-						</p>
-					{/if}
-
-					{#if isValidatingArtwork}
-						<p class="text-sm text-amber-700 font-medium mt-2" role="status" aria-live="polite">
-							Checking image quality…
-						</p>
-					{/if}
-
-					{#if validationMessage}
-						<p class="text-sm text-slate-600 mt-2" aria-live="polite">{validationMessage}</p>
-					{/if}
-
-					{#if validationWarnings.length > 0}
-						<div class="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900">
-							<p class="font-bold">Image quality warnings</p>
-							<ul class="mt-2 list-disc pl-5 space-y-2 text-sm">
-								{#each validationWarnings as warning}
-									<li>{warning}</li>
-								{/each}
-							</ul>
-							<p class="mt-3 text-sm">You can still proceed, but this is the gate trying to keep weak source images out of production.</p>
+					{#if errorMessage}
+						<div bind:this={errorRegionRef} tabindex="-1" role="alert" class="rounded-xl border border-red-300/40 bg-red-500/10 p-4 text-red-100">
+							<p class="font-bold">Checkout needs one quick fix</p>
+							<p>{errorMessage}</p>
 						</div>
 					{/if}
+
+					<button
+						bind:this={buyButtonRef}
+						type="button"
+						class={`w-full rounded-2xl py-4 text-lg font-black uppercase tracking-[0.16em] shadow-lg transition-all focus:outline-none focus:ring-4 focus:ring-[#d8ff3e] ${uploadedImage && !isCheckingOut ? 'bg-[#d8ff3e] text-slate-950 hover:bg-yellow-200 hover:scale-[1.01]' : 'bg-white/10 text-slate-500 cursor-not-allowed opacity-70'}`}
+						disabled={!uploadedImage || isCheckingOut}
+						onclick={buyNow}
+						aria-label={uploadedImage ? `Buy ${quantity} ${product.name} item${quantity > 1 ? 's' : ''} now for ${orderTotal} dollars with Stripe Checkout` : 'Upload artwork to enable Buy Now'}
+						aria-busy={isCheckingOut}
+					>
+						{#if isCheckingOut}
+							Starting Checkout…
+						{:else}
+							Buy Now — ${orderTotal}
+						{/if}
+					</button>
+
+					<p class="text-center text-sm text-slate-400" aria-live="polite">
+						{uploadedImage ? 'You will be redirected to Stripe Checkout to finish payment securely.' : 'Upload artwork to enable Buy Now.'}
+					</p>
 				</div>
-
-				{#if errorMessage}
-					<div bind:this={errorRegionRef} tabindex="-1" role="alert" class="rounded-xl border border-red-300 bg-red-50 p-4 text-red-700">
-						<p class="font-bold">Checkout needs one quick fix</p>
-						<p>{errorMessage}</p>
-					</div>
-				{/if}
-
-				<button
-					bind:this={buyButtonRef}
-					type="button"
-					class={`w-full font-black uppercase tracking-wide py-4 rounded-xl shadow-lg transition-all text-lg focus:outline-none focus:ring-4 focus:ring-yellow-400 ${uploadedImage && !isCheckingOut ? 'bg-yellow-400 text-slate-900 hover:bg-yellow-300 hover:scale-105' : 'bg-slate-200 text-slate-500 cursor-not-allowed opacity-70'}`}
-					disabled={!uploadedImage || isCheckingOut}
-					onclick={buyNow}
-					aria-label={uploadedImage ? `Buy ${quantity} ${product.name} item${quantity > 1 ? 's' : ''} now for ${orderTotal} dollars with Stripe Checkout` : 'Upload artwork to enable Buy Now'}
-					aria-busy={isCheckingOut}
-				>
-					{#if isCheckingOut}
-						Starting Checkout…
-					{:else}
-						Buy Now — ${orderTotal}
-					{/if}
-				</button>
-
-				<p class="text-sm text-slate-500 text-center" aria-live="polite">
-					{uploadedImage ? 'You will be redirected to Stripe Checkout to finish payment securely.' : 'Upload artwork to enable Buy Now.'}
-				</p>
-			</div>
+			</aside>
 		</div>
 	</div>
 </section>
 
-<footer class="bg-slate-900 text-white py-12 mt-12">
-	<div class="max-w-6xl mx-auto px-6 text-center">
+<footer class="border-t border-white/10 bg-[#07090f] py-12 text-white">
+	<div class="mx-auto max-w-7xl px-4 text-center sm:px-6">
 		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Checkout-ready configurator.</p>
 	</div>
 </footer>
