@@ -337,25 +337,15 @@
 					</div>
 					<div
 						bind:this={previewRef}
-						class="relative isolate overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.16),transparent_42%),linear-gradient(180deg,#111827,#030712)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] select-none"
+						class="relative isolate overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] select-none"
 						style="aspect-ratio: 1;"
 						role="img"
 						aria-label={`${product.name} preview with current artwork placement.`}
 					>
-						<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[length:36px_36px]"></div>
-						<div class="absolute inset-x-8 top-8 h-px bg-cyan-200/30"></div>
-						<div class="absolute inset-y-10 left-8 w-px bg-cyan-200/20"></div>
-						<div class="absolute inset-y-10 right-8 w-px bg-cyan-200/20"></div>
-						<div class="absolute bottom-8 left-8 right-8 h-px bg-cyan-200/20"></div>
-						<div class="absolute left-10 top-10 z-20 text-[0.65rem] font-black uppercase tracking-[0.24em] text-cyan-100/70">Registration guide</div>
-						<div class="absolute right-10 top-10 z-20 rounded-full border border-white/10 bg-black/35 px-3 py-1 text-[0.62rem] font-black uppercase tracking-[0.18em] text-slate-300 backdrop-blur">{colorSelection}</div>
-						<img src={product.image} alt={product.imageAlt} class="h-full w-full object-cover opacity-95 mix-blend-screen" />
+						<div class="absolute right-5 top-5 z-20 rounded-full border border-slate-200 bg-white/85 px-3 py-1 text-[0.62rem] font-black uppercase tracking-[0.18em] text-slate-700 shadow-sm backdrop-blur">{colorSelection}</div>
+						<img src={product.image} alt={product.imageAlt} class="h-full w-full object-cover opacity-100" />
 
-						{#if selections.color?.hex}
-							<div class="absolute inset-0 mix-blend-multiply pointer-events-none opacity-35" style={`background-color: ${selections.color.hex};`}></div>
-						{/if}
-
-						<div class="pointer-events-none absolute left-1/2 top-[48%] h-[34%] w-[38%] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-dashed border-cyan-200/50 bg-cyan-300/5 shadow-[0_0_40px_rgba(34,211,238,0.12)]"></div>
+						<div class="pointer-events-none absolute left-1/2 top-[48%] h-[30%] w-[36%] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-dashed border-slate-500/35 bg-white/5 shadow-[0_12px_35px_rgba(15,23,42,0.16)]"></div>
 
 						{#if uploadedImage}
 							<div

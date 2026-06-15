@@ -62,8 +62,8 @@ export const shopProducts: Record<string, ProductConfig> = {
 		name: 'Custom T-Shirt',
 		basePrice: 18,
 		description: 'Premium cotton tee with your custom artwork. Soft, durable, and made to stand out.',
-		image: productStudioImage('T-Shirt', '#78e8ff', 'shirt'),
-		imageAlt: 'Dark custom t-shirt preview with printable front artwork area',
+		image: '/products/t-shirt-black-front.jpg',
+		imageAlt: 'Realistic black custom t-shirt mockup with blank printable front artwork area',
 		previewEmptyText: 'Upload artwork to see your t-shirt preview.',
 		artworkPosition: { x: 50, y: 40 },
 		artworkMaxScale: 2,
@@ -79,7 +79,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'hoodie': {
 		slug: 'hoodie', name: 'Custom Hoodie', basePrice: 45,
 		description: 'Heavyweight cotton-blend hoodie with your custom artwork. Front print, back print, or both.',
-		image: productStudioImage('Hoodie', '#d8ff3e', 'hoodie'), imageAlt: 'Dark custom hoodie preview with printable front artwork area',
+		image: '/products/hoodie-black-front.jpg', imageAlt: 'Realistic black custom hoodie mockup with blank printable front artwork area',
 		previewEmptyText: 'Upload artwork to see your hoodie preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 2,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the hoodie size.', render: 'pill', options: [
@@ -96,7 +96,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'mug': {
 		slug: 'mug', name: 'Custom Mug', basePrice: 14,
 		description: '11oz ceramic mug with your custom artwork. Dishwasher safe, vivid print quality.',
-		image: productStudioImage('Mug', '#38bdf8'), imageAlt: 'Ceramic mug base preview',
+		image: '/products/mug-white-front.jpg', imageAlt: 'Realistic white ceramic mug mockup with blank printable front artwork area',
 		previewEmptyText: 'Upload artwork to see your mug preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 2,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the mug size.', render: 'pill', options: [
