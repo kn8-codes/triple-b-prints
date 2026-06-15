@@ -332,8 +332,8 @@
 
 				<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-3 shadow-2xl shadow-cyan-950/40 backdrop-blur">
 					<div class="mb-3 flex flex-wrap items-center justify-between gap-3 px-2 text-[0.68rem] font-black uppercase tracking-[0.2em] text-cyan-100/70">
-						<span>Live mockup stage</span>
-						<span class="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[#d8ff3e]">Template preview</span>
+						<span>Live proof stage</span>
+						<span class="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[#d8ff3e]">Artwork placement preview</span>
 					</div>
 					<div
 						bind:this={previewRef}
@@ -380,7 +380,7 @@
 								<div class="max-w-xs rounded-2xl border border-white/10 bg-black/45 p-5 shadow-2xl shadow-black/30 backdrop-blur">
 									<p class="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">Drop art here</p>
 									<p class="mt-2 text-sm text-slate-300">{product.previewEmptyText}</p>
-									<p class="mt-3 text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Template proof preview</p>
+									<p class="mt-3 text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Live proof preview</p>
 								</div>
 							</div>
 						{/if}
