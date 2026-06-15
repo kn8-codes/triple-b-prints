@@ -1,255 +1,153 @@
-<!--
-  Contact Page — Triple B Prints
-  ===============================
-  PURPOSE: Let customers reach the business. Every field is a placeholder
-  until backend (Supabase / serverless function) is wired.
-  WHAT'S HERE: Contact form, business info, map placeholder, social links.
-  REVERSAL POINT: Once Supabase is connected, swap the onsubmit handler
-  from "show coming-soon message" to "POST to /api/contact".
-  a11y: Labels linked to inputs, error announcements, focus management.
--->
-
 <script lang="ts">
-  // PLACEHOLDER STATE: Replace with real form handling once backend ready.
-  // If adding Supabase, import createClient here and POST on submit.
-  let name = $state('');
-  let email = $state('');
-  let phone = $state('');
-  let subject = $state('');
-  let message = $state('');
-  let status = $state(''); // 'idle' | 'sending' | 'sent' | 'error'
+	const productOptions = ['T-Shirts', 'Hoodies', 'Mugs', 'Hats', 'Keychains', 'Coasters', 'Phone Cases', 'Other / Not sure yet'];
+	const timelineOptions = ['Rush / 1–3 days', 'This week', 'This month', 'Flexible'];
 
-  function handleSubmit(e: SubmitEvent) {
-    e.preventDefault();
-    // PLACEHOLDER: No backend yet. Show coming-soon message.
-    status = 'sent';
-    // Clear form so user knows something happened
-    name = email = phone = subject = message = '';
-    // Auto-clear status after 5s for screen-reader politeness
-    setTimeout(() => { status = 'idle'; }, 5000);
-  }
+	let name = $state('');
+	let email = $state('');
+	let phone = $state('');
+	let product = $state('');
+	let quantity = $state('');
+	let timeline = $state('');
+	let artworkStatus = $state('');
+	let notes = $state('');
+	let submitted = $state(false);
+
+	let requestSummary = $derived(
+		[
+			`Name: ${name || '—'}`,
+			`Email: ${email || '—'}`,
+			`Phone: ${phone || '—'}`,
+			`Product: ${product || '—'}`,
+			`Quantity: ${quantity || '—'}`,
+			`Timeline: ${timeline || '—'}`,
+			`Artwork: ${artworkStatus || '—'}`,
+			`Notes: ${notes || '—'}`
+		].join('\n')
+	);
+
+	function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		submitted = true;
+	}
+
+	async function copySummary() {
+		await navigator.clipboard.writeText(requestSummary);
+	}
 </script>
 
 <svelte:head>
-  <title>Contact — Triple B Prints</title>
-  <meta name="description" content="Contact Triple B Prints for custom orders, quotes, and questions." />
+	<title>Start a Print Request — Triple B Prints</title>
+	<meta name="description" content="Start a custom print request for shirts, hoodies, mugs, hats, keychains, and small-run merch." />
 </svelte:head>
 
-<main class="min-h-screen bg-neutral-900 text-neutral-100">
-  <!-- HERO -->
-  <section class="relative overflow-hidden bg-gradient-to-b from-yellow-500/10 to-neutral-900 py-20 px-6">
-    <div class="mx-auto max-w-4xl text-center">
-      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">
-        Contact Us
-      </h1>
-      <p class="mt-4 text-lg text-neutral-300">
-        <!-- PLACEHOLDER: Replace with actual response-time promise once known. -->
-        Questions? Quotes? Custom jobs? We reply within one business day.
-      </p>
-    </div>
-  </section>
+<main class="min-h-screen bg-[#07090f] text-white">
+	<section class="relative isolate overflow-hidden border-b border-white/10 px-4 py-16 sm:px-6 md:py-24">
+		<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(120,232,255,0.18),transparent_30%),radial-gradient(circle_at_82%_20%,rgba(216,255,62,0.12),transparent_26%)]"></div>
+		<div class="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+			<div>
+				<p class="mb-4 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Order intake preview</p>
+				<h1 class="max-w-4xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.07em] sm:text-7xl">
+					Start a print request without the phone-tag mess.
+				</h1>
+				<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+					Capture the product, quantity, deadline, and artwork condition up front so Triple B can quote faster and avoid bad-file surprises.
+				</p>
+			</div>
+			<div class="rounded-[2rem] border border-cyan-200/20 bg-white/[0.05] p-6 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl">
+				<p class="text-sm font-black uppercase tracking-[0.2em] text-[#d8ff3e]">Meeting-ready note</p>
+				<p class="mt-3 text-slate-300">
+					This form is a working front-end intake preview. After the meeting, wire delivery to the owner’s preferred inbox, CRM, spreadsheet, or admin queue.
+				</p>
+			</div>
+		</div>
+	</section>
 
-  <!-- CONTACT GRID -->
-  <section class="mx-auto max-w-6xl px-6 py-16">
-    <div class="grid gap-12 lg:grid-cols-2">
+	<section class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr]">
+		<form onsubmit={handleSubmit} class="rounded-[2rem] border border-white/10 bg-white/[0.045] p-5 shadow-xl shadow-black/20 sm:p-8" aria-label="Print request form">
+			<div class="mb-8">
+				<p class="text-sm font-black uppercase tracking-[0.24em] text-cyan-100">Request details</p>
+				<h2 class="mt-2 text-3xl font-black uppercase tracking-[-0.04em]">Tell us what goes on the press.</h2>
+			</div>
 
-      <!-- FORM -->
-      <div>
-        <h2 class="text-xl font-bold text-yellow-400">Send a Message</h2>
+			<div class="grid gap-5 sm:grid-cols-2">
+				<label class="grid gap-2 text-sm font-bold text-slate-300">
+					Name *
+					<input bind:value={name} required class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]" placeholder="Your name" />
+				</label>
+				<label class="grid gap-2 text-sm font-bold text-slate-300">
+					Email *
+					<input bind:value={email} required type="email" class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]" placeholder="you@example.com" />
+				</label>
+				<label class="grid gap-2 text-sm font-bold text-slate-300">
+					Phone / text
+					<input bind:value={phone} type="tel" class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]" placeholder="Best callback number" />
+				</label>
+				<label class="grid gap-2 text-sm font-bold text-slate-300">
+					Product *
+					<select bind:value={product} required class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]">
+						<option value="" disabled>Select product</option>
+						{#each productOptions as option}<option>{option}</option>{/each}
+					</select>
+				</label>
+				<label class="grid gap-2 text-sm font-bold text-slate-300">
+					Quantity / run size *
+					<input bind:value={quantity} required class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]" placeholder="Example: 24 shirts, 12 mugs" />
+				</label>
+				<label class="grid gap-2 text-sm font-bold text-slate-300">
+					Timeline *
+					<select bind:value={timeline} required class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]">
+						<option value="" disabled>Select timeline</option>
+						{#each timelineOptions as option}<option>{option}</option>{/each}
+					</select>
+				</label>
+			</div>
 
-        <!--
-          PLACEHOLDER FORM: Currently shows a "coming soon" message on submit.
-          When Supabase or a serverless function is ready:
-          1. Remove the setTimeout / status = 'sent' placeholder.
-          2. Add async fetch() to your endpoint.
-          3. Set status = 'sending' while waiting, then 'sent' or 'error'.
-        -->
-        <form onsubmit={handleSubmit} class="mt-6 space-y-4" aria-label="Contact form">
+			<fieldset class="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+				<legend class="px-2 text-sm font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Artwork status</legend>
+				<div class="mt-3 grid gap-3 sm:grid-cols-3">
+					{#each ['Ready to upload', 'Needs cleanup', 'Need design help'] as option}
+						<label class="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 hover:border-cyan-200/40">
+							<input bind:group={artworkStatus} type="radio" value={option} required />
+							{option}
+						</label>
+					{/each}
+				</div>
+			</fieldset>
 
-          <!-- Name -->
-          <div>
-            <label for="contact-name" class="block text-sm font-medium text-neutral-300">
-              Name <span class="text-red-400" aria-hidden="true">*</span>
-            </label>
-            <input
-              id="contact-name"
-              type="text"
-              bind:value={name}
-              required
-              class="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
-              placeholder="Your name"
-            />
-          </div>
+			<label class="mt-6 grid gap-2 text-sm font-bold text-slate-300">
+				Job notes
+				<textarea bind:value={notes} rows="5" class="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none focus:border-[#d8ff3e]" placeholder="Sizes, colors, placement, event date, budget, or anything the shop should know."></textarea>
+			</label>
 
-          <!-- Email -->
-          <div>
-            <label for="contact-email" class="block text-sm font-medium text-neutral-300">
-              Email <span class="text-red-400" aria-hidden="true">*</span>
-            </label>
-            <input
-              id="contact-email"
-              type="email"
-              bind:value={email}
-              required
-              class="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
-              placeholder="you@example.com"
-            />
-          </div>
+			<button type="submit" class="mt-7 w-full rounded-2xl bg-[#d8ff3e] px-6 py-4 font-black uppercase tracking-[0.16em] text-slate-950 transition hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]">
+				Preview request summary
+			</button>
+		</form>
 
-          <!-- Phone (optional) -->
-          <div>
-            <label for="contact-phone" class="block text-sm font-medium text-neutral-300">
-              Phone <span class="text-neutral-500">(optional)</span>
-            </label>
-            <input
-              id="contact-phone"
-              type="tel"
-              bind:value={phone}
-              class="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
-              placeholder="(330) 555-0199"
-            />
-          </div>
+		<aside class="grid content-start gap-5">
+			<div class="rounded-[2rem] border border-white/10 bg-white/[0.045] p-6">
+				<p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-100">Why this matters</p>
+				<ul class="mt-5 space-y-4 text-slate-300">
+					<li><strong class="text-white">Artwork clarity:</strong> flags whether the customer has clean art or needs rebuild help.</li>
+					<li><strong class="text-white">Quote speed:</strong> quantity, product, and deadline are captured before the first call.</li>
+					<li><strong class="text-white">Growth path:</strong> same intake can later write to admin, email, spreadsheet, Supabase, or Stripe quote flow.</li>
+				</ul>
+			</div>
 
-          <!-- Subject -->
-          <div>
-            <label for="contact-subject" class="block text-sm font-medium text-neutral-300">
-              Subject <span class="text-red-400" aria-hidden="true">*</span>
-            </label>
-            <select
-              id="contact-subject"
-              bind:value={subject}
-              required
-              class="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
-            >
-              <!-- PLACEHOLDER: Add/remove options as client defines service categories. -->
-              <option value="" disabled selected>Select a topic</option>
-              <option value="custom-order">Custom Order</option>
-              <option value="quote">Quote Request</option>
-              <option value="bulk">Bulk / Event Order</option>
-              <option value="turnkey">Turnkey Business Package</option>
-              <option value="support">Order Support</option>
-              <option value="other">Something Else</option>
-            </select>
-          </div>
+			<div class="rounded-[2rem] border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 p-6">
+				<p class="text-sm font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Next wiring decision</p>
+				<p class="mt-4 text-slate-200">Tomorrow’s useful question: should new requests land in email/text first, a simple admin queue, or both?</p>
+			</div>
 
-          <!-- Message -->
-          <div>
-            <label for="contact-message" class="block text-sm font-medium text-neutral-300">
-              Message <span class="text-red-400" aria-hidden="true">*</span>
-            </label>
-            <textarea
-              id="contact-message"
-              bind:value={message}
-              required
-              rows="5"
-              class="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-yellow-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
-              placeholder="Tell us what you need..."
-            ></textarea>
-          </div>
-
-          <!-- Submit -->
-          <button
-            type="submit"
-            class="w-full rounded-lg bg-yellow-500 px-6 py-3 font-semibold text-neutral-900 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-neutral-900"
-          >
-            Send Message
-          </button>
-
-          <!-- Status announcement for screen readers -->
-          <div aria-live="polite" class="sr-only">
-            {#if status === 'sent'}
-              Message sent. We'll be in touch soon.
-            {/if}
-          </div>
-
-          <!-- Visual status banner -->
-          {#if status === 'sent'}
-            <div class="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-center text-yellow-400">
-              <!-- PLACEHOLDER: Swap this for a real success message once backend is live. -->
-              Thanks! This form is a demo right now — backend coming soon.
-              For urgent orders, call or text directly.
-            </div>
-          {/if}
-        </form>
-      </div>
-
-      <!-- BUSINESS INFO -->
-      <div class="space-y-8">
-        <h2 class="text-xl font-bold text-yellow-400">Reach Us Directly</h2>
-
-        <!-- PLACEHOLDER BLOCK: Replace with real info once client provides it. -->
-        <div class="rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <h3 class="font-semibold text-neutral-100">Phone / Text</h3>
-          <p class="mt-1 text-neutral-300">
-            <!-- PLACEHOLDER: Insert real number. -->
-            (330) 555-0199
-          </p>
-        </div>
-
-        <div class="rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <h3 class="font-semibold text-neutral-100">Email</h3>
-          <p class="mt-1 text-neutral-300">
-            <!-- PLACEHOLDER: Insert real email. -->
-            hello@bbbprints.com
-          </p>
-        </div>
-
-        <div class="rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <h3 class="font-semibold text-neutral-100">Location</h3>
-          <p class="mt-1 text-neutral-300">
-            <!-- PLACEHOLDER: Insert real address or "Akron, OH — local pickup available." -->
-            Akron, Ohio<br />
-            Local pickup available. Shipping nationwide.
-          </p>
-        </div>
-
-        <div class="rounded-xl border border-neutral-700 bg-neutral-800 p-6">
-          <h3 class="font-semibold text-neutral-100">Hours</h3>
-          <p class="mt-1 text-neutral-300">
-            <!-- PLACEHOLDER: Replace with actual hours once known. -->
-            Mon–Fri: 9am – 6pm<br />
-            Sat: 10am – 4pm<br />
-            Sun: Closed
-          </p>
-        </div>
-
-        <!-- SOCIAL LINKS -->
-        <div class="flex gap-4">
-          <!-- PLACEHOLDER: Add real social URLs once accounts exist. -->
-          <button
-            type="button"
-            aria-label="Facebook coming soon"
-            class="rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          >
-            FB
-          </button>
-          <button
-            type="button"
-            aria-label="Instagram coming soon"
-            class="rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          >
-            IG
-          </button>
-          <button
-            type="button"
-            aria-label="TikTok coming soon"
-            class="rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          >
-            TT
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MAP PLACEHOLDER -->
-  <section class="mx-auto max-w-6xl px-6 pb-16">
-    <!--
-      PLACEHOLDER: Replace with real embedded map once address confirmed.
-      Options: Google Maps iframe, Leaflet.js, or static image with link.
-    -->
-    <div class="rounded-xl border-2 border-dashed border-neutral-700 bg-neutral-800/50 p-12 text-center">
-      <p class="text-neutral-400">Map coming soon — address to be confirmed.</p>
-    </div>
-  </section>
+			{#if submitted}
+				<div class="rounded-[2rem] border border-cyan-200/25 bg-cyan-200/10 p-6" aria-live="polite">
+					<p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-100">Request summary</p>
+					<pre class="mt-4 whitespace-pre-wrap rounded-2xl bg-black/35 p-4 text-sm text-slate-200">{requestSummary}</pre>
+					<button type="button" onclick={copySummary} class="mt-4 rounded-2xl border border-cyan-200/30 bg-cyan-200/10 px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-cyan-100 hover:bg-cyan-200/20">
+						Copy summary
+					</button>
+				</div>
+			{/if}
+		</aside>
+	</section>
 </main>

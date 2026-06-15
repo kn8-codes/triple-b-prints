@@ -10,7 +10,7 @@
 		{ href: '/equipment', label: 'Equipment' },
 		{ href: '/turnkey-interview', label: 'Turnkey' },
 		{ href: '/#about', label: 'About' },
-		{ href: '/#contact', label: 'Contact' }
+		{ href: '/contact', label: 'Contact' }
 	];
 
 	function closeMobileMenu() {
