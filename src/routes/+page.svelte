@@ -1,69 +1,18 @@
 <script lang="ts">
-	const products = [
-		{
-			name: 'Custom T-Shirts',
-			price: 'From $25',
-			image: 'https://placehold.co/400x400/111827/78e8ff?text=T-Shirt',
-			badge: 'Best Seller',
-			link: '/shop/t-shirt'
-		},
-		{
-			name: 'Custom Hoodies',
-			price: 'From $45',
-			image: 'https://placehold.co/400x400/111827/d8ff3e?text=Hoodie',
-			badge: 'New',
-			link: '/shop/hoodie'
-		},
-		{
-			name: 'Printed Mugs',
-			price: 'From $18',
-			image: 'https://placehold.co/400x400/0f172a/78e8ff?text=Mug',
-			badge: 'New',
-			link: '/shop/mug'
-		},
-		{
-			name: 'Custom Hats',
-			price: 'From $22',
-			image: 'https://placehold.co/400x400/0f172a/d8ff3e?text=Hat',
-			badge: null,
-			link: '/shop/hat'
-		},
-		{
-			name: 'Keychains',
-			price: 'From $8',
-			image: 'https://placehold.co/400x400/111827/78e8ff?text=Keychain',
-			badge: null,
-			link: '/shop/keychain'
-		},
-		{
-			name: 'Phone Cases',
-			price: 'From $20',
-			image: 'https://placehold.co/400x400/111827/d8ff3e?text=Phone+Case',
-			badge: null,
-			link: '/shop/phone-case'
-		},
-		{
-			name: 'Coasters',
-			price: 'From $12',
-			image: 'https://placehold.co/400x400/0f172a/78e8ff?text=Coaster',
-			badge: null,
-			link: '/shop/coaster'
-		},
-		{
-			name: 'Shorts',
-			price: 'From $28',
-			image: 'https://placehold.co/400x400/111827/d8ff3e?text=Shorts',
-			badge: null,
-			link: '/shop/shorts'
-		},
-		{
-			name: 'Joggers',
-			price: 'From $35',
-			image: 'https://placehold.co/400x400/0f172a/78e8ff?text=Joggers',
-			badge: null,
-			link: '/shop/joggers'
-		}
-	];
+	import { shopProducts } from '$lib/data/shopProducts';
+
+	const productOrder = ['t-shirt', 'hoodie', 'mug', 'hat', 'keychain', 'phone-case', 'coaster', 'shorts', 'joggers'];
+
+	const products = productOrder.map((slug) => {
+		const product = shopProducts[slug];
+		return {
+			name: product.slug === 'mug' ? 'Printed Mugs' : `${product.name}s`,
+			price: `From $${product.basePrice}`,
+			image: product.image,
+			badge: product.slug === 't-shirt' ? 'Best Seller' : product.slug === 'hoodie' || product.slug === 'mug' ? 'New' : null,
+			link: `/shop/${product.slug}`
+		};
+	});
 </script>
 
 <!--
