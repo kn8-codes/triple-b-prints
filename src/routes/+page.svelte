@@ -3,10 +3,22 @@
 
 	const productOrder = ['t-shirt', 'hoodie', 'mug', 'hat', 'keychain', 'phone-case', 'coaster', 'shorts', 'joggers'];
 
+	const productNames: Record<string, string> = {
+		't-shirt': 'Custom T-Shirts',
+		hoodie: 'Custom Hoodies',
+		mug: 'Printed Mugs',
+		hat: 'Custom Hats',
+		keychain: 'Custom Keychains',
+		'phone-case': 'Custom Phone Cases',
+		coaster: 'Custom Coasters',
+		shorts: 'Custom Shorts',
+		joggers: 'Custom Joggers'
+	};
+
 	const products = productOrder.map((slug) => {
 		const product = shopProducts[slug];
 		return {
-			name: product.slug === 'mug' ? 'Printed Mugs' : `${product.name}s`,
+			name: productNames[product.slug] ?? product.name,
 			price: `From $${product.basePrice}`,
 			image: product.image,
 			badge: product.slug === 't-shirt' ? 'Best Seller' : product.slug === 'hoodie' || product.slug === 'mug' ? 'New' : null,
@@ -97,7 +109,7 @@
 			<a href="/shop/hoodie" class="hidden rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10 md:inline-flex">Start with hoodie →</a>
 		</div>
 
-		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
 			{#each products as product}
 				<a
 					href={product.link}
@@ -108,7 +120,7 @@
 						<img
 							src={product.image}
 							alt={product.name}
-							class="h-64 w-full object-cover opacity-90 transition-transform duration-300 group-hover:scale-105"
+							class="h-64 w-full object-contain p-4 opacity-95 transition-transform duration-300 group-hover:scale-105"
 							loading="lazy"
 						/>
 						<div class="absolute inset-0 bg-gradient-to-t from-[#07090f] via-transparent to-transparent"></div>

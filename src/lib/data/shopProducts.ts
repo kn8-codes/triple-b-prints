@@ -25,35 +25,6 @@ export type ProductConfig = {
 	optionGroups: OptionGroup[];
 };
 
-function productStudioImage(label: string, accent: string, kind: 'shirt' | 'hoodie' | 'product' = 'product') {
-	const garment = kind === 'hoodie'
-		? `<path d="M214 112c22-34 150-34 172 0 16 16 28 40 31 70l76 64-58 86-50-41v250H215V291l-50 41-58-86 76-64c3-30 15-54 31-70Z" fill="#0b1220" stroke="${accent}" stroke-opacity="0.55" stroke-width="4"/>
-		<path d="M238 118c-20 42-19 78 3 108h118c22-30 23-66 3-108-30 24-94 24-124 0Z" fill="#111827" stroke="#ffffff" stroke-opacity="0.12"/>
-		<path d="M248 256h104c19 0 34 15 34 34v74H214v-74c0-19 15-34 34-34Z" fill="#050816" fill-opacity="0.46" stroke="#ffffff" stroke-opacity="0.10"/>
-		<path d="M246 432h108" stroke="${accent}" stroke-width="6" stroke-opacity="0.45" stroke-linecap="round"/>`
-		: kind === 'shirt'
-			? `<path d="M230 96c-45 18-73 56-82 111l-74 72 68 78 50-47v250h216V310l50 47 68-78-74-72c-9-55-37-93-82-111H230Z" fill="#0b1220" stroke="${accent}" stroke-opacity="0.55" stroke-width="4"/>
-		<path d="M236 100c-22 32-28 75-14 130h156c14-55 8-98-14-130-31 25-97 25-128 0Z" fill="#111827" stroke="#ffffff" stroke-opacity="0.12"/>
-		<rect x="214" y="272" width="172" height="150" rx="30" fill="#050816" fill-opacity="0.48" stroke="#ffffff" stroke-opacity="0.10"/>
-		<path d="M246 456h108" stroke="${accent}" stroke-width="6" stroke-opacity="0.45" stroke-linecap="round"/>`
-			: `<rect x="145" y="120" width="310" height="410" rx="46" fill="#0b1220" stroke="${accent}" stroke-opacity="0.55" stroke-width="4"/>
-		<rect x="182" y="175" width="236" height="245" rx="28" fill="#111827" stroke="#ffffff" stroke-opacity="0.12"/>
-		<path d="M198 458h204" stroke="${accent}" stroke-opacity="0.42" stroke-width="6" stroke-linecap="round"/>`;
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700">
-		<defs>
-			<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset="1" stop-color="#030712"/></linearGradient>
-			<radialGradient id="glow" cx="50%" cy="16%" r="72%"><stop stop-color="${accent}" stop-opacity="0.34"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient>
-			<filter id="shadow"><feDropShadow dx="0" dy="28" stdDeviation="23" flood-color="#000" flood-opacity="0.52"/></filter>
-		</defs>
-		<rect width="600" height="700" fill="url(#bg)"/>
-		<rect width="600" height="700" fill="url(#glow)"/>
-		<g filter="url(#shadow)">${garment}</g>
-		<text x="300" y="602" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="900" text-anchor="middle" letter-spacing="-1">${label}</text>
-		<text x="300" y="638" fill="${accent}" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="900" text-anchor="middle" letter-spacing="4">TRIPLE B PRINTS</text>
-	</svg>`;
-	return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-}
-
 // The repo had nine nearly-identical configurators with slightly different option sets.
 // We normalize them into one data shape so checkout logic stays consistent across every product page.
 export const shopProducts: Record<string, ProductConfig> = {
@@ -110,7 +81,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'hat': {
 		slug: 'hat', name: 'Custom Hat', basePrice: 22,
 		description: 'Structured cap with clean embroidery-style placement for your logo or art.',
-		image: productStudioImage('Hat', '#f59e0b'), imageAlt: 'Hat base garment preview',
+		image: '/products/hat-black-front.jpg', imageAlt: 'Realistic black custom hat mockup with blank printable front panel',
 		previewEmptyText: 'Upload artwork to see your hat preview.', artworkPosition: { x: 50, y: 48 }, artworkMaxScale: 1.6,
 		optionGroups: [
 			{ id: 'size', label: 'Style', helperText: 'Choose the hat style.', render: 'pill', options: [
@@ -124,7 +95,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'keychain': {
 		slug: 'keychain', name: 'Custom Keychain', basePrice: 8,
 		description: 'Small, durable, and perfect for logos, mascots, and quick gift runs.',
-		image: productStudioImage('Keychain', '#f59e0b'), imageAlt: 'Keychain base preview',
+		image: '/products/keychain-clear-front.jpg', imageAlt: 'Realistic clear acrylic custom keychain mockup with blank printable front area',
 		previewEmptyText: 'Upload artwork to see your keychain preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5,
 		optionGroups: [
 			{ id: 'size', label: 'Material', helperText: 'Choose the keychain material.', render: 'pill', options: [
@@ -138,7 +109,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'phone-case': {
 		slug: 'phone-case', name: 'Custom Phone Case', basePrice: 20,
 		description: 'Protective case with full-color custom artwork for everyday carry.',
-		image: productStudioImage('Phone Case', '#8b5cf6'), imageAlt: 'Phone case base preview',
+		image: '/products/phone-case-black-front.jpg', imageAlt: 'Realistic black custom phone case mockup with blank printable back surface',
 		previewEmptyText: 'Upload artwork to see your phone case preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.7,
 		optionGroups: [
 			{ id: 'size', label: 'Phone Model', helperText: 'Choose the phone model.', render: 'pill', options: [
@@ -152,7 +123,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'coaster': {
 		slug: 'coaster', name: 'Custom Coaster', basePrice: 12,
 		description: 'Sturdy custom coasters that make logos and artwork pop on every table.',
-		image: productStudioImage('Coaster', '#10b981'), imageAlt: 'Coaster base preview',
+		image: '/products/coaster-white-front.jpg', imageAlt: 'Realistic white custom coaster mockup with blank printable top surface',
 		previewEmptyText: 'Upload artwork to see your coaster preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5,
 		optionGroups: [
 			{ id: 'size', label: 'Shape', helperText: 'Choose the coaster shape.', render: 'pill', options: [
@@ -166,7 +137,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'shorts': {
 		slug: 'shorts', name: 'Custom Shorts', basePrice: 28,
 		description: 'Comfortable custom shorts with print placement that works for teams, brands, and events.',
-		image: productStudioImage('Shorts', '#06b6d4'), imageAlt: 'Shorts base garment preview',
+		image: '/products/shorts-black-front.jpg', imageAlt: 'Realistic black custom shorts mockup with blank printable leg area',
 		previewEmptyText: 'Upload artwork to see your shorts preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 1.6,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the shorts size.', render: 'pill', options: [
@@ -183,7 +154,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 	'joggers': {
 		slug: 'joggers', name: 'Custom Joggers', basePrice: 35,
 		description: 'Midweight joggers built for clean front-leg branding and repeat-wear comfort.',
-		image: productStudioImage('Joggers', '#64748b'), imageAlt: 'Joggers base garment preview',
+		image: '/products/joggers-black-front.jpg', imageAlt: 'Realistic black custom joggers mockup with blank printable thigh area',
 		previewEmptyText: 'Upload artwork to see your joggers preview.', artworkPosition: { x: 50, y: 42 }, artworkMaxScale: 1.6,
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the jogger size.', render: 'pill', options: [

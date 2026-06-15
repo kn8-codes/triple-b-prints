@@ -343,7 +343,7 @@
 						aria-label={`${product.name} preview with current artwork placement.`}
 					>
 						<div class="absolute right-5 top-5 z-20 rounded-full border border-slate-200 bg-white/85 px-3 py-1 text-[0.62rem] font-black uppercase tracking-[0.18em] text-slate-700 shadow-sm backdrop-blur">{colorSelection}</div>
-						<img src={product.image} alt={product.imageAlt} class="h-full w-full object-cover opacity-100" />
+						<img src={product.image} alt={product.imageAlt} class="h-full w-full object-contain opacity-100" />
 
 						<div class="pointer-events-none absolute left-1/2 top-[48%] h-[30%] w-[36%] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-dashed border-slate-500/35 bg-white/5 shadow-[0_12px_35px_rgba(15,23,42,0.16)]"></div>
 
