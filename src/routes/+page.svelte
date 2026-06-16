@@ -46,10 +46,14 @@
 						<div class="relative mx-auto flex aspect-square max-w-md flex-col items-center justify-center rounded-[2rem] border border-dashed border-cyan-200/35 bg-black/25 text-center shadow-[0_0_60px_rgba(34,211,238,0.12)]">
 							<p class="text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Live print room</p>
 							<p class="mt-4 text-[6.5rem] font-black leading-none tracking-[-0.14em] text-white sm:text-[8rem]">BBB</p>
-							<p class="mt-4 max-w-xs text-sm font-bold uppercase tracking-[0.18em] text-[#d8ff3e]">Upload art. Place it. Checkout.</p>
+							<p class="mt-4 max-w-xs text-sm font-bold uppercase leading-6 tracking-[0.18em] text-[#d8ff3e]">
+								Upload art.<br />
+								Place it.<br />
+								Checkout.
+							</p>
 						</div>
 
-						<div class="mt-6 grid grid-cols-3 gap-3 text-center text-xs font-black uppercase tracking-[0.14em] text-slate-300">
+						<div class="mt-6 grid grid-cols-1 gap-3 text-center text-xs font-black uppercase tracking-[0.14em] text-slate-300 sm:grid-cols-3">
 							<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">No minimums</div>
 							<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Fast runs</div>
 							<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Custom art</div>
