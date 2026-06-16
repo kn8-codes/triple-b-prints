@@ -33,18 +33,18 @@
 		BBB
 	</div>
 
-	<div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24">
-		<div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-			<div class="order-2 lg:order-1">
+	<div class="relative mx-auto max-w-7xl overflow-hidden px-4 py-16 sm:px-6 md:py-24">
+		<div class="grid min-w-0 gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+			<div class="order-2 min-w-0 lg:order-1">
 				<div class="rounded-[2rem] border border-white/10 bg-white/[0.05] p-4 shadow-2xl shadow-cyan-950/40 backdrop-blur-xl">
-					<div class="relative overflow-hidden rounded-[1.5rem] border border-cyan-200/15 bg-[radial-gradient(circle_at_50%_0%,rgba(120,232,255,0.22),transparent_38%),linear-gradient(180deg,#111827,#030712)] p-6 sm:p-8">
-						<div class="absolute inset-x-8 top-8 h-px bg-cyan-200/25"></div>
-						<div class="absolute inset-y-8 left-8 w-px bg-cyan-200/20"></div>
-						<div class="absolute inset-y-8 right-8 w-px bg-cyan-200/20"></div>
-						<div class="absolute bottom-8 left-8 right-8 h-px bg-cyan-200/20"></div>
+					<div class="relative overflow-hidden rounded-[1.5rem] border border-[#d8ff3e]/15 bg-[radial-gradient(circle_at_50%_0%,rgba(216,255,62,0.14),transparent_38%),linear-gradient(180deg,#111827,#030712)] p-5 sm:p-8">
+						<div class="absolute inset-x-6 top-6 h-px bg-[#d8ff3e]/18 sm:inset-x-8 sm:top-8"></div>
+						<div class="absolute inset-y-6 left-6 w-px bg-[#d8ff3e]/14 sm:inset-y-8 sm:left-8"></div>
+						<div class="absolute inset-y-6 right-6 w-px bg-[#d8ff3e]/14 sm:inset-y-8 sm:right-8"></div>
+						<div class="absolute bottom-6 left-6 right-6 h-px bg-[#d8ff3e]/14 sm:bottom-8 sm:left-8 sm:right-8"></div>
 
-						<div class="relative mx-auto flex aspect-square max-w-md flex-col items-center justify-center rounded-[2rem] border border-dashed border-cyan-200/35 bg-black/25 text-center shadow-[0_0_60px_rgba(34,211,238,0.12)]">
-							<p class="text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Live print room</p>
+						<div class="relative mx-auto flex aspect-square w-full max-w-md flex-col items-center justify-center rounded-[2rem] border border-dashed border-[#d8ff3e]/28 bg-black/25 text-center shadow-[0_0_60px_rgba(216,255,62,0.08)]">
+							<p class="text-sm font-black uppercase tracking-[0.28em] text-[#d8ff3e]">Live print room</p>
 							<p class="mt-4 text-[6.5rem] font-black leading-none tracking-[-0.14em] text-white sm:text-[8rem]">BBB</p>
 							<p class="mt-4 max-w-xs text-sm font-bold uppercase leading-6 tracking-[0.18em] text-[#d8ff3e]">
 								Upload art.<br />
@@ -53,20 +53,30 @@
 							</p>
 						</div>
 
-						<div class="mt-6 grid grid-cols-1 gap-3 text-center text-xs font-black uppercase tracking-[0.14em] text-slate-300 sm:grid-cols-3">
-							<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">No minimums</div>
-							<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Fast runs</div>
-							<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Custom art</div>
+						<div class="mt-5 grid grid-cols-1 gap-1.5 text-center text-[0.66rem] font-black uppercase tracking-[0.12em] text-[#d8ff3e] min-[430px]:grid-cols-3 min-[430px]:text-[0.62rem] sm:mt-6 sm:grid-cols-3 sm:gap-3 sm:text-xs sm:tracking-[0.14em]">
+							<div class="cursor-default rounded-xl border border-[#d8ff3e]/12 bg-white/[0.025] px-2 py-2.5 sm:rounded-2xl sm:px-3 sm:py-3">No minimums</div>
+							<div class="cursor-default rounded-xl border border-[#d8ff3e]/12 bg-white/[0.025] px-2 py-2.5 sm:rounded-2xl sm:px-3 sm:py-3">Fast runs</div>
+							<div class="cursor-default rounded-xl border border-[#d8ff3e]/12 bg-white/[0.025] px-2 py-2.5 sm:rounded-2xl sm:px-3 sm:py-3">Custom art</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="order-1 text-center lg:order-2 lg:text-left">
-				<p class="mb-4 text-sm font-black uppercase tracking-[0.32em] text-cyan-100">Triple B / Print Studio</p>
-				<h1 class="text-5xl font-black uppercase leading-[0.88] tracking-[-0.08em] text-white sm:text-7xl lg:text-8xl">
-					Custom prints<br />
-					<span class="text-[#d8ff3e]">made sharp.</span>
+			<div class="order-1 min-w-0 text-center lg:order-2 lg:text-left">
+				<p class="mb-4 text-xs font-black uppercase tracking-[0.24em] text-[#d8ff3e] sm:text-sm sm:tracking-[0.32em]">Triple B / Print Studio</p>
+				<h1 class="text-[3.15rem] font-black uppercase leading-[0.88] tracking-[-0.045em] text-white min-[390px]:text-6xl sm:text-7xl sm:tracking-[-0.08em] lg:text-8xl">
+					<span class="sm:hidden">
+						<span class="block">Custom</span>
+						<span class="block">prints</span>
+					</span>
+					<span class="hidden sm:inline">Custom prints</span><br />
+					<span class="text-[#d8ff3e]">
+						<span class="sm:hidden">
+							<span class="block">made</span>
+							<span class="block">sharp.</span>
+						</span>
+						<span class="hidden sm:inline">made sharp.</span>
+					</span>
 				</h1>
 				<p class="mx-auto mt-7 max-w-xl text-lg leading-8 text-slate-300 lg:mx-0">
 					T-shirts, hoodies, mugs, keychains, and small-run merch with a configurator that lets customers see the job before checkout.
@@ -85,9 +95,9 @@
 						Browse Products
 					</a>
 				</div>
-				<div class="mt-8 inline-flex max-w-full flex-wrap items-center gap-3 rounded-2xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 px-4 py-3">
+				<div class="mt-8 flex w-full max-w-full flex-col items-start gap-2 rounded-2xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 px-4 py-3 text-left sm:inline-flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
 					<span class="text-sm font-black uppercase tracking-wide text-[#d8ff3e]">SAVEBUCK$</span>
-					<span class="text-sm text-slate-300">Monthly promo code active — bulk deals & flash sales</span>
+					<span class="min-w-0 text-sm leading-6 text-slate-300">Monthly promo code active — bulk deals & flash sales</span>
 					<a href="/promo/savebucks" class="text-sm font-bold text-[#d8ff3e] hover:underline">Shop Deals →</a>
 				</div>
 			</div>
@@ -101,7 +111,7 @@
 		<div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 			<div>
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Product line</p>
-				<h2 class="text-4xl font-black uppercase tracking-[-0.05em] text-white md:text-6xl">Featured Products</h2>
+				<h2 class="text-[2.55rem] font-black uppercase leading-none tracking-[-0.04em] text-white min-[430px]:text-4xl md:text-6xl">Featured <span class="block sm:inline">Products</span></h2>
 				<p class="mt-3 max-w-2xl text-lg text-slate-400">Start with a product, upload the art, and let the configurator keep the job honest.</p>
 			</div>
 			<a href="/shop/hoodie" class="hidden rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10 md:inline-flex">Start with hoodie →</a>
