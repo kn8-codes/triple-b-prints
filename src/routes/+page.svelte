@@ -185,7 +185,7 @@
 
 <footer id="contact" class="border-t border-white/10 bg-[#07090f] py-16 text-white">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6">
-		<div class="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+		<div class="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
 			<div>
 				<h3 class="mb-4 text-2xl font-black uppercase tracking-[-0.03em]">Triple B Prints</h3>
 				<p class="leading-relaxed text-slate-400">
@@ -206,25 +206,8 @@
 				<ul class="space-y-2 text-slate-400">
 					<li><a href="/#about" class="transition-colors hover:text-[#d8ff3e]">About</a></li>
 					<li><a href="/equipment" class="transition-colors hover:text-[#d8ff3e]">Equipment</a></li>
-					<li><a href="/turnkey-interview" class="transition-colors hover:text-[#d8ff3e]">Turnkey</a></li>
 					<li><a href="/contact" class="transition-colors hover:text-[#d8ff3e]">Contact</a></li>
 				</ul>
-			</div>
-			<div>
-				<h4 class="mb-4 text-sm font-bold uppercase tracking-wide text-slate-300">Social</h4>
-				<div class="flex flex-wrap gap-3">
-					{#each [
-						{ label: 'Facebook', short: 'FB', href: 'https://www.facebook.com/' },
-						{ label: 'Instagram', short: 'IG', href: 'https://www.instagram.com/' },
-						{ label: 'TikTok', short: 'TT', href: 'https://www.tiktok.com/' },
-						{ label: 'YouTube', short: 'YT', href: 'https://www.youtube.com/' }
-					] as social}
-						<a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`${social.label} profile`} class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xs font-black text-cyan-100 transition-colors hover:border-[#d8ff3e]/40 hover:bg-[#d8ff3e]/10 hover:text-[#d8ff3e]">
-							{social.short}
-						</a>
-					{/each}
-				</div>
-				<p class="mt-3 text-xs leading-5 text-slate-500">Follow the shop online as new product runs go live.</p>
 			</div>
 		</div>
 		<div class="border-t border-white/10 pt-8 text-center text-sm text-slate-500">

@@ -102,6 +102,7 @@
 <svelte:head>
 	<title>Turnkey Interview Script | Triple B Prints</title>
 	<meta name="description" content="Structured interview questions for collecting turnkey business information." />
+	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <!-- Header -->
