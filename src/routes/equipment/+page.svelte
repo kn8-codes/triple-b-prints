@@ -117,8 +117,8 @@
 		<div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 			<div class="max-w-3xl">
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Reference equipment</p>
-				<h2 class="text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-5xl">Actual xTool product imagery for the business pitch.</h2>
-				<p class="mt-4 text-lg leading-8 text-slate-300">Demo/reference images sourced from official xTool product pages. Final usage should be confirmed with approved affiliate/media terms before a permanent public launch.</p>
+				<h2 class="text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-5xl">Actual xTool product imagery for shop planning.</h2>
+				<p class="mt-4 text-lg leading-8 text-slate-300">Reference images sourced from official xTool product pages. Final usage should be confirmed with approved affiliate/media terms before a permanent public launch.</p>
 			</div>
 			<a href="https://www.xtool.com" target="_blank" rel="noopener noreferrer" class="inline-flex rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10">xTool site →</a>
 		</div>
@@ -168,10 +168,10 @@
 		<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Meeting-ready next step</p>
 		<h2 class="text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-5xl">Use the configurator to start the conversation.</h2>
 		<p class="mx-auto mt-4 max-w-2xl text-lg leading-8 text-slate-300">
-			For the demo, start with a hoodie or T-shirt, upload art, show placement, then jump to the request form to show how the same intake can become a quote/admin queue after approval.
+			Start with a hoodie or T-shirt, upload art, show placement, then jump to the request form to show how the same intake can become a clean quote request.
 		</p>
 		<div class="mt-8 flex flex-wrap justify-center gap-4">
-			<a href="/shop/hoodie" class="rounded-2xl bg-[#d8ff3e] px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-slate-950 shadow-lg shadow-[#d8ff3e]/10 transition-transform hover:-translate-y-0.5">Demo hoodie</a>
+			<a href="/shop/hoodie" class="rounded-2xl bg-[#d8ff3e] px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-slate-950 shadow-lg shadow-[#d8ff3e]/10 transition-transform hover:-translate-y-0.5">Start with hoodie</a>
 			<a href="/contact" class="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10">Open request form</a>
 		</div>
 	</div>

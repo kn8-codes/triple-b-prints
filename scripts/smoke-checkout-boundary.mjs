@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const baseUrl = process.env.BBB_BASE_URL ?? 'http://127.0.0.1:5174';
+const siteOrigin = new URL(baseUrl).origin;
 
 const routes = ['/', '/shop/hoodie', '/shop/success?session_id=cs_test_smoke&product=hoodie'];
 
@@ -26,6 +27,7 @@ async function smokeArtworkValidation() {
 
 	const response = await fetch(`${baseUrl}/api/validate-artwork`, {
 		method: 'POST',
+		headers: { origin: siteOrigin },
 		body: form
 	});
 	const payload = await response.json();
@@ -54,7 +56,7 @@ async function smokeCheckoutBoundary() {
 
 	const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
 		method: 'POST',
-		headers: { 'content-type': 'application/json' },
+		headers: { 'content-type': 'application/json', origin: siteOrigin },
 		body: JSON.stringify(payload)
 	});
 	const body = await response.text();

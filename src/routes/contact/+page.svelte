@@ -45,7 +45,7 @@
 		<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(120,232,255,0.18),transparent_30%),radial-gradient(circle_at_82%_20%,rgba(216,255,62,0.12),transparent_26%)]"></div>
 		<div class="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
 			<div>
-				<p class="mb-4 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Order intake preview</p>
+				<p class="mb-4 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Print request intake</p>
 				<h1 class="max-w-4xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.07em] sm:text-7xl">
 					Start a print request without the phone-tag mess.
 				</h1>
@@ -54,9 +54,9 @@
 				</p>
 			</div>
 			<div class="rounded-[2rem] border border-cyan-200/20 bg-white/[0.05] p-6 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl">
-				<p class="text-sm font-black uppercase tracking-[0.2em] text-[#d8ff3e]">Meeting-ready note</p>
+				<p class="text-sm font-black uppercase tracking-[0.2em] text-[#d8ff3e]">Clean request path</p>
 				<p class="mt-3 text-slate-300">
-					This form is a working front-end intake preview. After the meeting, wire delivery to the owner’s preferred inbox, CRM, spreadsheet, or admin queue.
+					This request path gathers the job details first so the shop can follow up with a cleaner quote and fewer back-and-forth messages.
 				</p>
 			</div>
 		</div>
@@ -130,13 +130,13 @@
 				<ul class="mt-5 space-y-4 text-slate-300">
 					<li><strong class="text-white">Artwork clarity:</strong> flags whether the customer has clean art or needs rebuild help.</li>
 					<li><strong class="text-white">Quote speed:</strong> quantity, product, and deadline are captured before the first call.</li>
-					<li><strong class="text-white">Growth path:</strong> same intake can later write to admin, email, spreadsheet, Supabase, or Stripe quote flow.</li>
+					<li><strong class="text-white">Growth path:</strong> the same intake can later write to email, a shop queue, spreadsheet, or quote flow.</li>
 				</ul>
 			</div>
 
 			<div class="rounded-[2rem] border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 p-6">
-				<p class="text-sm font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Next wiring decision</p>
-				<p class="mt-4 text-slate-200">Tomorrow’s useful question: should new requests land in email/text first, a simple admin queue, or both?</p>
+				<p class="text-sm font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Next step</p>
+				<p class="mt-4 text-slate-200">Choose where new requests should land first: email/text, a simple shop queue, or both.</p>
 			</div>
 
 			{#if submitted}
