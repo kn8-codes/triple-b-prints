@@ -26,6 +26,27 @@
 		'Positions a proof preview',
 		'Sends a cleaner request into the shop'
 	];
+
+	const toolImages = [
+		{
+			name: 'xTool F1',
+			label: 'Portable laser engraver',
+			src: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_f1-whitebackground_5122-69954.webp?v=1747623440',
+			href: 'https://www.xtool.com/products/xtool-f1'
+		},
+		{
+			name: 'xTool M1 Ultra',
+			label: 'Multi-function craft machine',
+			src: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_m1ultra-whitebackground_5122-70511.webp?v=1747562384',
+			href: 'https://www.xtool.com/products/xtool-m1-ultra-the-worlds-first-4-in-1-craft-machine'
+		},
+		{
+			name: 'xTool P2 / P2S',
+			label: 'CO₂ laser cutter',
+			src: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_p-black-standalone_5130-129_2291d7b0-a962-466d-89c6-8166e1c383a0.webp?v=1754966102',
+			href: 'https://www.xtool.com/products/xtool-p2-55w-co2-laser-cutter'
+		}
+	];
 </script>
 
 <svelte:head>
@@ -87,6 +108,34 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</section>
+
+<section class="border-t border-white/10 bg-[#0a0d14] py-16 text-white sm:py-20">
+	<div class="mx-auto max-w-7xl px-4 sm:px-6">
+		<div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+			<div class="max-w-3xl">
+				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Reference equipment</p>
+				<h2 class="text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-5xl">Actual xTool product imagery for the business pitch.</h2>
+				<p class="mt-4 text-lg leading-8 text-slate-300">Demo/reference images sourced from official xTool product pages. Final usage should be confirmed with approved affiliate/media terms before a permanent public launch.</p>
+			</div>
+			<a href="https://www.xtool.com" target="_blank" rel="noopener noreferrer" class="inline-flex rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10">xTool site →</a>
+		</div>
+
+		<div class="grid gap-5 md:grid-cols-3">
+			{#each toolImages as tool}
+				<a href={tool.href} target="_blank" rel="noopener noreferrer" class="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.05] shadow-xl shadow-black/20 transition-all hover:-translate-y-1 hover:border-cyan-200/40">
+					<div class="bg-white p-4">
+						<img src={tool.src} alt={tool.name} class="h-56 w-full object-contain transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+					</div>
+					<div class="p-6">
+						<p class="text-xs font-black uppercase tracking-[0.22em] text-[#d8ff3e]">{tool.label}</p>
+						<h3 class="mt-2 text-2xl font-black uppercase tracking-[-0.03em] text-white">{tool.name}</h3>
+						<p class="mt-3 text-sm font-bold uppercase tracking-[0.14em] text-cyan-100/70">View source →</p>
+					</div>
+				</a>
+			{/each}
 		</div>
 	</div>
 </section>

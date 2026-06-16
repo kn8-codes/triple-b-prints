@@ -79,6 +79,24 @@
 
 	let showNotes = $state(false);
 	let notes = $state('');
+
+	const equipmentStack = [
+		{
+			name: 'xTool M1 Ultra',
+			role: 'Starter production machine',
+			image: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_m1ultra-whitebackground_5122-70511.webp?v=1747562384'
+		},
+		{
+			name: 'xTool F1',
+			role: 'Fast small-item engraving',
+			image: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_f1-whitebackground_5122-69954.webp?v=1747623440'
+		},
+		{
+			name: 'xTool P2 / P2S',
+			role: 'Larger laser/cutting capacity',
+			image: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_p-black-standalone_5130-129_2291d7b0-a962-466d-89c6-8166e1c383a0.webp?v=1754966102'
+		}
+	];
 </script>
 
 <svelte:head>
@@ -114,6 +132,30 @@
 					<li>Copy the completed notes into the turnkey intake form or Supabase</li>
 				</ol>
 			</div>
+		</div>
+	</div>
+</section>
+
+<section class="bg-slate-950 py-12 text-white">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6">
+		<div class="mb-8 max-w-3xl">
+			<p class="mb-2 text-sm font-black uppercase tracking-[0.24em] text-yellow-300">Equipment stack reference</p>
+			<h2 class="text-3xl md:text-4xl font-black uppercase tracking-[-0.04em]">What “buy the business” can look like.</h2>
+			<p class="mt-3 text-slate-300 leading-7">Use these actual xTool product images as visual prompts while collecting the package details. Final equipment bundle, pricing, and media rights still need owner confirmation.</p>
+		</div>
+
+		<div class="grid gap-5 md:grid-cols-3">
+			{#each equipmentStack as tool}
+				<div class="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] shadow-xl shadow-black/20">
+					<div class="bg-white p-4">
+						<img src={tool.image} alt={tool.name} class="h-48 w-full object-contain" loading="lazy" />
+					</div>
+					<div class="p-5">
+						<h3 class="text-xl font-black text-white">{tool.name}</h3>
+						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-yellow-300/80">{tool.role}</p>
+					</div>
+				</div>
+			{/each}
 		</div>
 	</div>
 </section>

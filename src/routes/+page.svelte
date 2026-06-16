@@ -213,9 +213,20 @@
 				</ul>
 			</div>
 			<div>
-				<h4 class="mb-4 text-sm font-bold uppercase tracking-wide text-slate-300">Ready to quote</h4>
-				<p class="mb-4 text-sm leading-6 text-slate-400">Capture product, quantity, timeline, and artwork condition before the first call.</p>
-				<a href="/contact" class="inline-flex rounded-2xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 px-4 py-3 text-sm font-black uppercase tracking-[0.14em] text-[#d8ff3e] transition-colors hover:bg-[#d8ff3e]/20">Start request</a>
+				<h4 class="mb-4 text-sm font-bold uppercase tracking-wide text-slate-300">Social</h4>
+				<div class="flex flex-wrap gap-3">
+					{#each [
+						{ label: 'Facebook', short: 'FB', href: 'https://www.facebook.com/' },
+						{ label: 'Instagram', short: 'IG', href: 'https://www.instagram.com/' },
+						{ label: 'TikTok', short: 'TT', href: 'https://www.tiktok.com/' },
+						{ label: 'YouTube', short: 'YT', href: 'https://www.youtube.com/' }
+					] as social}
+						<a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`${social.label} placeholder link`} class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xs font-black text-cyan-100 transition-colors hover:border-[#d8ff3e]/40 hover:bg-[#d8ff3e]/10 hover:text-[#d8ff3e]">
+							{social.short}
+						</a>
+					{/each}
+				</div>
+				<p class="mt-3 text-xs leading-5 text-slate-500">Placeholder links for launch profiles.</p>
 			</div>
 		</div>
 		<div class="border-t border-white/10 pt-8 text-center text-sm text-slate-500">
