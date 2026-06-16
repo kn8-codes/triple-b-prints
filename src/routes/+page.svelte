@@ -209,22 +209,13 @@
 					<li><a href="/#about" class="transition-colors hover:text-[#d8ff3e]">About</a></li>
 					<li><a href="/equipment" class="transition-colors hover:text-[#d8ff3e]">Equipment</a></li>
 					<li><a href="/turnkey-interview" class="transition-colors hover:text-[#d8ff3e]">Turnkey</a></li>
-					<li><a href="/#contact" class="transition-colors hover:text-[#d8ff3e]">Contact</a></li>
+					<li><a href="/contact" class="transition-colors hover:text-[#d8ff3e]">Contact</a></li>
 				</ul>
 			</div>
 			<div>
-				<h4 class="mb-4 text-sm font-bold uppercase tracking-wide text-slate-300">Follow Us</h4>
-				<div class="flex gap-4">
-					<button type="button" aria-label="Instagram profile coming soon" class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-cyan-200/10">
-						<span class="font-black">IG</span>
-					</button>
-					<button type="button" aria-label="TikTok profile coming soon" class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-cyan-200/10">
-						<span class="font-black">TT</span>
-					</button>
-					<button type="button" aria-label="X / Twitter profile coming soon" class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-cyan-200/10">
-						<span class="font-black">X</span>
-					</button>
-				</div>
+				<h4 class="mb-4 text-sm font-bold uppercase tracking-wide text-slate-300">Ready to quote</h4>
+				<p class="mb-4 text-sm leading-6 text-slate-400">Capture product, quantity, timeline, and artwork condition before the first call.</p>
+				<a href="/contact" class="inline-flex rounded-2xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 px-4 py-3 text-sm font-black uppercase tracking-[0.14em] text-[#d8ff3e] transition-colors hover:bg-[#d8ff3e]/20">Start request</a>
 			</div>
 		</div>
 		<div class="border-t border-white/10 pt-8 text-center text-sm text-slate-500">
