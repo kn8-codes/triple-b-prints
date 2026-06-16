@@ -1,145 +1,137 @@
-<!--
-  About Page — Triple B Prints
-  =============================
-  PURPOSE: Tell the brand story, build trust with potential customers.
-  WHAT'S HERE: Hero section, brand story, team/owner intro, values, CTA.
-  REVERSAL POINT: If client wants different copy or photos, swap the
-  placeholder text/images below. The layout (sections, spacing, responsive
-  grid) should stay stable.
-  a11y: All images have alt text, headings in order, focus rings on links.
--->
-
-<script lang="ts">
-  // No reactive state needed for a static about page.
-  // If we add testimonials or team carousel later, use $state here.
-</script>
-
 <svelte:head>
-  <title>About — Triple B Prints</title>
-  <meta name="description" content="Learn about Triple B Prints, Akron's custom DTG, laser, and print-and-cut shop." />
+	<title>About — Triple B Prints</title>
+	<meta
+		name="description"
+		content="Triple B Prints is an Akron custom print studio for apparel, gifts, small-run merch, and customer-ready proofing."
+	/>
 </svelte:head>
 
-<main class="min-h-screen bg-neutral-900 text-neutral-100">
-  <!-- HERO -->
-  <section class="relative overflow-hidden bg-gradient-to-b from-yellow-500/10 to-neutral-900 py-20 px-6">
-    <div class="mx-auto max-w-4xl text-center">
-      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">
-        About Triple B Prints
-      </h1>
-      <p class="mt-4 text-lg text-neutral-300">
-        <!-- PLACEHOLDER: Replace with actual tagline once client provides it. -->
-        Custom apparel and gifts, printed with precision in Akron, Ohio.
-      </p>
-    </div>
-  </section>
+<main class="min-h-screen bg-[#07090f] text-white">
+	<section class="relative isolate overflow-hidden border-b border-white/10 px-4 py-20 sm:px-6 lg:py-24">
+		<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(120,232,255,0.18),transparent_32%),radial-gradient(circle_at_85%_18%,rgba(216,255,62,0.12),transparent_30%),linear-gradient(135deg,rgba(15,23,42,0.35),#030712)]"></div>
+		<div class="pointer-events-none absolute left-1/2 top-12 hidden -translate-x-1/2 select-none text-[18vw] font-black uppercase leading-none tracking-[-0.12em] text-white/[0.035] lg:block">
+			BBB
+		</div>
 
-  <!-- BRAND STORY -->
-  <section class="mx-auto max-w-5xl px-6 py-16">
-    <div class="grid gap-12 md:grid-cols-2 md:items-center">
-      <!-- PLACEHOLDER IMAGE: Replace src with actual shop/owner photo. -->
-      <img
-        src="/images/about-shop.jpg"
-        alt="Triple B Prints shop interior with DTG printer and laser engraver"
-        class="rounded-2xl border border-neutral-700 shadow-lg"
-        onerror={(event) => {
-          const image = event.currentTarget as HTMLImageElement | null;
-          if (image) image.style.display = 'none';
-        }}
-      />
-      <div>
-        <h2 class="text-2xl font-bold text-yellow-400">Our Story</h2>
-        <p class="mt-4 text-neutral-300 leading-relaxed">
-          <!-- PLACEHOLDER: Replace with real origin story once client shares it. -->
-          Triple B Prints started with a simple idea: make custom printing accessible,
-          fast, and high-quality. What began as a side project grew into a full-service
-          shop serving Akron and beyond with DTG printing, laser engraving, and
-          print-and-cut solutions.
-        </p>
-        <p class="mt-4 text-neutral-300 leading-relaxed">
-          <!-- PLACEHOLDER: Add milestones, years in business, notable clients. -->
-          Today we handle everything from single custom shirts to bulk orders for
-          teams, events, and businesses. No minimums, no setup fees for standard
-          jobs — just honest pricing and fast turnaround.
-        </p>
-      </div>
-    </div>
-  </section>
+		<div class="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+			<div>
+				<p class="mb-4 text-sm font-black uppercase tracking-[0.32em] text-cyan-100">Akron print studio</p>
+				<h1 class="text-5xl font-black uppercase leading-[0.9] tracking-[-0.015em] [word-spacing:0.08em] text-white sm:text-7xl">
+					Built for custom work that needs to look right.
+				</h1>
+				<p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
+					Triple B Prints helps customers move from a rough idea or uploaded artwork to a clean proof, clear product choices, and a job the shop can actually produce.
+				</p>
+				<div class="mt-8 flex flex-wrap gap-4">
+					<a
+						href="/shop/t-shirt"
+						class="tap-target inline-flex items-center justify-center rounded-2xl bg-[#d8ff3e] px-7 py-4 font-black uppercase tracking-[0.16em] text-slate-950 shadow-lg shadow-lime-950/30 transition-all hover:scale-[1.02] hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]"
+					>
+						Start a Product
+					</a>
+					<a
+						href="/contact"
+						class="tap-target inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-7 py-4 font-black uppercase tracking-[0.16em] text-white transition-all hover:border-cyan-200/60 hover:bg-cyan-200/10 hover:text-cyan-100"
+					>
+						Request Quote
+					</a>
+				</div>
+			</div>
 
-  <!-- VALUES / WHAT SETS US APART -->
-  <section class="bg-neutral-800 py-16 px-6">
-    <div class="mx-auto max-w-5xl">
-      <h2 class="text-center text-2xl font-bold text-yellow-400">Why Choose Us</h2>
-      <!--
-        PLACEHOLDER: These 3 value props are generic.
-        Replace with client's actual differentiators once known.
-      -->
-      <div class="mt-10 grid gap-8 sm:grid-cols-3">
-        <div class="rounded-xl border border-neutral-700 bg-neutral-900 p-6 text-center">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/20 text-yellow-400 text-xl font-bold">1</div>
-          <h3 class="mt-4 font-semibold">No Minimums</h3>
-          <p class="mt-2 text-sm text-neutral-400">
-            Order one shirt or one hundred. We treat every job with the same care.
-          </p>
-        </div>
-        <div class="rounded-xl border border-neutral-700 bg-neutral-900 p-6 text-center">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/20 text-yellow-400 text-xl font-bold">2</div>
-          <h3 class="mt-4 font-semibold">Fast Turnaround</h3>
-          <p class="mt-2 text-sm text-neutral-400">
-            Most orders ready within 3–5 business days. Rush options available.
-          </p>
-        </div>
-        <div class="rounded-xl border border-neutral-700 bg-neutral-900 p-6 text-center">
-          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/20 text-yellow-400 text-xl font-bold">3</div>
-          <h3 class="mt-4 font-semibold">Local & Personal</h3>
-          <p class="mt-2 text-sm text-neutral-400">
-            Akron-based, owner-operated. Talk to a human, not a ticket system.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+			<div class="rounded-[2rem] border border-white/10 bg-white/[0.05] p-4 shadow-2xl shadow-cyan-950/40 backdrop-blur-xl">
+				<div class="relative overflow-hidden rounded-[1.5rem] border border-cyan-200/15 bg-[radial-gradient(circle_at_50%_0%,rgba(120,232,255,0.22),transparent_38%),linear-gradient(180deg,#111827,#030712)] p-6 sm:p-8">
+					<div class="absolute inset-x-8 top-8 h-px bg-cyan-200/25"></div>
+					<div class="absolute inset-y-8 left-8 w-px bg-cyan-200/20"></div>
+					<div class="absolute inset-y-8 right-8 w-px bg-cyan-200/20"></div>
+					<div class="absolute bottom-8 left-8 right-8 h-px bg-cyan-200/20"></div>
+					<div class="relative mx-auto flex aspect-[4/3] max-w-lg flex-col items-center justify-center rounded-[2rem] border border-dashed border-cyan-200/35 bg-black/25 text-center shadow-[0_0_60px_rgba(34,211,238,0.12)]">
+						<p class="text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Print Studio</p>
+						<p class="mt-4 text-[6rem] font-black leading-none tracking-[-0.14em] text-white sm:text-[8rem]">BBB</p>
+						<p class="mt-4 max-w-xs text-sm font-bold uppercase tracking-[0.18em] text-[#d8ff3e]">Akron, Ohio</p>
+					</div>
+					<div class="mt-6 grid grid-cols-3 gap-3 text-center text-xs font-black uppercase tracking-[0.14em] text-slate-300">
+						<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Proof first</div>
+						<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Small runs</div>
+						<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">Custom art</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-  <!-- EQUIPMENT / CAPABILITIES -->
-  <section class="mx-auto max-w-5xl px-6 py-16">
-    <h2 class="text-2xl font-bold text-yellow-400">What We Can Do</h2>
-    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-      <!-- PLACEHOLDER: Expand or reorder based on actual equipment list. -->
-      <li class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400" aria-hidden="true"></span>
-        <span>Direct-to-garment (DTG) printing on cotton and cotton-blend apparel</span>
-      </li>
-      <li class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400" aria-hidden="true"></span>
-        <span>Laser engraving on wood, metal, glass, leather, and acrylic</span>
-      </li>
-      <li class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400" aria-hidden="true"></span>
-        <span>Print-and-cut (PNC) vinyl for stickers, decals, and heat transfers</span>
-      </li>
-      <li class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400" aria-hidden="true"></span>
-        <span>Custom tumblers, mugs, keychains, coasters, and home decor</span>
-      </li>
-      <li class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400" aria-hidden="true"></span>
-        <span>Bulk orders for events, teams, and corporate gifting</span>
-      </li>
-      <li class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400" aria-hidden="true"></span>
-        <span>Turnkey business packages: equipment, training, and support</span>
-      </li>
-    </ul>
-  </section>
+	<section class="border-b border-white/10 px-4 py-20 sm:px-6">
+		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+			<div>
+				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">How the shop works</p>
+				<h2 class="text-4xl font-black uppercase tracking-[-0.015em] [word-spacing:0.06em] text-white md:text-6xl">Clear jobs beat guesswork.</h2>
+			</div>
+			<div class="grid gap-5 sm:grid-cols-3">
+				<div class="rounded-[1.5rem] border border-white/10 bg-white/[0.05] p-6">
+					<p class="text-3xl font-black text-[#d8ff3e]">01</p>
+					<h3 class="mt-4 text-lg font-black uppercase text-white">Choose the product</h3>
+					<p class="mt-3 text-sm leading-6 text-slate-400">Start from shirts, hoodies, mugs, hats, keychains, cases, coasters, shorts, or joggers.</p>
+				</div>
+				<div class="rounded-[1.5rem] border border-white/10 bg-white/[0.05] p-6">
+					<p class="text-3xl font-black text-[#d8ff3e]">02</p>
+					<h3 class="mt-4 text-lg font-black uppercase text-white">Preview the artwork</h3>
+					<p class="mt-3 text-sm leading-6 text-slate-400">Upload art, check placement, and catch obvious quality issues before the order moves forward.</p>
+				</div>
+				<div class="rounded-[1.5rem] border border-white/10 bg-white/[0.05] p-6">
+					<p class="text-3xl font-black text-[#d8ff3e]">03</p>
+					<h3 class="mt-4 text-lg font-black uppercase text-white">Send a clean request</h3>
+					<p class="mt-3 text-sm leading-6 text-slate-400">The shop gets product, quantity, timeline, notes, and proof context without a long back-and-forth.</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-  <!-- CTA -->
-  <section class="bg-yellow-500 py-16 px-6 text-center text-neutral-900">
-    <h2 class="text-2xl font-bold">Ready to print something?</h2>
-    <p class="mt-2">Browse products, upload your artwork, and check out in minutes.</p>
-    <a
-      href="/shop/t-shirt"
-      class="mt-6 inline-block rounded-lg bg-neutral-900 px-8 py-3 font-semibold text-yellow-400 hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2 focus:ring-offset-yellow-500"
-    >
-      Start Designing
-    </a>
-  </section>
+	<section class="px-4 py-20 sm:px-6">
+		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center">
+			<div class="rounded-[2rem] border border-white/10 bg-white/[0.05] p-6 shadow-xl shadow-black/20">
+				<div class="grid gap-4 sm:grid-cols-2">
+					{#each [
+						'DTG apparel printing',
+						'Laser engraving',
+						'Print-and-cut vinyl',
+						'Custom drinkware',
+						'Event and team runs',
+						'Turnkey business packages'
+					] as capability}
+						<div class="rounded-2xl border border-white/10 bg-black/25 p-5">
+							<span class="mb-4 inline-block h-2 w-2 rounded-full bg-[#d8ff3e]"></span>
+							<p class="font-bold text-slate-200">{capability}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div>
+				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Capabilities</p>
+				<h2 class="text-4xl font-black uppercase tracking-[-0.015em] [word-spacing:0.06em] text-white md:text-6xl">From one-off gifts to team runs.</h2>
+				<p class="mt-6 text-lg leading-8 text-slate-300">
+					The site supports both quick customer orders and more involved quote requests. The path stays simple: choose the product, review the proof, send the job details, and move toward production.
+				</p>
+				<a
+					href="/equipment"
+					class="mt-8 inline-flex rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10"
+				>
+					View capabilities →
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="border-t border-white/10 bg-[#d8ff3e] px-4 py-16 text-center text-slate-950 sm:px-6">
+		<h2 class="text-3xl font-black uppercase tracking-[-0.015em] [word-spacing:0.06em] sm:text-5xl">Ready to print something?</h2>
+		<p class="mx-auto mt-3 max-w-2xl text-base font-semibold text-slate-800 sm:text-lg">
+			Pick a product, upload artwork, or send the shop the job details for a clean quote.
+		</p>
+		<div class="mt-8 flex flex-wrap justify-center gap-4">
+			<a href="/shop/t-shirt" class="tap-target rounded-2xl bg-slate-950 px-7 py-4 font-black uppercase tracking-[0.16em] text-[#d8ff3e] hover:bg-slate-800">
+				Start Designing
+			</a>
+			<a href="/contact" class="tap-target rounded-2xl border border-slate-950/20 bg-white/30 px-7 py-4 font-black uppercase tracking-[0.16em] text-slate-950 hover:bg-white/50">
+				Request a Quote
+			</a>
+		</div>
+	</section>
 </main>

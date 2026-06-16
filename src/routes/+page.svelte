@@ -27,12 +27,6 @@
 	});
 </script>
 
-<!--
-  HOMEPAGE — Triple B Prints
-  Current direction: immersive black Print Studio treatment. Keep the mobile
-  responsiveness discipline from the prior audit; do not reintroduce white
-  template sections unless they are a deliberate catalog contrast choice.
--->
 <section class="relative isolate overflow-hidden bg-[#07090f] text-white">
 	<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_16%,rgba(62,230,255,0.22),transparent_32%),radial-gradient(circle_at_86%_10%,rgba(216,255,62,0.14),transparent_30%),linear-gradient(135deg,rgba(15,23,42,0.18),rgba(3,7,18,1))]"></div>
 	<div class="pointer-events-none absolute left-1/2 top-10 hidden -translate-x-1/2 select-none text-[18vw] font-black uppercase leading-none tracking-[-0.12em] text-white/[0.035] lg:block">
@@ -148,12 +142,12 @@
 		<div class="grid gap-8 md:grid-cols-2 md:items-center lg:gap-14">
 			<div>
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Shop posture</p>
-				<h2 class="mb-6 text-4xl font-black uppercase tracking-[-0.05em] text-white md:text-6xl">Small shop. Sharp output.</h2>
+				<h2 class="mb-6 text-4xl font-black uppercase tracking-[-0.05em] text-white md:text-6xl">Small shop. Sharp prints.</h2>
 				<p class="mb-6 text-lg leading-8 text-slate-300">
-					Triple B is being shaped around fast custom work, clean previews, and a checkout flow that helps customers send usable artwork instead of guessing what the shop needs.
+					Triple B helps customers turn rough artwork and product ideas into clean previews, clear options, and print-ready requests.
 				</p>
 				<p class="mb-8 text-lg leading-8 text-slate-300">
-					The site should feel like a print room: dark, focused, practical, and built around getting the job onto the press.
+					The experience is built to feel like a working print room: dark, focused, practical, and aimed at getting the job onto the press.
 				</p>
 				<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5">
@@ -165,8 +159,8 @@
 						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Size and position</p>
 					</div>
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5 col-span-2 sm:col-span-1">
-						<p class="text-3xl font-black text-[#d8ff3e]">Checkout</p>
-						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Stripe handoff</p>
+						<p class="text-3xl font-black text-[#d8ff3e]">Send</p>
+						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Quote or checkout</p>
 					</div>
 				</div>
 			</div>
@@ -221,12 +215,12 @@
 						{ label: 'TikTok', short: 'TT', href: 'https://www.tiktok.com/' },
 						{ label: 'YouTube', short: 'YT', href: 'https://www.youtube.com/' }
 					] as social}
-						<a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`${social.label} placeholder link`} class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xs font-black text-cyan-100 transition-colors hover:border-[#d8ff3e]/40 hover:bg-[#d8ff3e]/10 hover:text-[#d8ff3e]">
+						<a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`${social.label} profile`} class="tap-target flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xs font-black text-cyan-100 transition-colors hover:border-[#d8ff3e]/40 hover:bg-[#d8ff3e]/10 hover:text-[#d8ff3e]">
 							{social.short}
 						</a>
 					{/each}
 				</div>
-				<p class="mt-3 text-xs leading-5 text-slate-500">Placeholder links for launch profiles.</p>
+				<p class="mt-3 text-xs leading-5 text-slate-500">Follow the shop online as new product runs go live.</p>
 			</div>
 		</div>
 		<div class="border-t border-white/10 pt-8 text-center text-sm text-slate-500">
