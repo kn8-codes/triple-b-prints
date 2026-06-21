@@ -10,28 +10,53 @@
 	let timeline = $state('');
 	let artworkStatus = $state('');
 	let notes = $state('');
-	let submitted = $state(false);
+	const requestEmail = 'triplebp330@gmail.com';
 
-	let requestSummary = $derived(
+	let submitted = $state(false);
+	let copyStatus = $state('');
+
+	let emailSubject = $derived(`Print request — ${product || 'custom project'} — ${name || 'new customer'}`);
+
+	let emailBody = $derived(
 		[
+			'Hi Triple B Prints,',
+			'',
+			'I’d like to start a print request. Here are the details:',
+			'',
+			'CUSTOMER',
 			`Name: ${name || '—'}`,
 			`Email: ${email || '—'}`,
-			`Phone: ${phone || '—'}`,
+			`Phone/text: ${phone || '—'}`,
+			'',
+			'JOB DETAILS',
 			`Product: ${product || '—'}`,
-			`Quantity: ${quantity || '—'}`,
+			`Quantity/run size: ${quantity || '—'}`,
 			`Timeline: ${timeline || '—'}`,
-			`Artwork: ${artworkStatus || '—'}`,
-			`Notes: ${notes || '—'}`
+			`Artwork status: ${artworkStatus || '—'}`,
+			'',
+			'NOTES',
+			notes || '—',
+			'',
+			'Please review the artwork needs, placement, and pricing before production.',
+			'',
+			'Thank you.'
 		].join('\n')
+	);
+
+	let emailTemplate = $derived(`To: ${requestEmail}\nSubject: ${emailSubject}\n\n${emailBody}`);
+	let emailDraftHref = $derived(
+		`mailto:${requestEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`
 	);
 
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
 		submitted = true;
+		copyStatus = '';
 	}
 
-	async function copySummary() {
-		await navigator.clipboard.writeText(requestSummary);
+	async function copyEmailTemplate() {
+		await navigator.clipboard.writeText(emailTemplate);
+		copyStatus = 'Email template copied. Paste it into Gmail, text, or your preferred email app.';
 	}
 </script>
 
@@ -120,7 +145,7 @@
 			</label>
 
 			<button type="submit" class="mt-7 w-full rounded-2xl bg-[#d8ff3e] px-6 py-4 font-black uppercase tracking-[0.16em] text-slate-950 transition hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]">
-				Preview request summary
+				Preview email template
 			</button>
 		</form>
 
@@ -135,17 +160,33 @@
 			</div>
 
 			<div class="rounded-[2rem] border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 p-6">
-				<p class="text-sm font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Next step</p>
-				<p class="mt-4 text-slate-200">Choose where new requests should land first: email/text, a simple shop queue, or both.</p>
+				<p class="text-sm font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Email handoff</p>
+				<p class="mt-4 text-slate-200">For now, this page opens a prefilled email draft to Triple B and keeps a copy fallback. A real submit endpoint can come next.</p>
 			</div>
 
 			{#if submitted}
 				<div class="rounded-[2rem] border border-cyan-200/25 bg-cyan-200/10 p-6" aria-live="polite">
-					<p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-100">Request summary</p>
-					<pre class="mt-4 whitespace-pre-wrap rounded-2xl bg-black/35 p-4 text-sm text-slate-200">{requestSummary}</pre>
-					<button type="button" onclick={copySummary} class="mt-4 rounded-2xl border border-cyan-200/30 bg-cyan-200/10 px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-cyan-100 hover:bg-cyan-200/20">
-						Copy summary
-					</button>
+					<p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-100">Email template</p>
+					<p class="mt-3 text-sm leading-6 text-slate-300">Open the prefilled email draft, or copy the structured request and paste it into Gmail/text manually. The form is not sending automatically yet.</p>
+					<div class="mt-4 rounded-2xl border border-white/10 bg-black/35 p-4">
+						<p class="text-xs font-black uppercase tracking-[0.18em] text-[#d8ff3e]">To</p>
+						<p class="mt-2 text-sm font-bold text-white">{requestEmail}</p>
+						<p class="mt-5 text-xs font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Subject</p>
+						<p class="mt-2 text-sm font-bold text-white">{emailSubject}</p>
+						<p class="mt-5 text-xs font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Body</p>
+						<pre class="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-200">{emailBody}</pre>
+					</div>
+					<div class="mt-4 flex flex-wrap gap-3">
+						<a href={emailDraftHref} class="rounded-2xl bg-[#d8ff3e] px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-slate-950 hover:bg-yellow-200">
+							Open email draft
+						</a>
+						<button type="button" onclick={copyEmailTemplate} class="rounded-2xl border border-cyan-200/30 bg-cyan-200/10 px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-cyan-100 hover:bg-cyan-200/20">
+							Copy email template
+						</button>
+					</div>
+					{#if copyStatus}
+						<p class="mt-3 text-sm font-bold text-[#d8ff3e]">{copyStatus}</p>
+					{/if}
 				</div>
 			{/if}
 		</aside>
