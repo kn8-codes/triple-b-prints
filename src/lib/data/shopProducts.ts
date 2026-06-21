@@ -4,6 +4,17 @@ export type SwatchOption = {
 	hex?: string;
 };
 
+export type ProductColorConfig = {
+	enabled: boolean;
+	mode: 'garment-mask' | 'preset-image' | 'none';
+	previewShape: 't-shirt' | 'hoodie';
+	baseImage: string;
+	maskImage?: string;
+	defaultColor: string;
+	allowCustom: boolean;
+	disclaimer: string;
+};
+
 export type OptionGroup = {
 	id: string;
 	label: string;
@@ -28,6 +39,7 @@ export type ProductConfig = {
 		pricePerStep: number;
 		label?: string;
 	};
+	colorConfig?: ProductColorConfig;
 	optionGroups: OptionGroup[];
 };
 
@@ -45,12 +57,21 @@ export const shopProducts: Record<string, ProductConfig> = {
 		artworkPosition: { x: 50, y: 40 },
 		artworkMaxScale: 2,
 		artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
+		colorConfig: {
+			enabled: true,
+			mode: 'garment-mask',
+			previewShape: 't-shirt',
+			baseImage: '/products/t-shirt-white-front.jpg',
+			defaultColor: '#111111',
+			allowCustom: true,
+			disclaimer: 'Custom color preview only. Final garment color availability and closest match will be confirmed by Triple B Prints before production.'
+		},
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the shirt size.', render: 'pill', options: [
 				{ label: 'S', priceMod: 0 }, { label: 'M', priceMod: 0 }, { label: 'L', priceMod: 0 }, { label: 'XL', priceMod: 2 }, { label: '2XL', priceMod: 4 }
 			]},
-			{ id: 'color', label: 'Color', helperText: 'Choose the garment color.', render: 'swatch', options: [
-				{ label: 'Black', priceMod: 0, hex: '#1a1a1a' }, { label: 'White', priceMod: 0, hex: '#f5f5f5' }, { label: 'Navy', priceMod: 0, hex: '#1e3a5f' }, { label: 'Red', priceMod: 0, hex: '#cc0000' }
+			{ id: 'color', label: 'Color', helperText: 'Choose a common shirt color or use a custom preview color.', render: 'swatch', options: [
+				{ label: 'Black', priceMod: 0, hex: '#111111' }, { label: 'White', priceMod: 0, hex: '#ffffff' }, { label: 'Heather Gray', priceMod: 0, hex: '#8a8d8f' }, { label: 'Navy', priceMod: 0, hex: '#1f2a44' }, { label: 'Royal Blue', priceMod: 0, hex: '#1e5aa8' }, { label: 'Red', priceMod: 0, hex: '#b21f2d' }, { label: 'Forest Green', priceMod: 0, hex: '#1f4d3a' }, { label: 'Safety Orange', priceMod: 0, hex: '#f36c21' }
 			]}
 		]
 	},
@@ -59,12 +80,21 @@ export const shopProducts: Record<string, ProductConfig> = {
 		description: 'Heavyweight cotton-blend hoodie with your custom artwork. Front print, back print, or both.',
 		image: '/products/hoodie-black-front.jpg', imageAlt: 'Realistic black custom hoodie mockup with blank printable front artwork area',
 		previewEmptyText: 'Upload artwork to see your hoodie preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 2, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
+		colorConfig: {
+			enabled: true,
+			mode: 'garment-mask',
+			previewShape: 'hoodie',
+			baseImage: '/products/hoodie-black-front.jpg',
+			defaultColor: '#111111',
+			allowCustom: true,
+			disclaimer: 'Custom color preview only. Final hoodie availability and closest match will be confirmed by Triple B Prints before production.'
+		},
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the hoodie size.', render: 'pill', options: [
 				{ label: 'S', priceMod: 0 }, { label: 'M', priceMod: 0 }, { label: 'L', priceMod: 0 }, { label: 'XL', priceMod: 2 }, { label: '2XL', priceMod: 4 }, { label: '3XL', priceMod: 6 }
 			]},
-			{ id: 'color', label: 'Color', helperText: 'Choose the hoodie color.', render: 'swatch', options: [
-				{ label: 'Black', priceMod: 0, hex: '#1a1a1a' }, { label: 'Navy', priceMod: 0, hex: '#1e3a5f' }, { label: 'Heather Grey', priceMod: 0, hex: '#8b8b8b' }, { label: 'Forest Green', priceMod: 0, hex: '#1b4d3e' }, { label: 'Maroon', priceMod: 0, hex: '#6b1c23' }
+			{ id: 'color', label: 'Color', helperText: 'Choose a common hoodie color or use a custom preview color.', render: 'swatch', options: [
+				{ label: 'Black', priceMod: 0, hex: '#111111' }, { label: 'Charcoal', priceMod: 0, hex: '#3a3a3a' }, { label: 'Heather Gray', priceMod: 0, hex: '#8a8d8f' }, { label: 'Navy', priceMod: 0, hex: '#1f2a44' }, { label: 'Royal Blue', priceMod: 0, hex: '#1e5aa8' }, { label: 'Maroon', priceMod: 0, hex: '#6e2639' }, { label: 'Forest Green', priceMod: 0, hex: '#1f4d3a' }, { label: 'Sand/Tan', priceMod: 0, hex: '#c8b28a' }
 			]},
 			{ id: 'print-location', label: 'Print Location', helperText: 'Choose where the artwork should be printed.', render: 'pill', options: [
 				{ label: 'Front Only', priceMod: 0 }, { label: 'Back Only', priceMod: 0 }, { label: 'Front + Back', priceMod: 8 }
