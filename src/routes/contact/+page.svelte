@@ -50,13 +50,13 @@
 					Start a print request without the phone-tag mess.
 				</h1>
 				<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-					Capture the product, quantity, deadline, and artwork condition up front so Triple B can quote faster and avoid bad-file surprises.
+					Capture the product, quantity, deadline, and artwork condition up front so Triple B can quote faster, review rough files honestly, and avoid production surprises.
 				</p>
 			</div>
 			<div class="rounded-[2rem] border border-cyan-200/20 bg-white/[0.05] p-6 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl">
 				<p class="text-sm font-black uppercase tracking-[0.2em] text-[#d8ff3e]">Clean request path</p>
 				<p class="mt-3 text-slate-300">
-					This request path gathers the job details first so the shop can follow up with a cleaner quote and fewer back-and-forth messages.
+					This request path gathers the job details first so the shop can follow up with a cleaner quote, artwork review, and fewer back-and-forth messages.
 				</p>
 			</div>
 		</div>
@@ -105,7 +105,7 @@
 			<fieldset class="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
 				<legend class="px-2 text-sm font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Artwork status</legend>
 				<div class="mt-3 grid gap-3 sm:grid-cols-3">
-					{#each ['Ready to upload', 'Needs cleanup', 'Need design help'] as option}
+					{#each ['Ready to upload', 'Needs cleanup', 'Need art/design help'] as option}
 						<label class="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 hover:border-cyan-200/40">
 							<input bind:group={artworkStatus} type="radio" value={option} required />
 							{option}
@@ -128,7 +128,7 @@
 			<div class="rounded-[2rem] border border-white/10 bg-white/[0.045] p-6">
 				<p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-100">Why this matters</p>
 				<ul class="mt-5 space-y-4 text-slate-300">
-					<li><strong class="text-white">Artwork clarity:</strong> flags whether the customer has clean art or needs rebuild help.</li>
+					<li><strong class="text-white">Artwork clarity:</strong> flags whether the customer has clean art, rough art, or needs rebuild help.</li>
 					<li><strong class="text-white">Quote speed:</strong> quantity, product, and deadline are captured before the first call.</li>
 					<li><strong class="text-white">Growth path:</strong> the same intake can later write to email, a shop queue, spreadsheet, or quote flow.</li>
 				</ul>

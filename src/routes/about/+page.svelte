@@ -95,7 +95,7 @@
 						'Print-and-cut vinyl',
 						'Custom drinkware',
 						'Event and team runs',
-						'Turnkey business packages'
+						'Business merch and uniforms'
 					] as capability}
 						<div class="rounded-2xl border border-white/10 bg-black/25 p-5">
 							<span class="mb-4 inline-block h-2 w-2 rounded-full bg-[#d8ff3e]"></span>
@@ -108,14 +108,8 @@
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Capabilities</p>
 				<h2 class="text-4xl font-black uppercase tracking-[-0.015em] [word-spacing:0.06em] text-white md:text-6xl">From one-off gifts to team runs.</h2>
 				<p class="mt-6 text-lg leading-8 text-slate-300">
-					The site supports both quick customer orders and more involved quote requests. The path stays simple: choose the product, review the proof, send the job details, and move toward production.
+					The site supports both quick product previews and more involved quote requests. The path stays simple: choose the product, review the proof, send the job details, and let the shop confirm artwork, placement, and pricing before production.
 				</p>
-				<a
-					href="/equipment"
-					class="mt-8 inline-flex rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10"
-				>
-					View capabilities →
-				</a>
 			</div>
 		</div>
 	</section>

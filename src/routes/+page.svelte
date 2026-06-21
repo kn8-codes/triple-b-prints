@@ -49,7 +49,7 @@
 							<p class="mt-4 max-w-xs text-sm font-bold uppercase leading-6 tracking-[0.18em] text-[#d8ff3e]">
 								Upload art.<br />
 								Place it.<br />
-								Checkout.
+								Review.
 							</p>
 						</div>
 
@@ -79,7 +79,7 @@
 					</span>
 				</h1>
 				<p class="mx-auto mt-7 max-w-xl text-lg leading-8 text-slate-300 lg:mx-0">
-					T-shirts, hoodies, mugs, keychains, and small-run merch with a configurator that lets customers see the job before checkout.
+					Custom merch that makes your business look like a business. Bring the rough idea, logo, screenshot, or finished file — Triple B helps turn it into a clean preview before production.
 				</p>
 				<div class="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
 					<a
@@ -95,11 +95,6 @@
 						Browse Products
 					</a>
 				</div>
-				<div class="mt-8 flex w-full max-w-full flex-col items-start gap-2 rounded-2xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 px-4 py-3 text-left sm:inline-flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-					<span class="text-sm font-black uppercase tracking-wide text-[#d8ff3e]">SAVEBUCK$</span>
-					<span class="min-w-0 text-sm leading-6 text-slate-300">Monthly promo code active — bulk deals & flash sales</span>
-					<a href="/promo/savebucks" class="text-sm font-bold text-[#d8ff3e] hover:underline">Shop Deals →</a>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -112,7 +107,7 @@
 			<div>
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Product line</p>
 				<h2 class="text-[2.55rem] font-black uppercase leading-none tracking-[-0.04em] text-white min-[430px]:text-4xl md:text-6xl">Featured <span class="block sm:inline">Products</span></h2>
-				<p class="mt-3 max-w-2xl text-lg text-slate-400">Start with a product, upload the art, and let the configurator keep the job honest.</p>
+				<p class="mt-3 max-w-2xl text-lg text-slate-400">Start with a product, upload what you have, and use the preview to make the quote conversation cleaner.</p>
 			</div>
 			<a href="/shop/hoodie" class="hidden rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10 md:inline-flex">Start with hoodie →</a>
 		</div>
@@ -158,10 +153,10 @@
 				<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Shop posture</p>
 				<h2 class="mb-6 text-4xl font-black uppercase tracking-[-0.05em] text-white md:text-6xl">Small shop. Sharp prints.</h2>
 				<p class="mb-6 text-lg leading-8 text-slate-300">
-					Triple B helps customers turn rough artwork and product ideas into clean previews, clear options, and print-ready requests.
+					Triple B helps businesses, teams, families, and event organizers turn rough artwork and product ideas into clean previews, clear options, and print-ready requests.
 				</p>
 				<p class="mb-8 text-lg leading-8 text-slate-300">
-					The experience is built to feel like a working print room: dark, focused, practical, and aimed at getting the job onto the press.
+					The goal is satisfaction all the way around: clear communication, time taken with your idea, and custom merch that looks sharp enough to advertise.
 				</p>
 				<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5">
@@ -185,7 +180,7 @@
 					<div class="grid gap-3 text-sm font-black uppercase tracking-[0.14em] text-slate-300 sm:grid-cols-3">
 						<span class="rounded-2xl border border-white/10 bg-black/25 px-3 py-4">Upload</span>
 						<span class="rounded-2xl border border-white/10 bg-black/25 px-3 py-4">Place</span>
-						<span class="rounded-2xl border border-white/10 bg-black/25 px-3 py-4">Checkout</span>
+						<span class="rounded-2xl border border-white/10 bg-black/25 px-3 py-4">Review</span>
 					</div>
 				</div>
 			</div>
@@ -199,7 +194,7 @@
 			<div>
 				<h3 class="mb-4 text-2xl font-black uppercase tracking-[-0.03em]">Triple B Prints</h3>
 				<p class="leading-relaxed text-slate-400">
-					Bold custom merch with a live configurator built to get clean artwork, clear options, and checkout-ready orders into the shop.
+					Bold custom merch with a preview-ready quote flow built to get clean artwork, clear options, and reviewable requests into the shop.
 				</p>
 			</div>
 			<div>
@@ -208,14 +203,12 @@
 					<li><a href="/shop/t-shirt" class="transition-colors hover:text-[#d8ff3e]">T-Shirts</a></li>
 					<li><a href="/shop/mug" class="transition-colors hover:text-[#d8ff3e]">Mugs</a></li>
 					<li><a href="/shop/keychain" class="transition-colors hover:text-[#d8ff3e]">Keychains</a></li>
-					<li><a href="/promo/savebucks" class="transition-colors hover:text-[#d8ff3e]">Promos</a></li>
 				</ul>
 			</div>
 			<div>
 				<h4 class="mb-4 text-sm font-bold uppercase tracking-wide text-slate-300">Company</h4>
 				<ul class="space-y-2 text-slate-400">
 					<li><a href="/#about" class="transition-colors hover:text-[#d8ff3e]">About</a></li>
-					<li><a href="/equipment" class="transition-colors hover:text-[#d8ff3e]">Equipment</a></li>
 					<li><a href="/contact" class="transition-colors hover:text-[#d8ff3e]">Contact</a></li>
 				</ul>
 			</div>

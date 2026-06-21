@@ -22,6 +22,12 @@ export type ProductConfig = {
 	previewEmptyText: string;
 	artworkPosition: { x: number; y: number };
 	artworkMaxScale?: number;
+	artworkPricing?: {
+		includedScale: number;
+		step: number;
+		pricePerStep: number;
+		label?: string;
+	};
 	optionGroups: OptionGroup[];
 };
 
@@ -38,6 +44,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		previewEmptyText: 'Upload artwork to see your t-shirt preview.',
 		artworkPosition: { x: 50, y: 40 },
 		artworkMaxScale: 2,
+		artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the shirt size.', render: 'pill', options: [
 				{ label: 'S', priceMod: 0 }, { label: 'M', priceMod: 0 }, { label: 'L', priceMod: 0 }, { label: 'XL', priceMod: 2 }, { label: '2XL', priceMod: 4 }
@@ -51,7 +58,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'hoodie', name: 'Custom Hoodie', basePrice: 45,
 		description: 'Heavyweight cotton-blend hoodie with your custom artwork. Front print, back print, or both.',
 		image: '/products/hoodie-black-front.jpg', imageAlt: 'Realistic black custom hoodie mockup with blank printable front artwork area',
-		previewEmptyText: 'Upload artwork to see your hoodie preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 2,
+		previewEmptyText: 'Upload artwork to see your hoodie preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 2, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the hoodie size.', render: 'pill', options: [
 				{ label: 'S', priceMod: 0 }, { label: 'M', priceMod: 0 }, { label: 'L', priceMod: 0 }, { label: 'XL', priceMod: 2 }, { label: '2XL', priceMod: 4 }, { label: '3XL', priceMod: 6 }
@@ -68,7 +75,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'mug', name: 'Custom Mug', basePrice: 14,
 		description: '11oz ceramic mug with your custom artwork. Dishwasher safe, vivid print quality.',
 		image: '/products/mug-white-front.jpg', imageAlt: 'Realistic white ceramic mug mockup with blank printable front artwork area',
-		previewEmptyText: 'Upload artwork to see your mug preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 2,
+		previewEmptyText: 'Upload artwork to see your mug preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 2, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the mug size.', render: 'pill', options: [
 				{ label: '11 oz', priceMod: 0 }, { label: '15 oz', priceMod: 3 }
@@ -82,7 +89,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'hat', name: 'Custom Hat', basePrice: 22,
 		description: 'Structured cap with clean embroidery-style placement for your logo or art.',
 		image: '/products/hat-black-front.jpg', imageAlt: 'Realistic black custom hat mockup with blank printable front panel',
-		previewEmptyText: 'Upload artwork to see your hat preview.', artworkPosition: { x: 50, y: 48 }, artworkMaxScale: 1.6,
+		previewEmptyText: 'Upload artwork to see your hat preview.', artworkPosition: { x: 50, y: 48 }, artworkMaxScale: 1.6, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Style', helperText: 'Choose the hat style.', render: 'pill', options: [
 				{ label: 'Dad Hat', priceMod: 0 }, { label: 'Snapback', priceMod: 2 }, { label: 'Trucker', priceMod: 1 }
@@ -96,7 +103,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'keychain', name: 'Custom Keychain', basePrice: 8,
 		description: 'Small, durable, and perfect for logos, mascots, and quick gift runs.',
 		image: '/products/keychain-clear-front.jpg', imageAlt: 'Realistic clear acrylic custom keychain mockup with blank printable front area',
-		previewEmptyText: 'Upload artwork to see your keychain preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5,
+		previewEmptyText: 'Upload artwork to see your keychain preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Material', helperText: 'Choose the keychain material.', render: 'pill', options: [
 				{ label: 'Acrylic', priceMod: 0 }, { label: 'Wood', priceMod: 2 }, { label: 'Metal', priceMod: 4 }
@@ -110,7 +117,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'phone-case', name: 'Custom Phone Case', basePrice: 20,
 		description: 'Protective case with full-color custom artwork for everyday carry.',
 		image: '/products/phone-case-black-front.jpg', imageAlt: 'Realistic black custom phone case mockup with blank printable back surface',
-		previewEmptyText: 'Upload artwork to see your phone case preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.7,
+		previewEmptyText: 'Upload artwork to see your phone case preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.7, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Phone Model', helperText: 'Choose the phone model.', render: 'pill', options: [
 				{ label: 'iPhone 15', priceMod: 0 }, { label: 'iPhone 15 Pro', priceMod: 2 }, { label: 'Galaxy S24', priceMod: 1 }
@@ -124,7 +131,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'coaster', name: 'Custom Coaster', basePrice: 12,
 		description: 'Sturdy custom coasters that make logos and artwork pop on every table.',
 		image: '/products/coaster-white-front.jpg', imageAlt: 'Realistic white custom coaster mockup with blank printable top surface',
-		previewEmptyText: 'Upload artwork to see your coaster preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5,
+		previewEmptyText: 'Upload artwork to see your coaster preview.', artworkPosition: { x: 50, y: 50 }, artworkMaxScale: 1.5, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Shape', helperText: 'Choose the coaster shape.', render: 'pill', options: [
 				{ label: 'Square', priceMod: 0 }, { label: 'Round', priceMod: 0 }, { label: 'Hexagon', priceMod: 2 }
@@ -138,7 +145,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'shorts', name: 'Custom Shorts', basePrice: 28,
 		description: 'Comfortable custom shorts with print placement that works for teams, brands, and events.',
 		image: '/products/shorts-black-front.jpg', imageAlt: 'Realistic black custom shorts mockup with blank printable leg area',
-		previewEmptyText: 'Upload artwork to see your shorts preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 1.6,
+		previewEmptyText: 'Upload artwork to see your shorts preview.', artworkPosition: { x: 50, y: 45 }, artworkMaxScale: 1.6, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the shorts size.', render: 'pill', options: [
 				{ label: 'S', priceMod: 0 }, { label: 'M', priceMod: 0 }, { label: 'L', priceMod: 0 }, { label: 'XL', priceMod: 2 }, { label: '2XL', priceMod: 4 }
@@ -155,7 +162,7 @@ export const shopProducts: Record<string, ProductConfig> = {
 		slug: 'joggers', name: 'Custom Joggers', basePrice: 35,
 		description: 'Midweight joggers built for clean front-leg branding and repeat-wear comfort.',
 		image: '/products/joggers-black-front.jpg', imageAlt: 'Realistic black custom joggers mockup with blank printable thigh area',
-		previewEmptyText: 'Upload artwork to see your joggers preview.', artworkPosition: { x: 50, y: 42 }, artworkMaxScale: 1.6,
+		previewEmptyText: 'Upload artwork to see your joggers preview.', artworkPosition: { x: 50, y: 42 }, artworkMaxScale: 1.6, artworkPricing: { includedScale: 1, step: 0.1, pricePerStep: 1, label: 'Artwork size adjustment' },
 		optionGroups: [
 			{ id: 'size', label: 'Size', helperText: 'Choose the jogger size.', render: 'pill', options: [
 				{ label: 'S', priceMod: 0 }, { label: 'M', priceMod: 0 }, { label: 'L', priceMod: 0 }, { label: 'XL', priceMod: 2 }, { label: '2XL', priceMod: 4 }

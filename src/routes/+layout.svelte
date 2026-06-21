@@ -7,7 +7,6 @@
 
 	const navItems = [
 		{ href: '/shop/t-shirt', label: 'Products' },
-		{ href: '/equipment', label: 'Equipment' },
 		{ href: '/#about', label: 'About' },
 		{ href: '/contact', label: 'Contact' }
 	];
@@ -20,7 +19,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<title>Triple B Prints — Bold Custom Prints</title>
-	<meta name="description" content="Custom t-shirts, hoodies, mugs and more. Upload art, place it, checkout. No minimums. Fast runs." />
+	<meta name="description" content="Custom t-shirts, hoodies, mugs and more. Upload rough art, preview placement, and start a quote with Triple B Prints." />
 	<meta name="theme-color" content="#07090f" />
 	<meta name="color-scheme" content="dark light" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />

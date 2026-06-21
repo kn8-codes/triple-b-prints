@@ -27,7 +27,10 @@
 	let imageScale = $state(1);
 	let quantity = $state(1);
 	let isDragging = $state(false);
+	let isResizing = $state(false);
 	let dragStart = $state({ x: 0, y: 0 });
+	let resizeStart = $state({ x: 0, y: 0 });
+	let resizeStartScale = $state(1);
 	let previewRef = $state<HTMLDivElement | null>(null);
 	let buyButtonRef = $state<HTMLButtonElement | null>(null);
 	let liveRegionRef = $state<HTMLParagraphElement | null>(null);
@@ -40,15 +43,27 @@
 	let validationMessage = $state('');
 	let isValidatingArtwork = $state(false);
 
-	// Total unit price is derived from the base price plus every selected option modifier.
-	// Keeping this calculation derived avoids price drift between the UI and the checkout request.
-	let unitPrice = $derived(
-		product.basePrice + Object.values(selections).reduce((sum, option) => sum + option.priceMod, 0)
-	);
+	// Total unit price is derived from the base price, selected option modifiers, and explicit artwork-size adjustment.
+	// Keeping this calculation derived avoids price drift between the UI and the quote/checkout request.
+	let optionPrice = $derived(Object.values(selections).reduce((sum, option) => sum + option.priceMod, 0));
+	let artworkSizePrice = $derived(calculateArtworkSizePrice(imageScale));
+	let unitPrice = $derived(product.basePrice + optionPrice + artworkSizePrice);
 	let orderTotal = $derived(unitPrice * quantity);
 	let colorSelection = $derived(selections.color?.label ?? 'Default');
 	let sizeSelection = $derived(selections.size?.label ?? 'Standard');
 	let printSelection = $derived(selections['print-location']?.label ?? 'Standard print');
+
+	function calculateArtworkSizePrice(scale: number) {
+		const pricing = product.artworkPricing;
+		if (!pricing) return 0;
+		const overIncluded = scale - pricing.includedScale;
+		if (overIncluded <= 0) return 0;
+		return Math.ceil(overIncluded / pricing.step) * pricing.pricePerStep;
+	}
+
+	function clampArtworkScale(nextScale: number) {
+		return Math.max(0.5, Math.min(product.artworkMaxScale ?? 2, nextScale));
+	}
 
 	function announce(message: string) {
 		// Screen readers only announce live-region changes when the text actually changes.
@@ -151,10 +166,18 @@
 	}
 
 	function onDragMove(event: MouseEvent | TouchEvent) {
-		if (!isDragging || !previewRef) return;
+		if ((!isDragging && !isResizing) || !previewRef) return;
+		if ('touches' in event) event.preventDefault();
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 		const rect = previewRef.getBoundingClientRect();
+
+		if (isResizing) {
+			const diagonalDelta = ((clientX - resizeStart.x) + (clientY - resizeStart.y)) / Math.max(rect.width, rect.height);
+			imageScale = clampArtworkScale(resizeStartScale + diagonalDelta * 1.6);
+			return;
+		}
+
 		const deltaX = ((clientX - dragStart.x) / rect.width) * 100;
 		const deltaY = ((clientY - dragStart.y) / rect.height) * 100;
 
@@ -163,11 +186,27 @@
 		dragStart = { x: clientX, y: clientY };
 	}
 
+	function startResize(event: MouseEvent | TouchEvent) {
+		if (!uploadedImage) return;
+		event.stopPropagation();
+		if ('touches' in event) event.preventDefault();
+		isDragging = false;
+		isResizing = true;
+		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+		resizeStart = { x: clientX, y: clientY };
+		resizeStartScale = imageScale;
+	}
+
 	function endDrag() {
 		if (isDragging) {
 			announce(`Artwork moved to ${Math.round(imagePosition.x)} percent horizontal and ${Math.round(imagePosition.y)} percent vertical.`);
 		}
+		if (isResizing) {
+			announce(`Artwork size set to ${Math.round(imageScale * 100)} percent.`);
+		}
 		isDragging = false;
+		isResizing = false;
 	}
 
 	function handleArtworkKey(event: KeyboardEvent) {
@@ -200,7 +239,7 @@
 
 	function handleScaleChange(event: Event) {
 		const input = event.target as HTMLInputElement;
-		imageScale = parseFloat(input.value);
+		imageScale = clampArtworkScale(parseFloat(input.value));
 		announce(`Artwork size set to ${Math.round(imageScale * 100)} percent.`);
 	}
 
@@ -227,7 +266,7 @@
 				warnings: validationWarnings
 			});
 		}
-		announce('Preparing secure Stripe Checkout.');
+		announce('Preparing secure review checkout.');
 
 		try {
 			if (!STRIPE_PUBLISHABLE_KEY) {
@@ -248,6 +287,9 @@
 					color: colorSelection,
 					quantity,
 					artworkReference: `${uploadedArtworkName} (${uploadedArtworkMeta})`,
+					artworkScale: imageScale,
+					artworkPosition: imagePosition,
+					artworkSizePrice,
 					unitAmountCents: unitPrice * 100,
 					selectedOptions: Object.fromEntries(
 						Object.entries(selections).map(([groupId, option]) => [groupId, option.label])
@@ -262,7 +304,7 @@
 				throw new Error(payload?.error ?? 'Stripe Checkout could not be started.');
 			}
 
-			announce('Redirecting to Stripe Checkout.');
+			announce('Opening secure review checkout.');
 			window.location.assign(payload.url);
 		} catch (error) {
 			setError(error instanceof Error ? error.message : 'Something went wrong while starting checkout.');
@@ -319,14 +361,14 @@
 		<div class="grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.92fr)] lg:items-start">
 			<div class="space-y-6">
 				<div class="max-w-2xl">
-					<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Print Studio / Live Configurator</p>
+					<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Print Studio / Live Product Preview</p>
 					<h1 class="text-4xl font-black uppercase tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">{product.name}</h1>
 					<p class="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">{product.description}</p>
 					<div class="mt-5 flex flex-wrap gap-2 text-[0.68rem] font-black uppercase tracking-[0.18em] text-cyan-100/80" aria-label="Configurator workflow">
 						<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">1 / Pick base</span>
 						<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">2 / Upload art</span>
-						<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">3 / Proof layout</span>
-						<span class="rounded-full border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 px-3 py-2 text-[#d8ff3e]">4 / Checkout</span>
+							<span class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2">3 / Proof layout</span>
+						<span class="rounded-full border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 px-3 py-2 text-[#d8ff3e]">4 / Review quote</span>
 					</div>
 				</div>
 
@@ -358,12 +400,21 @@
 								tabindex="0"
 								onkeydown={handleArtworkKey}
 							>
-								<img
-									src={uploadedImage}
-									alt={`Uploaded artwork preview: ${uploadedArtworkName}`}
-									class="h-28 w-28 object-contain pointer-events-none sm:h-36 sm:w-36"
-									style="filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45));"
-								/>
+								<div class="relative">
+									<img
+										src={uploadedImage}
+										alt={`Uploaded artwork preview: ${uploadedArtworkName}`}
+										class="h-28 w-28 object-contain pointer-events-none sm:h-36 sm:w-36"
+										style="filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45));"
+									/>
+									<button
+										type="button"
+										class="absolute -bottom-3 -right-3 grid h-9 w-9 cursor-nwse-resize place-items-center rounded-full border-2 border-slate-950 bg-[#d8ff3e] text-sm font-black text-slate-950 shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-200"
+										onmousedown={startResize}
+										ontouchstart={startResize}
+										aria-label="Resize artwork diagonally"
+									>↘</button>
+								</div>
 							</div>
 						{:else}
 							<div class="absolute inset-0 z-20 flex items-center justify-center px-6 text-center">
@@ -408,7 +459,7 @@
 							class="w-full min-h-11 accent-cyan-300"
 							aria-label="Adjust artwork size"
 						/>
-						<p class="mt-1 text-sm text-slate-400">Drag artwork to position. Focus the artwork itself, then use arrow keys for fine control.</p>
+						<p class="mt-1 text-sm text-slate-400">Drag artwork to move. Pull the corner to resize. Use the slider for fine control.</p>
 					</div>
 				{/if}
 			</div>
@@ -418,6 +469,9 @@
 					<p class="text-xs font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Order Summary</p>
 					<p class="mt-1 text-5xl font-black tracking-[-0.08em] text-white">${orderTotal}</p>
 					<p class="mt-2 text-sm text-slate-300">Unit price: ${unitPrice} × Quantity: {quantity}</p>
+					{#if artworkSizePrice > 0}
+						<p class="mt-1 text-sm font-bold text-[#d8ff3e]">{product.artworkPricing?.label ?? 'Artwork size adjustment'}: +${artworkSizePrice}</p>
+					{/if}
 				</div>
 
 				<div class="space-y-7">
@@ -498,7 +552,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
 							</svg>
 							<p class="text-lg font-black text-white">Click to upload or drag and drop</p>
-							<p class="mt-1 text-sm text-slate-400">PNG, JPG, SVG, or WEBP. The configurator checks source quality before checkout.</p>
+							<p class="mt-1 text-sm text-slate-400">PNG, JPG, SVG, or WEBP. Upload what you have — logo, screenshot, rough idea, or finished file. We'll review quality before production.</p>
 						</label>
 
 						{#if uploadedImage}
@@ -525,14 +579,14 @@
 										<li>{warning}</li>
 									{/each}
 								</ul>
-								<p class="mt-3 text-sm text-slate-300">You can still proceed, but this gate is trying to keep weak source images out of production.</p>
+								<p class="mt-3 text-sm text-slate-300">You can still proceed. If the file needs cleanup or redesign, we'll explain options before production.</p>
 							</div>
 						{/if}
 					</div>
 
 					{#if errorMessage}
 						<div bind:this={errorRegionRef} tabindex="-1" role="alert" class="rounded-xl border border-red-300/40 bg-red-500/10 p-4 text-red-100">
-							<p class="font-bold">Checkout needs one quick fix</p>
+							<p class="font-bold">Review needs one quick fix</p>
 							<p>{errorMessage}</p>
 						</div>
 					{/if}
@@ -543,18 +597,18 @@
 						class={`w-full rounded-2xl py-4 text-lg font-black uppercase tracking-[0.16em] shadow-lg transition-all focus:outline-none focus:ring-4 focus:ring-[#d8ff3e] ${uploadedImage && !isCheckingOut ? 'bg-[#d8ff3e] text-slate-950 hover:bg-yellow-200 hover:scale-[1.01]' : 'bg-white/10 text-slate-500 cursor-not-allowed opacity-70'}`}
 						disabled={!uploadedImage || isCheckingOut}
 						onclick={buyNow}
-						aria-label={uploadedImage ? `Buy ${quantity} ${product.name} item${quantity > 1 ? 's' : ''} now for ${orderTotal} dollars with Stripe Checkout` : 'Upload artwork to enable Buy Now'}
+						aria-label={uploadedImage ? `Start review for ${quantity} ${product.name} item${quantity > 1 ? 's' : ''} at ${orderTotal} dollars` : 'Upload artwork to start your quote preview'}
 						aria-busy={isCheckingOut}
 					>
 						{#if isCheckingOut}
-							Starting Checkout…
+							Starting Review…
 						{:else}
-							Buy Now — ${orderTotal}
+							Start Review — ${orderTotal}
 						{/if}
 					</button>
 
 					<p class="text-center text-sm text-slate-400" aria-live="polite">
-						{uploadedImage ? 'You will be redirected to Stripe Checkout to finish payment securely.' : 'Upload artwork to enable Buy Now.'}
+						{uploadedImage ? 'We’ll review artwork, placement, and pricing before production.' : 'Upload artwork to start your quote preview.'}
 					</p>
 				</div>
 			</aside>
@@ -564,6 +618,6 @@
 
 <footer class="border-t border-white/10 bg-[#07090f] py-12 text-white">
 	<div class="mx-auto max-w-7xl px-4 text-center sm:px-6">
-		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Checkout-ready configurator.</p>
+		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Preview-ready quote flow.</p>
 	</div>
 </footer>

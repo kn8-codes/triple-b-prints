@@ -22,6 +22,7 @@
 <svelte:head>
 	<title>$30 Tumblers | Triple B Prints</title>
 	<meta name="description" content="Custom stainless steel tumblers for $30 each. Double-wall insulated, laser-etched or printed. Great for gifts." />
+	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <!-- Breadcrumb -->
@@ -41,8 +42,8 @@
 			Stainless steel, double-wall insulated. Your artwork laser-etched or UV printed. Great for gifts, corporate swag, or personal use.
 		</p>
 		<div class="flex flex-wrap gap-4 justify-center items-stretch">
-			<a href="/promo/savebucks" class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all tap-target">
-				All Deals
+			<a href="/contact" class="inline-block bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-yellow-300 hover:scale-105 transition-all tap-target">
+				Request Quote
 			</a>
 			<a href="/shop/t-shirt" class="inline-block bg-white/10 text-white font-bold uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl hover:bg-white/20 transition-all tap-target">
 				Shop Other Products
@@ -88,10 +89,10 @@
 <!-- CTA -->
 <section class="py-16 bg-yellow-400">
 	<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-		<h2 class="text-3xl font-black text-slate-900 mb-4">Ready to Order?</h2>
-		<p class="text-slate-800 mb-8">Use code <span class="font-black">SAVEBUCK$</span> at checkout. Or call us and mention this deal.</p>
-		<a href="/promo/savebucks" class="inline-block bg-slate-900 text-white font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-slate-800 hover:scale-105 transition-all tap-target">
-			View All Deals
+		<h2 class="text-3xl font-black text-slate-900 mb-4">Ready to Review This Job?</h2>
+		<p class="text-slate-800 mb-8">Send the product, artwork, quantity, and deadline so Triple B can confirm current pricing before production.</p>
+		<a href="/contact" class="inline-block bg-slate-900 text-white font-black uppercase tracking-wide px-6 sm:px-8 py-4 rounded-xl shadow-lg hover:bg-slate-800 hover:scale-105 transition-all tap-target">
+			View Request Quote
 		</a>
 	</div>
 </section>
