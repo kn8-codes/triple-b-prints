@@ -169,7 +169,7 @@
 					</div>
 					<div class="rounded-2xl border border-white/10 bg-white/[0.05] p-5 col-span-2 sm:col-span-1">
 						<p class="text-3xl font-black text-[#d8ff3e]">Send</p>
-						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Quote or checkout</p>
+						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-400">Quote review</p>
 					</div>
 				</div>
 			</div>
