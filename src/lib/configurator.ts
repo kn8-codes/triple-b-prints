@@ -16,6 +16,12 @@ export type ValidatedCheckoutPayload = {
 	cancelPath: string;
 	sizeLabel: string;
 	colorLabel: string;
+	artworkScale?: number;
+	artworkPosition?: { x: number; y: number };
+	artworkSizePriceCents?: number;
+	previewGarmentColor?: string;
+	previewGarmentColorHex?: string;
+	colorPreviewMode?: 'preset' | 'custom';
 };
 
 export type ArtworkQualityRule = {
@@ -60,6 +66,20 @@ function asNonEmptyString(value: unknown) {
 	return typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
 }
 
+function asFiniteNumber(value: unknown) {
+	const numberValue = typeof value === 'number' ? value : Number(value);
+	return Number.isFinite(numberValue) ? numberValue : null;
+}
+
+function asHexColor(value: unknown) {
+	const candidate = asNonEmptyString(value);
+	return candidate && /^#[0-9a-fA-F]{6}$/.test(candidate) ? candidate.toUpperCase() : null;
+}
+
+export function dollarsToCents(value: number): number {
+	return Math.round(value * 100);
+}
+
 function normalizeCheckoutSelections(product: ProductConfig, value: unknown) {
 	const incoming = isRecord(value) ? value : {};
 	const normalized: CheckoutSelections = {};
@@ -72,7 +92,7 @@ function normalizeCheckoutSelections(product: ProductConfig, value: unknown) {
 		computedUnitPrice += resolvedOption.priceMod;
 	}
 
-	return { selectedOptions: normalized, unitAmountCents: computedUnitPrice * 100 };
+	return { selectedOptions: normalized, unitAmountCents: dollarsToCents(computedUnitPrice) };
 }
 
 export function validateArtworkFile(file: File) {
@@ -97,6 +117,24 @@ export function validateCheckoutPayload(body: unknown): ValidatedCheckoutPayload
 	const artworkReference = asNonEmptyString(body.artworkReference);
 	if (!artworkReference) throw new Error('artworkReference is required.');
 	const { selectedOptions, unitAmountCents } = normalizeCheckoutSelections(product, body.selectedOptions);
+	const artworkScale = asFiniteNumber(body.artworkScale);
+	if (artworkScale !== null && (artworkScale < 0.5 || artworkScale > (product.artworkMaxScale ?? 2))) {
+		throw new Error('artworkScale is outside the allowed preview range.');
+	}
+	const artworkSizePrice = asFiniteNumber(body.artworkSizePrice);
+	if (artworkSizePrice !== null && artworkSizePrice < 0) throw new Error('artworkSizePrice cannot be negative.');
+	const artworkPositionInput = isRecord(body.artworkPosition)
+		? { x: asFiniteNumber(body.artworkPosition.x), y: asFiniteNumber(body.artworkPosition.y) }
+		: null;
+	if (artworkPositionInput && (artworkPositionInput.x === null || artworkPositionInput.y === null)) {
+		throw new Error('artworkPosition must include numeric x and y values.');
+	}
+	const artworkPosition: { x: number; y: number } | undefined = artworkPositionInput && artworkPositionInput.x !== null && artworkPositionInput.y !== null
+		? { x: artworkPositionInput.x, y: artworkPositionInput.y }
+		: undefined;
+	const previewGarmentColor = asNonEmptyString(body.color);
+	const previewGarmentColorHex = asHexColor(body.previewGarmentColorHex);
+	const colorPreviewMode = body.colorPreviewMode === 'custom' ? 'custom' : body.colorPreviewMode === 'preset' ? 'preset' : undefined;
 	return {
 		product,
 		quantity,
@@ -105,7 +143,13 @@ export function validateCheckoutPayload(body: unknown): ValidatedCheckoutPayload
 		unitAmountCents,
 		cancelPath: `/shop/${encodeURIComponent(product.slug)}?checkout=cancelled`,
 		sizeLabel: selectedOptions.size ?? 'Not specified',
-		colorLabel: selectedOptions.color ?? 'Not specified'
+		colorLabel: selectedOptions.color ?? 'Not specified',
+		...(artworkScale !== null ? { artworkScale } : {}),
+		...(artworkPosition ? { artworkPosition: { x: artworkPosition.x, y: artworkPosition.y } } : {}),
+		...(artworkSizePrice !== null ? { artworkSizePriceCents: dollarsToCents(artworkSizePrice) } : {}),
+		...(previewGarmentColor ? { previewGarmentColor } : {}),
+		...(previewGarmentColorHex ? { previewGarmentColorHex } : {}),
+		...(colorPreviewMode ? { colorPreviewMode } : {})
 	};
 }
 

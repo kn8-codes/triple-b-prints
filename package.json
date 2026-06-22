@@ -10,7 +10,10 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"smoke:checkout-boundary": "node scripts/smoke-checkout-boundary.mjs"
+		"smoke:checkout-boundary": "node scripts/smoke-checkout-boundary.mjs",
+		"smoke:public-copy-boundary": "node scripts/smoke-public-copy-boundary.mjs",
+		"smoke:request-handoff": "node --experimental-strip-types scripts/smoke-request-handoff.mjs",
+		"smoke:bbb": "npm run smoke:checkout-boundary && npm run smoke:public-copy-boundary && npm run smoke:request-handoff"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^6.3.3",

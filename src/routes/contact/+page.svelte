@@ -1,5 +1,12 @@
 <script lang="ts">
-	const productOptions = ['T-Shirts', 'Hoodies', 'Mugs', 'Hats', 'Keychains', 'Coasters', 'Phone Cases', 'Other / Not sure yet'];
+	import {
+		buildMailtoHref,
+		buildRequestEmailBody,
+		buildRequestEmailSubject,
+		buildRequestEmailTemplate
+	} from '$lib/requestHandoff';
+
+	const productOptions = ['T-Shirts', 'Hoodies', 'Shorts', 'Joggers', 'Mugs', 'Hats', 'Keychains', 'Coasters', 'Phone Cases', 'Other / Not sure yet'];
 	const timelineOptions = ['Rush / 1–3 days', 'This week', 'This month', 'Flexible'];
 
 	let name = $state('');
@@ -15,38 +22,21 @@
 	let submitted = $state(false);
 	let copyStatus = $state('');
 
-	let emailSubject = $derived(`Print request — ${product || 'custom project'} — ${name || 'new customer'}`);
-
-	let emailBody = $derived(
-		[
-			'Hi Triple B Prints,',
-			'',
-			'I’d like to start a print request. Here are the details:',
-			'',
-			'CUSTOMER',
-			`Name: ${name || '—'}`,
-			`Email: ${email || '—'}`,
-			`Phone/text: ${phone || '—'}`,
-			'',
-			'JOB DETAILS',
-			`Product: ${product || '—'}`,
-			`Quantity/run size: ${quantity || '—'}`,
-			`Timeline: ${timeline || '—'}`,
-			`Artwork status: ${artworkStatus || '—'}`,
-			'',
-			'NOTES',
-			notes || '—',
-			'',
-			'Please review the artwork needs, placement, and pricing before production.',
-			'',
-			'Thank you.'
-		].join('\n')
-	);
-
-	let emailTemplate = $derived(`To: ${requestEmail}\nSubject: ${emailSubject}\n\n${emailBody}`);
-	let emailDraftHref = $derived(
-		`mailto:${requestEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`
-	);
+	let requestHandoffInput = $derived({
+		name,
+		email,
+		phone,
+		product,
+		quantity,
+		timeline,
+		artworkStatus,
+		notes,
+		requestEmail
+	});
+	let emailSubject = $derived(buildRequestEmailSubject(requestHandoffInput));
+	let emailBody = $derived(buildRequestEmailBody(requestHandoffInput));
+	let emailTemplate = $derived(buildRequestEmailTemplate(requestHandoffInput));
+	let emailDraftHref = $derived(buildMailtoHref(requestHandoffInput));
 
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
@@ -162,12 +152,18 @@
 			<div class="rounded-[2rem] border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 p-6">
 				<p class="text-sm font-black uppercase tracking-[0.22em] text-[#d8ff3e]">Email handoff</p>
 				<p class="mt-4 text-slate-200">For now, this page opens a prefilled email draft to Triple B and keeps a copy fallback. A real submit endpoint can come next.</p>
+				<ul class="mt-4 space-y-2 text-sm leading-6 text-slate-300">
+					<li><strong class="text-white">Destination:</strong> the draft is addressed to {requestEmail}.</li>
+					<li><strong class="text-white">Not automatic yet:</strong> you still review and send the email from your own mail app.</li>
+					<li><strong class="text-white">Artwork files:</strong> attach logos, screenshots, or rough ideas to the email draft if you have them ready.</li>
+					<li><strong class="text-white">Fallback:</strong> if your mail app does not open, copy the template and paste it anywhere.</li>
+				</ul>
 			</div>
 
 			{#if submitted}
 				<div class="rounded-[2rem] border border-cyan-200/25 bg-cyan-200/10 p-6" aria-live="polite">
 					<p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-100">Email template</p>
-					<p class="mt-3 text-sm leading-6 text-slate-300">Open the prefilled email draft, or copy the structured request and paste it into Gmail/text manually. The form is not sending automatically yet.</p>
+					<p class="mt-3 text-sm leading-6 text-slate-300">Open the prefilled email draft, attach artwork if you have it, then review and send from your email app. If the draft does not open, copy the structured request and paste it into Gmail/text manually. The form is not sending automatically yet.</p>
 					<div class="mt-4 rounded-2xl border border-white/10 bg-black/35 p-4">
 						<p class="text-xs font-black uppercase tracking-[0.18em] text-[#d8ff3e]">To</p>
 						<p class="mt-2 text-sm font-bold text-white">{requestEmail}</p>

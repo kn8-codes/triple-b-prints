@@ -330,7 +330,9 @@
 					artworkScale: imageScale,
 					artworkPosition: imagePosition,
 					artworkSizePrice,
-					unitAmountCents: unitPrice * 100,
+					previewGarmentColorHex: selectedGarmentColor,
+					colorPreviewMode: colorMode,
+					unitAmountCents: Math.round(unitPrice * 100),
 					selectedOptions: Object.fromEntries(
 						Object.entries(selections).map(([groupId, option]) => [groupId, option.label])
 					),

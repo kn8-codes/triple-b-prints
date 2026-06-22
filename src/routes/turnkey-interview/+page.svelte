@@ -1,235 +1,37 @@
-<script lang="ts">
-	// ─── Turnkey Business Interview Script ───
-	// Use this page as a prompt sheet when talking to your friend.
-	// Record the conversation, then transcribe answers back into the
-	// turnkey_intake form or directly into Supabase.
-
-	const sections = [
-		{
-			title: '1. What\'s Included in the Package?',
-			questions: [
-				'What equipment comes with the turnkey business? (laser, printer, heat press, etc.)',
-				'What materials or blanks are included to get started?',
-				'Do you include training? If yes, what kind — in-person, video calls, written guides?',
-				'How long does support last after purchase?',
-				'Is there a warranty on the equipment?'
-			]
-		},
-		{
-			title: '2. Pricing Tiers',
-			questions: [
-				'Do you offer different package levels? (Starter, Pro, Premium?)',
-				'What\'s the price range for each tier?',
-				'What\'s the difference between the cheapest and most expensive package?',
-				'Is financing available?',
-				'Are there ongoing costs they should know about? (software, supplies, maintenance)'
-			]
-		},
-		{
-			title: '3. Who Is the Ideal Buyer?',
-			questions: [
-				'Who typically buys this from you? (hobbyist, side-hustler, someone going full-time?)',
-				'How much money does someone need to get started beyond the package price?',
-				'How long before they can make their first sale?',
-				'What skills do they need coming in? (design, sales, technical?)',
-				'Who is NOT a good fit for this business?'
-			]
-		},
-		{
-			title: '4. Proof & Success Stories',
-			questions: [
-				'Do you have testimonials or reviews from people who bought the turnkey?',
-				'Can you share any revenue numbers from successful buyers?',
-				'Do you have photos of their shops, their work, or unboxing the equipment?',
-				'How many people have you sold this to so far?',
-				'What\'s the biggest success story you can tell?'
-			]
-		},
-		{
-			title: '5. Operations & Logistics',
-			questions: [
-				'Where do you source blanks and materials? Can buyers use your suppliers?',
-				'How does shipping work? Do they ship from home or use a fulfillment center?',
-				'What software do they need? Is it included?',
-				'What kind of workspace do they need? (garage, spare room, warehouse?)',
-				'Any permits, licenses, or legal stuff they need to handle?'
-			]
-		},
-		{
-			title: '6. Marketing & Branding',
-			questions: [
-				'Do you help them with branding — logo, business cards, social media?',
-				'Do you teach them how to find customers?',
-				'Is there a website included or do they build their own?',
-				'Do you provide templates or designs they can sell?',
-				'Any exclusivity or territory restrictions?'
-			]
-		},
-		{
-			title: '7. The Big Pitch',
-			questions: [
-				'In one sentence, why should someone buy this turnkey business from you instead of doing it themselves?',
-				'What\'s the hardest part of starting this business, and how does your package solve it?',
-				'What do you wish you knew when you started?',
-				'Where do you see this business going in 2-3 years?',
-				'Anything else someone should know before they buy?'
-			]
-		}
-	];
-
-	let showNotes = $state(false);
-	let notes = $state('');
-
-	const equipmentStack = [
-		{
-			name: 'xTool M1 Ultra',
-			role: 'Starter production machine',
-			image: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_m1ultra-whitebackground_5122-70511.webp?v=1747562384'
-		},
-		{
-			name: 'xTool F1',
-			role: 'Fast small-item engraving',
-			image: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_f1-whitebackground_5122-69954.webp?v=1747623440'
-		},
-		{
-			name: 'xTool P2 / P2S',
-			role: 'Larger laser/cutting capacity',
-			image: 'https://www.xtool.com/cdn/shop/files/mk-baidituyingyong_us_pc_p-black-standalone_5130-129_2291d7b0-a962-466d-89c6-8166e1c383a0.webp?v=1754966102'
-		}
-	];
-</script>
-
 <svelte:head>
-	<title>Turnkey Interview Script | Triple B Prints</title>
-	<meta name="description" content="Structured interview questions for collecting turnkey business information." />
+	<title>Internal Interview Page Archived | Triple B Prints</title>
+	<meta
+		name="description"
+		content="This internal Triple B Prints interview prompt page is archived and hidden from search."
+	/>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<!-- Header -->
-<div class="bg-slate-900 text-white py-12">
-	<div class="max-w-4xl mx-auto px-4 sm:px-6">
-		<a href="/" class="text-slate-400 hover:text-yellow-400 transition-colors text-sm font-bold uppercase tracking-wide">← Back to Home</a>
-		<h1 class="text-4xl md:text-5xl font-black mt-4 mb-2">Turnkey Business Interview</h1>
-		<p class="text-slate-400 text-lg">Read these questions to your friend. Record the answers. Transcribe later.</p>
+<div class="bg-[#07090f] text-cyan-100/80 py-4 border-b border-white/10">
+	<div class="mx-auto max-w-7xl px-4 sm:px-6">
+		<a href="/" class="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-black uppercase tracking-[0.18em] text-cyan-100 transition-colors hover:border-cyan-200/40 hover:bg-cyan-200/10 hover:text-[#d8ff3e] focus:outline-none focus:ring-2 focus:ring-[#d8ff3e]">← Back to Studio</a>
 	</div>
 </div>
 
-<!-- Instructions -->
-<section class="bg-yellow-50 py-8">
-	<div class="max-w-4xl mx-auto px-4 sm:px-6">
-		<div class="flex flex-col sm:flex-row items-start gap-4">
-			<div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0">
-				<svg class="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-				</svg>
-			</div>
-			<div>
-				<h2 class="font-black text-slate-900 mb-1">How to Use This</h2>
-				<ol class="text-slate-700 space-y-1 list-decimal list-inside">
-					<li>Call your friend (or sit down with them)</li>
-					<li>Read each section heading and the questions below it</li>
-					<li>Record the conversation on your phone or computer</li>
-					<li>After the call, transcribe answers into the notes section below</li>
-					<li>Copy the completed notes into the turnkey intake form or Supabase</li>
-				</ol>
-			</div>
+<section class="relative isolate overflow-hidden bg-[#07090f] py-16 text-white sm:py-24">
+	<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_10%,rgba(216,255,62,0.14),transparent_34%),radial-gradient(circle_at_80%_8%,rgba(62,230,255,0.14),transparent_30%),linear-gradient(135deg,rgba(15,23,42,0.25),rgba(3,7,18,1))]"></div>
+	<div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+		<p class="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-100">Archived internal page</p>
+		<h1 class="text-4xl font-black uppercase tracking-[-0.05em] text-white sm:text-6xl">
+			This interview page is no longer public-facing.
+		</h1>
+		<p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+			This route was used as an internal prompt sheet during early planning. It is parked and hidden from search so customers land on current product previews and the quote request flow instead.
+		</p>
+		<div class="mt-8 flex flex-wrap justify-center gap-4">
+			<a href="/#products" class="rounded-2xl bg-[#d8ff3e] px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-slate-950 shadow-lg shadow-[#d8ff3e]/10 transition-transform hover:-translate-y-0.5">Browse product previews</a>
+			<a href="/contact" class="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-cyan-100 transition-colors hover:bg-cyan-200/10">Start a quote request</a>
 		</div>
 	</div>
 </section>
 
-<section class="bg-slate-950 py-12 text-white">
-	<div class="max-w-6xl mx-auto px-4 sm:px-6">
-		<div class="mb-8 max-w-3xl">
-			<p class="mb-2 text-sm font-black uppercase tracking-[0.24em] text-yellow-300">Equipment stack reference</p>
-			<h2 class="text-3xl md:text-4xl font-black uppercase tracking-[-0.04em]">What “buy the business” can look like.</h2>
-			<p class="mt-3 text-slate-300 leading-7">Use these actual xTool product images as visual prompts while collecting the package details. Final equipment bundle, pricing, and media rights still need owner confirmation.</p>
-		</div>
-
-		<div class="grid gap-5 md:grid-cols-3">
-			{#each equipmentStack as tool}
-				<div class="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] shadow-xl shadow-black/20">
-					<div class="bg-white p-4">
-						<img src={tool.image} alt={tool.name} class="h-48 w-full object-contain" loading="lazy" />
-					</div>
-					<div class="p-5">
-						<h3 class="text-xl font-black text-white">{tool.name}</h3>
-						<p class="mt-1 text-sm font-bold uppercase tracking-wide text-yellow-300/80">{tool.role}</p>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- Questions -->
-<section class="py-12 bg-white">
-	<div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-12">
-		{#each sections as section, i}
-			<div class="border-l-4 border-rose-600 pl-6">
-				<h2 class="text-2xl font-black text-slate-900 mb-4">{section.title}</h2>
-				<ul class="space-y-3">
-					{#each section.questions as q, j}
-						<li class="flex items-start gap-3">
-							<span class="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-black text-slate-500">{j + 1}</span>
-							<p class="text-slate-700 leading-relaxed">{q}</p>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		{/each}
-	</div>
-</section>
-
-<!-- Notes Section -->
-<section class="py-12 bg-slate-50">
-	<div class="max-w-4xl mx-auto px-4 sm:px-6">
-		<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
-			<h2 class="text-2xl font-black text-slate-900">Interview Notes</h2>
-			<button
-				class="text-sm font-bold text-rose-600 hover:text-rose-700 transition-colors tap-target"
-				onclick={() => showNotes = !showNotes}
-			>
-				{showNotes ? 'Hide Notes' : 'Show Notes'}
-			</button>
-		</div>
-		
-		{#if showNotes}
-			<div class="space-y-4">
-				<p class="text-slate-600 text-sm">Paste transcribed answers here. Copy this block into the Supabase turnkey_intake table when done.</p>
-				<textarea
-					bind:value={notes}
-					class="w-full h-96 p-4 rounded-xl border-2 border-slate-200 focus:border-yellow-400 focus:outline-none font-mono text-sm text-slate-700 resize-y"
-					placeholder="Paste notes here...&#10;&#10;Section 1: What's Included&#10;- Equipment: ...&#10;- Training: ...&#10;&#10;Section 2: Pricing&#10;- Starter: $...&#10;- Pro: $..."
-				></textarea>
-				<div class="flex flex-col sm:flex-row gap-4">
-					<button
-						class="bg-yellow-400 text-slate-900 font-black uppercase tracking-wide px-6 py-3 rounded-xl hover:bg-yellow-300 transition-colors tap-target"
-						onclick={() => {
-							navigator.clipboard.writeText(notes);
-							alert('Notes copied to clipboard');
-						}}
-					>
-						Copy Notes
-					</button>
-					<button
-						class="bg-slate-200 text-slate-700 font-bold uppercase tracking-wide px-6 py-3 rounded-xl hover:bg-slate-300 transition-colors tap-target"
-						onclick={() => {
-							if (confirm('Clear all notes?')) notes = '';
-						}}
-					>
-						Clear
-					</button>
-				</div>
-			</div>
-		{:else}
-			<p class="text-slate-400 text-sm">Click "Show Notes" to reveal the transcription area.</p>
-		{/if}
-	</div>
-</section>
-
-<!-- Footer -->
-<footer class="bg-slate-900 text-white py-8">
-	<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-		<p class="text-slate-400 text-sm">Triple B Prints — Turnkey Business Documentation</p>
+<footer class="border-t border-white/10 bg-[#07090f] py-12 text-white">
+	<div class="mx-auto max-w-7xl px-4 text-center sm:px-6">
+		<p class="text-slate-400">© {new Date().getFullYear()} Triple B Prints. Preview-ready quote flow.</p>
 	</div>
 </footer>

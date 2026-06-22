@@ -47,7 +47,13 @@ export const POST: RequestHandler = async ({ request, url }) => {
 		selectedOptions,
 		cancelPath,
 		sizeLabel,
-		colorLabel
+		colorLabel,
+		artworkScale,
+		artworkPosition,
+		artworkSizePriceCents,
+		previewGarmentColor,
+		previewGarmentColorHex,
+		colorPreviewMode
 	} = checkout;
 
 	let stripeSecretKey: string;
@@ -81,6 +87,12 @@ export const POST: RequestHandler = async ({ request, url }) => {
 	appendFormValue(form, 'metadata[size]', sizeLabel);
 	appendFormValue(form, 'metadata[color]', colorLabel);
 	appendFormValue(form, 'metadata[artwork_reference]', artworkReference);
+	if (artworkScale !== undefined) appendFormValue(form, 'metadata[artwork_scale]', artworkScale.toFixed(2));
+	if (artworkPosition) appendFormValue(form, 'metadata[artwork_position]', `${Math.round(artworkPosition.x)}:${Math.round(artworkPosition.y)}`);
+	if (artworkSizePriceCents !== undefined) appendFormValue(form, 'metadata[artwork_size_price_cents]', artworkSizePriceCents);
+	if (previewGarmentColor) appendFormValue(form, 'metadata[preview_garment_color]', previewGarmentColor);
+	if (previewGarmentColorHex) appendFormValue(form, 'metadata[preview_garment_color_hex]', previewGarmentColorHex);
+	if (colorPreviewMode) appendFormValue(form, 'metadata[color_preview_mode]', colorPreviewMode);
 
 	// Selected options are flattened into metadata so the shop can inspect exactly what the customer chose.
 	if (selectedOptions && typeof selectedOptions === 'object') {

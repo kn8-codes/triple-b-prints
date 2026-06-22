@@ -45,6 +45,11 @@ async function smokeCheckoutBoundary() {
 		color: 'Black',
 		quantity: 1,
 		artworkReference: 'bbb-smoke-art.png (image/png, 1 KB)',
+		artworkScale: 1.3,
+		artworkPosition: { x: 54, y: 47 },
+		artworkSizePrice: 3,
+		previewGarmentColorHex: '#1F2A44',
+		colorPreviewMode: 'custom',
 		unitAmountCents: 4500,
 		selectedOptions: {
 			size: 'S',
@@ -79,12 +84,33 @@ async function smokeCheckoutBoundary() {
 	console.log('✓ checkout boundary without Stripe env -> 503 stripe_not_configured');
 }
 
+async function smokeCheckoutPreviewMetadataValidation() {
+	const payload = {
+		productType: 'hoodie',
+		quantity: 1,
+		artworkReference: 'bbb-smoke-art.png (image/png, 1 KB)',
+		artworkScale: 99,
+		selectedOptions: { size: 'S', color: 'Black', 'print-location': 'Front Only' }
+	};
+
+	const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
+		method: 'POST',
+		headers: { 'content-type': 'application/json', origin: siteOrigin },
+		body: JSON.stringify(payload)
+	});
+	const body = await response.text();
+	assert(response.status === 400, `bad preview metadata expected 400, got ${response.status}: ${body}`);
+	assert(body.includes('artworkScale is outside the allowed preview range'), `bad preview metadata returned unexpected body: ${body}`);
+	console.log('✓ checkout rejects out-of-range preview metadata -> 400');
+}
+
 async function main() {
 	console.log(`BBB checkout-boundary smoke against ${baseUrl}`);
 	for (const route of routes) {
 		await expectRoute(route);
 	}
 	await smokeArtworkValidation();
+	await smokeCheckoutPreviewMetadataValidation();
 	await smokeCheckoutBoundary();
 	console.log('PASS: BBB checkout-boundary smoke complete');
 }
