@@ -4,11 +4,11 @@
 	import { STRIPE_PUBLISHABLE_KEY } from '$lib/stripe';
 	import {
 		ACCEPTED_ARTWORK_MIME_TYPES,
-		buildArtworkReference,
 		clampQuantity,
 		formatArtworkFileMeta,
 		validateArtworkFile
 	} from '$lib/configurator';
+	import { buildPrintJobEmailTemplate, buildPrintJobHandoffReport } from '$lib/printJobHandoff';
 	import type { OptionGroup, ProductConfig, SwatchOption } from '$lib/data/shopProducts';
 
 	let { product } = $props<{ product: ProductConfig }>();
@@ -44,6 +44,8 @@
 	let validationWarnings = $state<string[]>([]);
 	let validationMessage = $state('');
 	let isValidatingArtwork = $state(false);
+	let handoffCopyStatus = $state('');
+	const requestEmail = 'triplebp330@gmail.com';
 
 	// Total unit price is derived from the base price, selected option modifiers, and explicit artwork-size adjustment.
 	// Keeping this calculation derived avoids price drift between the UI and the quote/checkout request.
@@ -65,6 +67,27 @@
 	);
 	let sizeSelection = $derived(selections.size?.label ?? 'Standard');
 	let printSelection = $derived(selections['print-location']?.label ?? 'Standard print');
+	let handoffInput = $derived({
+		productName: product.name,
+		productSlug: product.slug,
+		quantity,
+		unitPrice,
+		orderTotal,
+		sizeLabel: sizeSelection,
+		colorLabel: colorSelection,
+		printLocationLabel: printSelection,
+		artworkReference: uploadedArtworkName ? `${uploadedArtworkName} (${uploadedArtworkMeta})` : '',
+		artworkUploaded: Boolean(uploadedImage),
+		artworkScale: imageScale,
+		artworkPosition: imagePosition,
+		artworkSizePrice,
+		previewGarmentColorHex: selectedGarmentColor.toUpperCase(),
+		colorPreviewMode: colorMode,
+		selectedOptions: Object.fromEntries(Object.entries(selections).map(([groupId, option]) => [groupId, option.label])),
+		qualityWarnings: validationWarnings
+	});
+	let printJobHandoffReport = $derived(buildPrintJobHandoffReport(handoffInput));
+	let printJobEmailTemplate = $derived(buildPrintJobEmailTemplate(handoffInput, requestEmail));
 
 	function calculateArtworkSizePrice(scale: number) {
 		const pricing = product.artworkPricing;
@@ -288,6 +311,28 @@
 		const nextQuantity = clampQuantity(Number.parseInt(input.value || '1', 10) || 1);
 		quantity = nextQuantity;
 		announce(`Quantity set to ${quantity}.`);
+	}
+
+	async function copyShopHandoff() {
+		try {
+			await navigator.clipboard.writeText(printJobHandoffReport);
+			handoffCopyStatus = 'Shop handoff report copied. Paste it into email, notes, or the job folder.';
+			announce('Shop handoff report copied.');
+		} catch {
+			handoffCopyStatus = 'Clipboard did not allow automatic copy. Select the report text above and copy it manually.';
+			announce('Clipboard did not allow automatic copy. Select the report text manually.');
+		}
+	}
+
+	async function copyShopEmailTemplate() {
+		try {
+			await navigator.clipboard.writeText(printJobEmailTemplate);
+			handoffCopyStatus = 'Shop email template copied. Paste it into Gmail or the customer thread.';
+			announce('Shop email template copied.');
+		} catch {
+			handoffCopyStatus = 'Clipboard did not allow automatic copy. Select the report text above and copy it manually.';
+			announce('Clipboard did not allow automatic copy. Select the report text manually.');
+		}
 	}
 
 	async function buyNow() {
@@ -590,6 +635,28 @@
 					<p class="mt-2 text-sm text-slate-300">Unit price: ${unitPrice} × Quantity: {quantity}</p>
 					{#if artworkSizePrice > 0}
 						<p class="mt-1 text-sm font-bold text-[#d8ff3e]">{product.artworkPricing?.label ?? 'Artwork size adjustment'}: +${artworkSizePrice}</p>
+					{/if}
+				</div>
+
+				<div class="mb-7 rounded-2xl border border-cyan-200/25 bg-cyan-200/10 p-5">
+					<p class="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">Shop handoff sheet</p>
+					<h2 class="mt-2 text-2xl font-black uppercase tracking-[-0.04em] text-white">The report the shop can actually use.</h2>
+					<p class="mt-3 text-sm leading-6 text-slate-300">
+						This turns the live preview into a copyable print-job handoff: product, options, color, artwork placement, price preview, and review checklist. It does not auto-start production.
+					</p>
+					<div class="mt-4 max-h-72 overflow-auto rounded-2xl border border-white/10 bg-black/35 p-4">
+						<pre class="whitespace-pre-wrap text-xs leading-5 text-slate-200">{printJobHandoffReport}</pre>
+					</div>
+					<div class="mt-4 flex flex-wrap gap-3">
+						<button type="button" onclick={copyShopHandoff} class="rounded-2xl bg-[#d8ff3e] px-4 py-3 text-sm font-black uppercase tracking-[0.14em] text-slate-950 hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]">
+							Copy shop report
+						</button>
+						<button type="button" onclick={copyShopEmailTemplate} class="rounded-2xl border border-cyan-200/30 bg-cyan-200/10 px-4 py-3 text-sm font-black uppercase tracking-[0.14em] text-cyan-100 hover:bg-cyan-200/20 focus:outline-none focus:ring-4 focus:ring-cyan-200/40">
+							Copy email version
+						</button>
+					</div>
+					{#if handoffCopyStatus}
+						<p class="mt-3 text-sm font-bold text-[#d8ff3e]">{handoffCopyStatus}</p>
 					{/if}
 				</div>
 

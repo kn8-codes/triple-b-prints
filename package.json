@@ -13,7 +13,8 @@
 		"smoke:checkout-boundary": "node scripts/smoke-checkout-boundary.mjs",
 		"smoke:public-copy-boundary": "node scripts/smoke-public-copy-boundary.mjs",
 		"smoke:request-handoff": "node --experimental-strip-types scripts/smoke-request-handoff.mjs",
-		"smoke:bbb": "npm run smoke:checkout-boundary && npm run smoke:public-copy-boundary && npm run smoke:request-handoff"
+		"smoke:print-job-handoff": "node --experimental-strip-types scripts/smoke-print-job-handoff.mjs",
+		"smoke:bbb": "npm run smoke:checkout-boundary && npm run smoke:public-copy-boundary && npm run smoke:request-handoff && npm run smoke:print-job-handoff"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^6.3.3",

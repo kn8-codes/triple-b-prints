@@ -116,7 +116,7 @@ export function validateCheckoutPayload(body: unknown): ValidatedCheckoutPayload
 	if (clampedQuantity !== quantity) throw new Error(`Quantity must be between ${MIN_QUANTITY} and ${MAX_QUANTITY}.`);
 	const artworkReference = asNonEmptyString(body.artworkReference);
 	if (!artworkReference) throw new Error('artworkReference is required.');
-	const { selectedOptions, unitAmountCents } = normalizeCheckoutSelections(product, body.selectedOptions);
+	const { selectedOptions, unitAmountCents: optionUnitAmountCents } = normalizeCheckoutSelections(product, body.selectedOptions);
 	const artworkScale = asFiniteNumber(body.artworkScale);
 	if (artworkScale !== null && (artworkScale < 0.5 || artworkScale > (product.artworkMaxScale ?? 2))) {
 		throw new Error('artworkScale is outside the allowed preview range.');
@@ -135,6 +135,7 @@ export function validateCheckoutPayload(body: unknown): ValidatedCheckoutPayload
 	const previewGarmentColor = asNonEmptyString(body.color);
 	const previewGarmentColorHex = asHexColor(body.previewGarmentColorHex);
 	const colorPreviewMode = body.colorPreviewMode === 'custom' ? 'custom' : body.colorPreviewMode === 'preset' ? 'preset' : undefined;
+	const unitAmountCents = optionUnitAmountCents + (artworkSizePrice !== null ? dollarsToCents(artworkSizePrice) : 0);
 	return {
 		product,
 		quantity,
