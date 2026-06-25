@@ -9,6 +9,9 @@ export type PrintJobHandoffInput = {
 	printLocationLabel: string;
 	artworkReference: string;
 	artworkUploaded: boolean;
+	artworkUrl?: string;
+	artworkStorageStatus?: 'attached' | 'not_configured' | 'failed' | 'local_preview_only';
+	artworkStorageMessage?: string;
 	artworkScale: number;
 	artworkPosition: { x: number; y: number };
 	artworkSizePrice: number;
@@ -32,6 +35,20 @@ function clean(value: string | undefined, fallback = '—') {
 
 function optionLines(selectedOptions: Record<string, string>) {
 	return Object.entries(selectedOptions).map(([key, value]) => `- ${key}: ${value}`);
+}
+
+function artworkAttachmentLine(input: PrintJobHandoffInput) {
+	if (input.artworkUrl) return `Artwork URL: ${input.artworkUrl}`;
+	if (input.artworkStorageStatus === 'not_configured') return 'Artwork URL: storage not connected yet — collect file by email until Blob is configured.';
+	if (input.artworkStorageStatus === 'failed') return 'Artwork URL: upload failed — customer should resend/attach artwork before production.';
+	return 'Artwork URL: add artwork to attach a file for shop review.';
+}
+
+function artworkStorageLabel(input: PrintJobHandoffInput) {
+	if (input.artworkStorageStatus === 'attached') return 'attached for shop review';
+	if (input.artworkStorageStatus === 'not_configured') return 'preview loaded; storage pending';
+	if (input.artworkStorageStatus === 'failed') return 'preview loaded; file attachment failed';
+	return input.artworkUploaded ? 'preview loaded; file attachment pending' : 'no artwork attached yet';
 }
 
 export function buildPrintJobHandoffReport(input: PrintJobHandoffInput) {
@@ -61,6 +78,9 @@ export function buildPrintJobHandoffReport(input: PrintJobHandoffInput) {
 		'ARTWORK',
 		`Artwork uploaded in preview: ${input.artworkUploaded ? 'yes' : 'no'}`,
 		`Artwork reference: ${clean(input.artworkReference, 'No artwork file staged yet')}`,
+		`Artwork attachment status: ${artworkStorageLabel(input)}`,
+		artworkAttachmentLine(input),
+		...(input.artworkStorageMessage ? [`Artwork storage note: ${input.artworkStorageMessage}`] : []),
 		`Artwork scale: ${percent(input.artworkScale * 100)}`,
 		`Artwork position: ${percent(input.artworkPosition.x)} horizontal / ${percent(input.artworkPosition.y)} vertical`,
 		'',

@@ -18,6 +18,9 @@ const input = {
 	printLocationLabel: 'Front Only',
 	artworkReference: 'bbb-smoke-art.png (image/png, 312 KB)',
 	artworkUploaded: true,
+	artworkUrl: 'https://blob.vercel-storage.com/bbb-artwork/2026-06-24/hoodie/smoke-bbb-art.png',
+	artworkStorageStatus: 'attached',
+	artworkStorageMessage: 'Artwork file attached for shop review.',
 	artworkScale: 1.3,
 	artworkPosition: { x: 54, y: 47 },
 	artworkSizePrice: 3,
@@ -54,6 +57,9 @@ for (const marker of [
 expectIncludes(report, 'Product: Custom Hoodie', 'report');
 expectIncludes(report, 'Quantity: 24', 'report');
 expectIncludes(report, 'Preview color hex: #1F2A44', 'report');
+expectIncludes(report, 'Artwork attachment status: attached for shop review', 'report');
+expectIncludes(report, 'Artwork URL: https://blob.vercel-storage.com/bbb-artwork/2026-06-24/hoodie/smoke-bbb-art.png', 'report');
+expectIncludes(report, 'Artwork storage note: Artwork file attached for shop review.', 'report');
 expectIncludes(report, 'Artwork scale: 130%', 'report');
 expectIncludes(report, 'Artwork position: 54% horizontal / 47% vertical', 'report');
 expectIncludes(report, 'Artwork size adjustment: $3.00', 'report');

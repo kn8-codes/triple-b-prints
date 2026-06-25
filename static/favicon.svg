@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Triple B Prints favicon">
+  <rect width="512" height="512" rx="96" fill="#07090f"/>
+  <rect x="20" y="20" width="472" height="472" rx="80" fill="none" stroke="#d8ff3e" stroke-width="20"/>
+  <circle cx="86" cy="112" r="23" fill="#1cceff"/>
+  <circle cx="420" cy="104" r="23" fill="#ff2bae"/>
+  <circle cx="90" cy="404" r="23" fill="#ffd62a"/>
+  <circle cx="424" cy="400" r="23" fill="#3dff88"/>
+  <circle cx="256" cy="68" r="17" fill="#ff681f"/>
+  <text x="256" y="314" text-anchor="middle" font-family="Arial Black, Arial, system-ui, sans-serif" font-size="188" font-weight="900" letter-spacing="-18" stroke="#000" stroke-width="22" paint-order="stroke fill"><tspan fill="#1cceff">B</tspan><tspan fill="#ff2bae">B</tspan><tspan fill="#ffd62a">B</tspan></text>
+</svg>

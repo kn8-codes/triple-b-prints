@@ -23,6 +23,9 @@
 	let uploadedImage = $state<string | null>(null);
 	let uploadedArtworkName = $state('');
 	let uploadedArtworkMeta = $state('');
+	let uploadedArtworkUrl = $state('');
+	let artworkStorageStatus = $state<'attached' | 'not_configured' | 'failed' | 'local_preview_only'>('local_preview_only');
+	let artworkStorageMessage = $state('');
 	let imagePosition = $state(untrack(() => ({ ...product.artworkPosition })));
 	let imageScale = $state(1);
 	let quantity = $state(1);
@@ -78,6 +81,9 @@
 		printLocationLabel: printSelection,
 		artworkReference: uploadedArtworkName ? `${uploadedArtworkName} (${uploadedArtworkMeta})` : '',
 		artworkUploaded: Boolean(uploadedImage),
+		artworkUrl: uploadedArtworkUrl,
+		artworkStorageStatus,
+		artworkStorageMessage,
 		artworkScale: imageScale,
 		artworkPosition: imagePosition,
 		artworkSizePrice,
@@ -180,6 +186,36 @@
 		} catch {
 			validationWarnings = ['We could not check image quality right now. Use a high-resolution source if you have one.'];
 			validationMessage = 'Artwork uploaded, but the quality gate was unavailable.';
+		}
+
+		try {
+			const uploadData = new FormData();
+			uploadData.append('file', file);
+			uploadData.append('productType', product.slug);
+
+			const uploadResponse = await fetch('/api/upload-artwork', {
+				method: 'POST',
+				body: uploadData
+			});
+			const uploadResult = await uploadResponse.json();
+
+			if (uploadResponse.ok && typeof uploadResult?.artworkUrl === 'string') {
+				uploadedArtworkUrl = uploadResult.artworkUrl;
+				artworkStorageStatus = 'attached';
+				artworkStorageMessage = typeof uploadResult?.message === 'string' ? uploadResult.message : 'Artwork file attached for shop review.';
+			} else if (uploadResult?.code === 'blob_not_configured') {
+				uploadedArtworkUrl = '';
+				artworkStorageStatus = 'not_configured';
+				artworkStorageMessage = 'Artwork storage is not connected yet. The preview works, but the shop will need the file by email until Blob is configured.';
+			} else {
+				uploadedArtworkUrl = '';
+				artworkStorageStatus = 'failed';
+				artworkStorageMessage = typeof uploadResult?.error === 'string' ? uploadResult.error : 'Artwork storage failed. The shop should collect the original file before production.';
+			}
+		} catch {
+			uploadedArtworkUrl = '';
+			artworkStorageStatus = 'failed';
+			artworkStorageMessage = 'Artwork storage was unavailable. The shop should collect the original file before production.';
 		}
 
 		const reader = new FileReader();
@@ -375,6 +411,8 @@
 					artworkScale: imageScale,
 					artworkPosition: imagePosition,
 					artworkSizePrice,
+					artworkUrl: uploadedArtworkUrl,
+					artworkStorageStatus,
 					previewGarmentColorHex: selectedGarmentColor,
 					colorPreviewMode: colorMode,
 					unitAmountCents: Math.round(unitPrice * 100),
@@ -640,12 +678,42 @@
 
 				<div class="mb-7 rounded-2xl border border-cyan-200/25 bg-cyan-200/10 p-5">
 					<p class="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">Shop handoff sheet</p>
-					<h2 class="mt-2 text-2xl font-black uppercase tracking-[-0.04em] text-white">The report the shop can actually use.</h2>
+					<h2 class="mt-2 text-2xl font-black uppercase tracking-[-0.04em] text-white">Clean details for the print desk.</h2>
 					<p class="mt-3 text-sm leading-6 text-slate-300">
-						This turns the live preview into a copyable print-job handoff: product, options, color, artwork placement, price preview, and review checklist. It does not auto-start production.
+						Copy a tidy job note for BBB Prints with the order basics, artwork status, price preview, and review steps. Nothing auto-starts production.
 					</p>
-					<div class="mt-4 max-h-72 overflow-auto rounded-2xl border border-white/10 bg-black/35 p-4">
-						<pre class="whitespace-pre-wrap text-xs leading-5 text-slate-200">{printJobHandoffReport}</pre>
+
+					<div class="mt-5 grid gap-3 sm:grid-cols-2">
+						<div class="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+							<p class="text-[0.65rem] font-black uppercase tracking-[0.18em] text-cyan-100/70">Product</p>
+							<p class="mt-1 font-black text-white">{product.name}</p>
+							<p class="mt-1 text-xs text-slate-400">{sizeSelection} · {colorSelection}</p>
+						</div>
+						<div class="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+							<p class="text-[0.65rem] font-black uppercase tracking-[0.18em] text-cyan-100/70">Artwork</p>
+							<p class="mt-1 font-black text-white">{uploadedImage ? 'Attached for review' : 'Waiting on upload'}</p>
+							<p class="mt-1 text-xs text-slate-400">{printSelection} · {Math.round(imageScale * 100)}% scale</p>
+						</div>
+						<div class="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+							<p class="text-[0.65rem] font-black uppercase tracking-[0.18em] text-cyan-100/70">Quantity</p>
+							<p class="mt-1 font-black text-white">{quantity} piece{quantity === 1 ? '' : 's'}</p>
+							<p class="mt-1 text-xs text-slate-400">Unit preview: ${unitPrice}</p>
+						</div>
+						<div class="rounded-2xl border border-[#d8ff3e]/30 bg-[#d8ff3e]/10 p-4">
+							<p class="text-[0.65rem] font-black uppercase tracking-[0.18em] text-[#d8ff3e]">Quote preview</p>
+							<p class="mt-1 text-2xl font-black text-white">${orderTotal}</p>
+							<p class="mt-1 text-xs text-slate-300">Final price confirmed by the shop.</p>
+						</div>
+					</div>
+
+					<div class="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4">
+						<p class="text-[0.65rem] font-black uppercase tracking-[0.18em] text-slate-300">Review before production</p>
+						<ul class="mt-3 space-y-2 text-sm leading-5 text-slate-200">
+							<li class="flex gap-2"><span class="text-[#d8ff3e]">✓</span><span>Confirm product, size, and color availability.</span></li>
+							<li class="flex gap-2"><span class="text-[#d8ff3e]">✓</span><span>Confirm artwork file, placement, and scale.</span></li>
+							<li class="flex gap-2"><span class="text-[#d8ff3e]">✓</span><span>Confirm price, cleanup needs, and production timeline.</span></li>
+							<li class="flex gap-2"><span class="text-[#d8ff3e]">✓</span><span>Contact the customer with final quote or approval request.</span></li>
+						</ul>
 					</div>
 					<div class="mt-4 flex flex-wrap gap-3">
 						<button type="button" onclick={copyShopHandoff} class="rounded-2xl bg-[#d8ff3e] px-4 py-3 text-sm font-black uppercase tracking-[0.14em] text-slate-950 hover:bg-yellow-200 focus:outline-none focus:ring-4 focus:ring-[#d8ff3e]">
@@ -771,8 +839,21 @@
 
 						{#if uploadedImage}
 							<p class="mt-2 text-sm font-medium text-emerald-300" role="status" aria-live="polite">
-								✓ Artwork uploaded: {uploadedArtworkName}
+								✓ Artwork preview loaded: {uploadedArtworkName}
 							</p>
+							{#if artworkStorageStatus === 'attached'}
+								<p class="mt-2 rounded-xl border border-emerald-300/25 bg-emerald-400/10 px-3 py-2 text-sm font-bold text-emerald-100" role="status" aria-live="polite">
+									✓ Artwork file attached for shop review. Triple B will receive the file link in the handoff.
+								</p>
+							{:else if artworkStorageStatus === 'not_configured'}
+								<p class="mt-2 rounded-xl border border-[#d8ff3e]/25 bg-[#d8ff3e]/10 px-3 py-2 text-sm font-bold text-[#f4f5f2]" role="status" aria-live="polite">
+									Preview is loaded. Artwork storage is being connected, so the shop may still ask for the original file before production.
+								</p>
+							{:else if artworkStorageStatus === 'failed'}
+								<p class="mt-2 rounded-xl border border-red-300/30 bg-red-500/10 px-3 py-2 text-sm font-bold text-red-100" role="status" aria-live="polite">
+									Preview is loaded, but the artwork file did not attach. Please keep the original file handy for the shop.
+								</p>
+							{/if}
 						{/if}
 
 						{#if isValidatingArtwork}

@@ -19,6 +19,8 @@ export type ValidatedCheckoutPayload = {
 	artworkScale?: number;
 	artworkPosition?: { x: number; y: number };
 	artworkSizePriceCents?: number;
+	artworkUrl?: string;
+	artworkStorageStatus?: 'attached' | 'not_configured' | 'failed' | 'local_preview_only';
 	previewGarmentColor?: string;
 	previewGarmentColorHex?: string;
 	colorPreviewMode?: 'preset' | 'custom';
@@ -74,6 +76,23 @@ function asFiniteNumber(value: unknown) {
 function asHexColor(value: unknown) {
 	const candidate = asNonEmptyString(value);
 	return candidate && /^#[0-9a-fA-F]{6}$/.test(candidate) ? candidate.toUpperCase() : null;
+}
+
+function asHttpUrl(value: unknown) {
+	const candidate = asNonEmptyString(value);
+	if (!candidate) return null;
+	try {
+		const url = new URL(candidate);
+		return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : null;
+	} catch {
+		return null;
+	}
+}
+
+function asArtworkStorageStatus(value: unknown) {
+	return value === 'attached' || value === 'not_configured' || value === 'failed' || value === 'local_preview_only'
+		? value
+		: null;
 }
 
 export function dollarsToCents(value: number): number {
@@ -134,6 +153,8 @@ export function validateCheckoutPayload(body: unknown): ValidatedCheckoutPayload
 		: undefined;
 	const previewGarmentColor = asNonEmptyString(body.color);
 	const previewGarmentColorHex = asHexColor(body.previewGarmentColorHex);
+	const artworkUrl = asHttpUrl(body.artworkUrl);
+	const artworkStorageStatus = asArtworkStorageStatus(body.artworkStorageStatus);
 	const colorPreviewMode = body.colorPreviewMode === 'custom' ? 'custom' : body.colorPreviewMode === 'preset' ? 'preset' : undefined;
 	const unitAmountCents = optionUnitAmountCents + (artworkSizePrice !== null ? dollarsToCents(artworkSizePrice) : 0);
 	return {
@@ -148,6 +169,8 @@ export function validateCheckoutPayload(body: unknown): ValidatedCheckoutPayload
 		...(artworkScale !== null ? { artworkScale } : {}),
 		...(artworkPosition ? { artworkPosition: { x: artworkPosition.x, y: artworkPosition.y } } : {}),
 		...(artworkSizePrice !== null ? { artworkSizePriceCents: dollarsToCents(artworkSizePrice) } : {}),
+		...(artworkUrl ? { artworkUrl } : {}),
+		...(artworkStorageStatus ? { artworkStorageStatus } : {}),
 		...(previewGarmentColor ? { previewGarmentColor } : {}),
 		...(previewGarmentColorHex ? { previewGarmentColorHex } : {}),
 		...(colorPreviewMode ? { colorPreviewMode } : {})
