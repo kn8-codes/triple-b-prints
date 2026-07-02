@@ -1,83 +1,46 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-
-	let { children } = $props();
-	let mobileMenuOpen = $state(false);
-
-	const navItems = [
-		{ href: '/shop/t-shirt', label: 'Products' },
-		{ href: '/#about', label: 'About' },
-		{ href: '/contact', label: 'Contact' }
-	];
-
-	function closeMobileMenu() {
-		mobileMenuOpen = false;
-	}
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Triple B Prints — Bold Custom Prints</title>
-	<meta name="description" content="Custom t-shirts, hoodies, mugs and more. Upload rough art, preview placement, and start a quote with Triple B Prints." />
+	<title>Triple B Prints — Temporarily Offline</title>
+	<meta
+		name="description"
+		content="Triple B Prints is temporarily offline while the shop updates its request and ordering flow."
+	/>
+	<meta name="robots" content="noindex, nofollow" />
 	<meta name="theme-color" content="#07090f" />
 	<meta name="color-scheme" content="dark light" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </svelte:head>
 
-<!--
-  ╔══════════════════════════════════════════════════════════════════════════════╗
-  ║  LAYOUT — Triple B Prints                                                    ║
-  ║  ============================================================================= ║
-  ║  MOBILE RESPONSIVENESS CHANGES (2025-05-03):                                ║
-  ║    • Added hamburger navigation for screens below 640px (sm breakpoint).    ║
-  ║    • Menu toggle uses a <button> with aria-expanded + aria-controls for     ║
-  ║      full a11y compliance (screen-reader + keyboard friendly).              ║
-  ║    • Mobile nav slides down as a vertical stack inside the header.          ║
-  ║    • Desktop nav remains unchanged (hidden below sm, flex at sm+).          ║
-  ╚══════════════════════════════════════════════════════════════════════════════╝
--->
-
-<div class="min-h-screen flex flex-col bg-[#07090f] text-white">
-	<header class="sticky top-0 z-50 border-b border-white/10 bg-[#07090f]/88 text-white shadow-2xl shadow-black/30 backdrop-blur-xl">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-			<a href="/" class="group inline-flex items-center gap-3 text-base sm:text-xl font-black tracking-tight uppercase nav-brand" aria-label="Triple B Prints home">
-				<span class="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-200/30 bg-cyan-200/10 text-sm text-cyan-100 shadow-[0_0_30px_rgba(34,211,238,0.16)]">BBB</span>
-				<span class="leading-none">
-					<span class="block tracking-[0.18em] text-white">Triple B</span>
-					<span class="block text-[0.62rem] tracking-[0.32em] text-cyan-100/75">Print Studio</span>
-				</span>
-			</a>
-
-			<nav class="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-wide" aria-label="Primary">
-				{#each navItems as item}
-					<a href={item.href} class="nav-link tap-target">{item.label}</a>
-				{/each}
-			</nav>
-
-			<button
-				type="button"
-				class="md:hidden mobile-menu-button tap-target border border-white/10 bg-white/5 text-cyan-100"
-				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-				aria-expanded={mobileMenuOpen}
-				aria-controls="mobile-navigation"
-				aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-			>
-				<span aria-hidden="true">☰</span>
-			</button>
+<main class="grid min-h-screen place-items-center overflow-hidden bg-[#07090f] px-4 py-12 text-white sm:px-6">
+	<div class="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(120,232,255,0.18),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(216,255,62,0.12),transparent_28%),linear-gradient(135deg,rgba(15,23,42,0.10),rgba(3,7,18,1))]"></div>
+	<div class="relative w-full max-w-3xl rounded-[2rem] border border-white/10 bg-white/[0.055] p-6 text-center shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-10">
+		<div class="mx-auto mb-7 grid h-20 w-20 place-items-center rounded-3xl border border-cyan-200/30 bg-cyan-200/10 text-xl font-black tracking-[-0.08em] text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,0.16)]">
+			BBB
 		</div>
 
-		{#if mobileMenuOpen}
-			<nav id="mobile-navigation" class="mobile-nav md:hidden" aria-label="Mobile">
-				<div class="max-w-7xl mx-auto px-4 sm:px-6 pb-4 grid gap-2">
-					{#each navItems as item}
-						<a href={item.href} class="mobile-nav-link tap-target" onclick={closeMobileMenu}>{item.label}</a>
-					{/each}
-				</div>
-			</nav>
-		{/if}
-	</header>
+		<p class="mb-4 text-xs font-black uppercase tracking-[0.28em] text-[#d8ff3e] sm:text-sm">
+			Triple B Prints
+		</p>
+		<h1 class="text-4xl font-black uppercase leading-[0.9] tracking-[-0.055em] sm:text-6xl">
+			Temporarily offline.
+		</h1>
+		<p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+			The online print preview and request flow are paused while the shop updates its ordering process. Existing customers and active jobs should contact the shop directly.
+		</p>
 
-	{@render children()}
-</div>
+		<div class="mx-auto mt-8 max-w-xl rounded-3xl border border-white/10 bg-black/25 p-5 text-left">
+			<p class="text-xs font-black uppercase tracking-[0.22em] text-cyan-100">Current status</p>
+			<ul class="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+				<li><strong class="text-white">Site:</strong> paused for maintenance.</li>
+				<li><strong class="text-white">Orders:</strong> not accepted through this website right now.</li>
+				<li><strong class="text-white">Contact:</strong> use your existing direct shop contact for active work.</li>
+			</ul>
+		</div>
+	</div>
+</main>
